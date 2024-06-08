@@ -5,16 +5,18 @@ import TableHead from '@material-ui/core/TableHead';
 import { Delete } from "@mui/icons-material";
 import CreateIcon from '@mui/icons-material/Create';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const orders = [1, 1, 1, 1, 1, 1, 1]
 
 export default function MenuTable() {
+    const navigate=useNavigate();
     return (
         <div>
             <Box>
                 <Card className='mt-1'>
                     <CardHeader action={
-                        <IconButton aria-label="settings">
+                        <IconButton onClick={()=>navigate("/admin/jewelry/add-menu")} aria-label="settings">
                             <CreateIcon />
                         </IconButton>
                     }

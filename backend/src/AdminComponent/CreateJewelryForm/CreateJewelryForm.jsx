@@ -5,6 +5,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
+import { uploadImageToCloudinary } from '../util/UploadToCloudinary';
+
+
 
 
 const initialValues = {
@@ -14,7 +17,7 @@ const initialValues = {
     streetAddress: "",
     city: "",
     stateProvince: "",
-    potalCode: "",
+    postalCode: "",
     country: "",
     email: "",
     mobile: "",
@@ -28,7 +31,7 @@ const CreateJewelryForm = () => {
     const [uploadImage, setUploadImage] = useState(false);
     const formik = useFormik({
         initialValues,
-        onSubmit: () => {
+        onSubmit: (values) => {
             const data={
                 name: formik.values.name,
                 description: formik.values.description,
@@ -37,7 +40,7 @@ const CreateJewelryForm = () => {
                     streetAddress: formik.values.streetAddress,
                     City: formik.values.city,
                     StateProvince: formik.values.stateProvince,
-                    potalCode: formik.values.potalCode,
+                    postalCode: formik.values.postalCode,
                     country: formik.values.country
                 },
 
@@ -54,12 +57,20 @@ const CreateJewelryForm = () => {
             console.log("data ---",data)
         },
     });
-    const handleImageChange = (e) => {
-
-    }
+    const handleImageChange = async(e) => {
+        const file=e.target.files[0]
+        setUploadImage(true);
+        const image = await uploadImageToCloudinary(file)
+        console.log("image ---",image)
+        formik.setFieldValue("images",[...formik.value.images,image])
+        setUploadImage(false)
+    };
     const handleRemoveImage = (index) => {
+        const updatedImages = [...formik.values.images]
+        updatedImages.splice(index,1);
+        formik.setFieldValue("images",updatedImages)
+    };
 
-    }
     return (
         <div className='py-10 lg:flex px-5 items-center justify-center min-h-screen'>
             <div className="lg:max-w-4x1">
@@ -87,12 +98,13 @@ const CreateJewelryForm = () => {
                                 }
                             </label>
                             <div className='flex flex-wrap gap-2'>
-                                {[1, 1, 1].map((image, index) => (
+                                {formik.values.images.map((image, index) => (
                                     <div className="relative">
                                         <img
                                             className='w-24 h-24 object-cover'
                                             key={index}
-                                            src="D:\Ring-1.jpg" alt="" />
+                                            src={image}
+                                            alt="" />
                                         <IconButton
                                             size='small'
                                             sx={{
@@ -127,7 +139,7 @@ const CreateJewelryForm = () => {
                                 label="Description"
                                 variant="outlined"
                                 onChange={formik.handleChange}
-                                value={formik.value.name}>
+                                value={formik.value.description}>
 
                             </TextField>
                         </Grid>
@@ -138,7 +150,7 @@ const CreateJewelryForm = () => {
                                 label="JewelryType"
                                 variant="outlined"
                                 onChange={formik.handleChange}
-                                value={formik.value.name}>
+                                value={formik.value.jewelryType}>
 
                             </TextField>
                         </Grid>
@@ -149,7 +161,7 @@ const CreateJewelryForm = () => {
                             label="OpeningHours"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.openingHours}>
 
                             </TextField>
                         </Grid>
@@ -160,7 +172,7 @@ const CreateJewelryForm = () => {
                             label="Address"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.address}>
 
                             </TextField>
                         </Grid>
@@ -171,7 +183,7 @@ const CreateJewelryForm = () => {
                             label="City"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.city}>
 
                             </TextField>
                         </Grid>
@@ -182,18 +194,18 @@ const CreateJewelryForm = () => {
                             label="StateProvince"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.stateProvince}>
 
                             </TextField>
                         </Grid>
                         <Grid item xs={12} lg={4}>
                             <TextField fullWidth
-                            id="potalCode"
-                            name="potalCode"
-                            label="PotalCode"
+                            id="postalCode"
+                            name="postalCode"
+                            label="PostalCode"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.postalCode}>
 
                             </TextField>
                         </Grid>
@@ -204,7 +216,7 @@ const CreateJewelryForm = () => {
                             label="Country"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.country}>
 
                             </TextField>
                         </Grid>
@@ -215,7 +227,7 @@ const CreateJewelryForm = () => {
                             label="Email"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.email}>
 
                             </TextField>
                         </Grid>
@@ -226,7 +238,7 @@ const CreateJewelryForm = () => {
                             label="Mobile"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.mobile}>
 
                             </TextField>
                         </Grid>
@@ -237,7 +249,7 @@ const CreateJewelryForm = () => {
                             label="Instagram"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.instagram}>
 
                             </TextField>
                         </Grid>
@@ -248,7 +260,7 @@ const CreateJewelryForm = () => {
                             label="Facebook"
                             variant="outlined"
                             onChange={formik.handleChange}
-                            value={formik.value.name}>
+                            value={formik.value.facebook}>
 
                             </TextField>
                         </Grid>
