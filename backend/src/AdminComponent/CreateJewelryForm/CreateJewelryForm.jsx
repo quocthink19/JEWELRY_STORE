@@ -29,6 +29,7 @@ const initialValues = {
 
 const CreateJewelryForm = () => {
     const [uploadImage, setUploadImage] = useState(false);
+    const dispatch=useDispatch()
     const formik = useFormik({
         initialValues,
         onSubmit: (values) => {
@@ -55,6 +56,8 @@ const CreateJewelryForm = () => {
                 images: formik.values.images,
             };
             console.log("data ---",data)
+
+            dispatch(CreateJewelry)
         },
     });
     const handleImageChange = async(e) => {

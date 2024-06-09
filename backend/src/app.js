@@ -18,6 +18,11 @@ function App() {
     dispatch(findCart(jwt));
 }, [auth.jwt]);
 
+useEffect(()=>{
+    dispatch(getJewelryByUserId(auth.jwt || jwt));
+
+},[auth.user])
+
 return (
     <ThemeProvider theme={darktheme}>
         <CssBaseline/>
