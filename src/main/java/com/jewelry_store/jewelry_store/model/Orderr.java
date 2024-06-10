@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Orderr {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

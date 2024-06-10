@@ -24,7 +24,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long userid;
+   private Long id;
 
    private String fullname;
 
@@ -40,7 +40,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(cascade =  CascadeType.ALL, mappedBy = "staff")
-    private List<Order> orders = new ArrayList<>();
+    private List<Orderr> orders = new ArrayList<>();
 
   
 }

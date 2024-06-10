@@ -6,6 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,8 +30,9 @@ public class Area {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    private User Staff;
+   @OneToOne
+    private User staff;
+
 
     private String name;
 
@@ -38,10 +41,18 @@ public class Area {
     @Embedded
     private ContactInformation contactInformation;
 
+    private String openingHours;
+
+
     @OneToMany(mappedBy = "Area" ,  cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
+    private List<Orderr> orders = new ArrayList<>();
     
+    @ElementCollection
+    @Column(length = 1000)
+    private List<String> images;
+
     private boolean open;
+    
     @JsonIgnore
     @OneToMany(mappedBy = "Area" ,  cascade = CascadeType.ALL)
     private List<Jewelry> jewelry = new ArrayList<>();
