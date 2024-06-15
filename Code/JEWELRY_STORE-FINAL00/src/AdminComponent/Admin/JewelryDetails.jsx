@@ -3,20 +3,22 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import XIcon from '@mui/icons-material/X';
 import { Button, Card, CardContent, CardHeader, Grid } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 export const JewelryDetails = () => {
-    const handleJewelryStatus=()=> {
+    const [isOpen, setIsOpen] = useState(false);
 
-    }
+    const handleJewelryStatus = () => {
+        setIsOpen(!isOpen);
+    };
 
     return (
         <div className='lg:px-20 px-5 pb-10'>
             <div className='py-5 flex justify-center items-center gap-5'>
                 <h1 className='text-2x1 lg:text-7x1 text-center font-bold p-5' style={{ fontSize: '36px' }}>Khuyen mai he</h1>
                 <div>
-                    <Button color={true?"primary":"error"} className='py-[1rem] px-[2rem]' variant ='contained' onClick={handleJewelryStatus} size='large'>
-                        {true?"close":"open"}
+                <Button color={isOpen ? "error" : "primary"} className='py-[1rem] px-[2rem]' variant='contained' onClick={handleJewelryStatus} size='large'>
+                        {isOpen ? "close" : "open"}
                     </Button>
                 </div>
             </div>
@@ -66,8 +68,8 @@ export const JewelryDetails = () => {
                                     <p className='w-48'>Status</p>
                                     <p className='text-gray-400'>
                                         <span className='pr-5'>-</span>
-                                        {true?<span className='px-5 py-2 rounded-full bg-green-400 text-gray-950'>Open</span>
-                                        :<span className='px-5 py-2 rounded-full bg-red-400 text-gray-9 50'>Closed</span>}
+                                        {isOpen ? <span className='px-5 py-2 rounded-full bg-green-400 text-gray-950'>Open</span> 
+                                        : <span className='px-5 py-2 rounded-full bg-red-400 text-gray-950'>Closed</span>}
                                     </p>
                                 </div>
                             </div>

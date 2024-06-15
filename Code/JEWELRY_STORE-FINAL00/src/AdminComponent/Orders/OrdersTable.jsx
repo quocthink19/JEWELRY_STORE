@@ -1,5 +1,4 @@
-import { Box, Card, CardHeader, Paper, Table, TableCell, TableContainer, TableRow } from '@material-ui/core';
-import { TableBody, TableHead } from '@mui/material';
+import { Box, Card, CardHeader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 
 const orders=[1,1,1,1,1,1,1]

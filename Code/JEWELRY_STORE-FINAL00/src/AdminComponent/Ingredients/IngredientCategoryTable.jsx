@@ -1,9 +1,5 @@
-import { Box, Card, CardHeader, Paper, Table, TableCell, TableContainer, TableRow } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
 import CreateIcon from '@mui/icons-material/Create';
-import { Modal } from '@mui/material';
+import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 import CreateIngredientCategoryForm from './CreateIngreddientCategoryForm';
 
