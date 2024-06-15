@@ -4,7 +4,7 @@ import { JewelryDetails } from '../Admin/JewelryDetails'
 import { Category } from '../Category/Category'
 import { JewelryDashboard } from '../Dashboard/Dashboard'
 
-import Events from '../Events/Events'
+import { Events } from '../Events/Events'
 import Ingredients from '../Ingredients/Ingredients'
 import CreateMenuForm from '../Menu/CreateMenuForm'
 import { Menu } from '../Menu/Menu'
@@ -23,7 +23,7 @@ export const Admin = () => {
         <div>
             <div className='lg:flex justify-between'>
                 <div>
-
+                    
                     <AdminSidebar handleClose={handleClose}/>
                 </div>
                 <div className='lg:w-[80%]'>

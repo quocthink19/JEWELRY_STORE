@@ -24,8 +24,8 @@ const CreateIngredientsForm = () => {
     };
 
     return (
-        <div className='flex justify-center items-center min-h-screen'>
-            <div className='p-5 bg-white w-120 h-120 flex flex-col justify-center'>
+        <div className=''>
+            <div className='p-5'>
                 <h1 className='text-black text-center text-xl pb-10' style={{ fontSize: '30px' }}>Create Ingredient</h1>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <TextField
