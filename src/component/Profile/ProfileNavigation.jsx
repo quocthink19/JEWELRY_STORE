@@ -1,14 +1,14 @@
-import React from "react";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import EventIcon from "@mui/icons-material/Event";
-import LogoutIcon from "@mui/icons-material/Logout";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
+import EventIcon from "@mui/icons-material/Event";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { Divider, Drawer, useMediaQuery } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../State/Authentication/Action";
 
 export const menu = [
@@ -47,8 +47,7 @@ const ProfileNavigation = ({ open, handleClose }) => {
             <>
               <div
                 onClick={() => handleNavigate(item)}
-                className="px-5 flex items-center space-x-5 cursor-pointer"
-              >
+                className="px-5 flex items-center space-x-5 cursor-pointer">
                 {item.icon}
                 <span>{item.title}</span>
               </div>
