@@ -25,7 +25,7 @@ import com.jewelry_store.jewelry_store.repository.CartRepository;
 import com.jewelry_store.jewelry_store.repository.UserRepository;
 import com.jewelry_store.jewelry_store.request.LoginRequest;
 import com.jewelry_store.jewelry_store.response.AuthResponse;
-import com.jewelry_store.jewelry_store.service.StaffUserDetailService;
+import com.jewelry_store.jewelry_store.service.User.StaffUserDetailService;
 
 @RestController
 @RequestMapping("/auth")

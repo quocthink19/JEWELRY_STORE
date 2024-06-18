@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jewelry_store.jewelry_store.model.User;
-import com.jewelry_store.jewelry_store.service.UserService;
+import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
 @RequestMapping("/users")

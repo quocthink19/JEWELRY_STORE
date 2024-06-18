@@ -1,6 +1,6 @@
 package com.jewelry_store.jewelry_store.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 
@@ -32,7 +32,7 @@ public class Orderr {
 
     @JsonIgnore
     @ManyToOne
-    private Area Area ;
+    private Area area ;
 
     private Long totalAmout;
 
@@ -47,5 +47,5 @@ public class Orderr {
 
     private int totalItem;
 
-    private int  totalPrice;
+    private double  totalPrice;
 }

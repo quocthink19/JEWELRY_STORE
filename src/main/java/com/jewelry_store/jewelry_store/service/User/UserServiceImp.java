@@ -1,4 +1,4 @@
-package com.jewelry_store.jewelry_store.service;
+package com.jewelry_store.jewelry_store.service.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.jewelry_store.jewelry_store.service;
+package com.jewelry_store.jewelry_store.service.Area;
 
 import java.util.List;
 

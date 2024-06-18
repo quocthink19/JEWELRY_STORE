@@ -6,4 +6,5 @@ import com.jewelry_store.jewelry_store.model.Cart;
 
 public interface CartRepository extends JpaRepository<Cart,Long> {
 
+    public Cart findByStaffId(Long userId);
 }

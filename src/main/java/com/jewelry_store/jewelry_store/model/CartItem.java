@@ -32,7 +32,7 @@ public class CartItem {
 
     private int quantity;
 
-    private List<String> ingredients;
+    private List<String> components;
 
-    private Long totalPrice;
+    private double totalPrice;
 }

@@ -17,8 +17,8 @@ import com.jewelry_store.jewelry_store.model.Area;
 import com.jewelry_store.jewelry_store.model.User;
 import com.jewelry_store.jewelry_store.request.CreateAreaRequest;
 import com.jewelry_store.jewelry_store.response.MessageResponse;
-import com.jewelry_store.jewelry_store.service.AreaService;
-import com.jewelry_store.jewelry_store.service.UserService;
+import com.jewelry_store.jewelry_store.service.Area.AreaService;
+import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
 @RequestMapping("/admin/area")

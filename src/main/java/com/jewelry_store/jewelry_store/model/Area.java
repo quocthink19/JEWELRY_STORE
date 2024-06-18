@@ -3,7 +3,6 @@ package com.jewelry_store.jewelry_store.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,7 +43,7 @@ public class Area {
     private String openingHours;
 
 
-    @OneToMany(mappedBy = "Area" ,  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "area" ,  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orderr> orders = new ArrayList<>();
     
     @ElementCollection
@@ -53,7 +52,4 @@ public class Area {
 
     private boolean open;
     
-    @JsonIgnore
-    @OneToMany(mappedBy = "Area" ,  cascade = CascadeType.ALL)
-    private List<Jewelry> jewelry = new ArrayList<>();
 }

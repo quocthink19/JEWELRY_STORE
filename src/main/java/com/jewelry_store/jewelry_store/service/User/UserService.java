@@ -1,4 +1,4 @@
-package com.jewelry_store.jewelry_store.service;
+package com.jewelry_store.jewelry_store.service.User;
 
 import com.jewelry_store.jewelry_store.model.User;
 

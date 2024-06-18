@@ -1,4 +1,4 @@
-package com.jewelry_store.jewelry_store.service;
+package com.jewelry_store.jewelry_store.service.Area;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +15,6 @@ import com.jewelry_store.jewelry_store.request.CreateAreaRequest;
 public class AreaServiceImp implements AreaService {
     @Autowired
     private AreaRepository areaRepository;
-    @Autowired
-    private UserService userService;
     @Override
     public Area createArea(CreateAreaRequest req, User user) {
         Area area = new Area();
