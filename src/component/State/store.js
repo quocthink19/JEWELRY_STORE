@@ -10,7 +10,7 @@ import ingredientReducer from "./ingredients/Reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    // chưa import từ Restaurant/reducer
+    // chưa import từ ./Restaurant/reducer
     restaurant: restaurantReducer,
     menu:menuItemReducer,
     cart:cartReducer,
