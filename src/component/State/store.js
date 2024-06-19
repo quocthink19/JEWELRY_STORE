@@ -5,12 +5,13 @@ import cartReducer from "./Cart/Reducer";
 import menuItemReducer from "./Menu/Reducer";
 import { orderReducer } from "./Order/Reducer";
 import restaurantOrderReducer from "./Restaurant Order/Reducer";
+import restaurantReducer from "./Restaurant/Reducer";
 import ingredientReducer from "./ingredients/Reducer";
 
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    // chưa import từ ./Restaurant/reducer
+
     restaurant: restaurantReducer,
     menu:menuItemReducer,
     cart:cartReducer,
