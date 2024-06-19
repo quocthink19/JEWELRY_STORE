@@ -4,6 +4,8 @@ import { authReducer } from "./Authentication/Reducer";
 import cartReducer from "./Cart/Reducer";
 import menuItemReducer from "./Menu/Reducer";
 import { orderReducer } from "./Order/Reducer";
+import restaurantOrderReducer from "./Restaurant Order/Reducer";
+import ingredientReducer from "./ingredients/Reducer";
 
 
 const rootReducer = combineReducers({
@@ -12,7 +14,10 @@ const rootReducer = combineReducers({
     restaurant: restaurantReducer,
     menu:menuItemReducer,
     cart:cartReducer,
-    order:orderReducer
+    order:orderReducer,
+    restaurantOrder:restaurantOrderReducer,
+    ingredients:ingredientReducer
+
 });
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
