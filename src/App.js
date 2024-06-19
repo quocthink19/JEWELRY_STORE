@@ -5,6 +5,7 @@ import "./App.css";
 import Routers from "./Routers/Routers";
 import { darkTheme } from "./Theme/DarkTheme";
 import { getUser } from "./component/State/Authentication/Action";
+import { getRestaurantByUserId } from "./component/State/Restaurant/Action";
 function App() {
   const dispatch= useDispatch()
   const jwt = localStorage.getItem("jwt")
@@ -13,6 +14,13 @@ function App() {
   useEffect(()=> {
     dispatch(getUser(auth.jwt || jwt))
   },[auth.jwt])
+
+  useEffect(()=>{
+    dispatch(getRestaurantByUserId(auth.jwt || jwt));
+
+  },[auth.user])
+    
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

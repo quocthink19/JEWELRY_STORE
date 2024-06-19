@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { createRestaurant } from '../../component/State/Restaurant/Action';
 import { uploadImageToCloudinary } from '../util/UploadToCloudinary';
 
 const initialValues = {
@@ -22,8 +23,8 @@ const initialValues = {
     instagram: "",
     facebook: "",
     openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
-    images: []
-}
+    images: [],
+};
 
 const CreateJewelryForm = () => {
     const [uploadImage, setUploadImage] = useState(false);
@@ -53,8 +54,8 @@ const CreateJewelryForm = () => {
                 images: values.images,
             };
             console.log("data ---",data)
-            // // import CreateJewelry từ component/...
-            // dispatch(CreateJewelry({data,token:jwt}))
+
+            dispatch(createRestaurant({data,token:jwt}))
         },
     });
 
@@ -64,7 +65,7 @@ const CreateJewelryForm = () => {
         const image = await uploadImageToCloudinary(file);
         console.log("image ---",image);
         formik.setFieldValue("images", [...formik.values.images, image]);
-        setUploadImage(false);
+        setUploadImage(false)
     };
 
     const handleRemoveImage = (index) => {
