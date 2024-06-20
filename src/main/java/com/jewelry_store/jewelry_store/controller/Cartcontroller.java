@@ -45,7 +45,7 @@ public class Cartcontroller {
         CartItem cartItem = cartService.updateCartItemQuantity(req.getCartItemId(), req.getQuantity());
         return new ResponseEntity<>(cartItem, HttpStatus.OK);
     }
-    @DeleteMapping("/cart/{if}/remove")
+    @DeleteMapping("/cart/{id}/remove")
     public ResponseEntity<Cart> removeCartItem(@PathVariable Long id,
     @RequestHeader("Authotization") String jwt) throws Exception{
         

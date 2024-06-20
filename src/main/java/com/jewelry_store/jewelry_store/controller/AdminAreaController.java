@@ -21,7 +21,7 @@ import com.jewelry_store.jewelry_store.service.Area.AreaService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
-@RequestMapping("/admin/area")
+@RequestMapping("/api/admin/area")
 public class AdminAreaController {
 
     @Autowired

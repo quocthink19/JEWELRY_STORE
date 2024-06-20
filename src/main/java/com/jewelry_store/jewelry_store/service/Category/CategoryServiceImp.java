@@ -1,5 +1,6 @@
 package com.jewelry_store.jewelry_store.service.Category;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,11 @@ public class CategoryServiceImp implements CategoryService {
         }
 
         return optionalCategory.get();
+    }
+
+    @Override
+    public List<Category> getAllCategories() throws Exception {
+        return categoryRepository.findAll();
     }
 
     }

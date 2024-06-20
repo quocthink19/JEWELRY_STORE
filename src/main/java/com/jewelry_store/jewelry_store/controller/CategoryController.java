@@ -1,5 +1,7 @@
 package com.jewelry_store.jewelry_store.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import com.jewelry_store.jewelry_store.service.Category.CategoryService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
-@RequestMapping("/admin/category")
+@RequestMapping("/api/admin/category")
 public class CategoryController {
 
     @Autowired
@@ -53,6 +55,18 @@ public class CategoryController {
             Category foundCategory = categoryService.findCategoryByName(name);
             return ResponseEntity.ok(foundCategory);
        
+    }
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Category>> getAllCategories(
+            @RequestHeader("Authorization") String jwt) throws Exception {
+
+        // Validate user based on JWT token
+        User user = userService.findUserByJwtToken(jwt);
+        
+        // Get all categories
+        List<Category> categories = categoryService.getAllCategories();
+
+        return ResponseEntity.ok(categories);
     }
     }
 

@@ -23,22 +23,13 @@ import com.jewelry_store.jewelry_store.service.Component.ComponentService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
-@RequestMapping("/admin/component")
+@RequestMapping("/api/component")
 public class ComponentController {
     @Autowired
     private ComponentService componentService;
     
     @Autowired
     private UserService userService;
-
-    @PostMapping("/create")
-    public ResponseEntity<Component> createComponent(@RequestBody ComponentRequest req,
-    @RequestHeader("Authorization") String jwt) throws Exception{ 
-      
-        User user = userService.findUserByJwtToken(jwt);
-        Component createComponent = componentService.createComponent(req);
-       return new ResponseEntity<>(createComponent, HttpStatus.CREATED);
-    }
     
     @GetMapping("/{id}")
     public ResponseEntity<Component> getComponentById(@PathVariable Long id,
@@ -91,11 +82,4 @@ public class ComponentController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Component>> getAllComponents(@RequestHeader("Authorization") String jwt) throws Exception {
-        
-        User user = userService.findUserByJwtToken(jwt);
-        List<Component> components = componentService.findAll();
-        return new ResponseEntity<>(components, HttpStatus.OK);
-    }
 }

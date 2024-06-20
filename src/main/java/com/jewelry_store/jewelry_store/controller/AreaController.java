@@ -17,7 +17,7 @@ import com.jewelry_store.jewelry_store.service.Area.AreaService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
-@RequestMapping("/areas")
+@RequestMapping("/api/areas")
 public class AreaController {
 
     

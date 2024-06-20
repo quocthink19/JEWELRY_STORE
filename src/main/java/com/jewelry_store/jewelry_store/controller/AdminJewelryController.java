@@ -20,7 +20,7 @@ import com.jewelry_store.jewelry_store.service.Jewelry.JewelryService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
-@RequestMapping("/admin/jewelry")
+@RequestMapping("/api/admin/jewelry")
 public class AdminJewelryController {
 
     @Autowired

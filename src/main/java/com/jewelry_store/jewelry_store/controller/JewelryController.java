@@ -18,7 +18,7 @@ import com.jewelry_store.jewelry_store.service.User.UserService;
 
 
 @RestController
-@RequestMapping("/jewelry")
+@RequestMapping("/api/jewelry")
 public class JewelryController {
 
     

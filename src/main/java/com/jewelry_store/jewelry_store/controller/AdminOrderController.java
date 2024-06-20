@@ -39,7 +39,7 @@ public class AdminOrderController {
     }
 
 
-    @PutMapping("/order/{id}/{orderStatus}")
+    @PutMapping("/orders/{id}/{orderStatus}")
     public ResponseEntity <Orderr> updateOrderStatus(
         @PathVariable Long id, 
         @PathVariable String orderstatus,
