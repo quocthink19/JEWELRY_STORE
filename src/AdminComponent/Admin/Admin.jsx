@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { JewelryDetails } from '../Admin/JewelryDetails'
 import { Category } from '../Category/Category'
 import { JewelryDashboard } from '../Dashboard/Dashboard'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchRestaurantsOrder } from '../../component/State/Restaurant Order/Action'
+import { getRestaurantsCategory } from '../../component/State/Restaurant/Action'
 import { Events } from '../Events/Events'
 import Ingredients from '../Ingredients/Ingredients'
 import CreateMenuForm from '../Menu/CreateMenuForm'
@@ -18,23 +20,21 @@ import { AdminSidebar } from './AdminSidebar'
 export const Admin = () => {
     const dispatch=useDispatch()
     const jwt=localStorage.getItem('jwt')
-    const {jewelry} = useSelector (store=>store)
-    const handleClose=()=> {
+    const {restaurant} = useSelector((store)=>store);
+    const handleClose=() => {};
 
-    }
-    // useEffect(()=>{
-    //     dispatch(getCategory({
-    //         jwt,
-    //         jewelryId:jewelry.userJewelry?.id,
-    //     })
-    //     );
-    //     dispatch(fetchJewelryOrder({
-    //         jwt,
-    //         jewelryId:jewelry.userJewelry?.id,
-    //     }))
-    //     // dispatch(getMenuItemsByJewelryId())
-    //     // dispatch(getJewelryById())
-    // })
+    useEffect(()=>{
+        dispatch(
+            getRestaurantsCategory({
+                jwt,
+                restaurantId: restaurant.usersRestaurant?.id,
+            })
+        );
+        dispatch(fetchRestaurantsOrder({
+            jwt,
+            restaurantId: restaurant.usersRestaurant?.id,
+        }))
+    },[])
 
     return (
         <div>

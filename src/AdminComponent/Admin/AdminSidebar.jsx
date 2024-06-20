@@ -35,7 +35,7 @@ export const AdminSidebar = ({ handleClose }) => {
             dispatch(logout());
             navigate("/")
         } else {
-            navigate(`/admin/jewelry${item.path}`);
+            navigate(`/admin/restaurants${item.path}`);
         }
         // Đóng thanh điều hướng sau khi điều hướng
         handleClose();

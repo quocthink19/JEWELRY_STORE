@@ -16,7 +16,7 @@ export const JewelryDetails = () => {
     const handleJewelryStatus = () => {
         setIsOpen(!isOpen);
         dispatch(updateRestaurantStatus({
-            restaurantId:restaurant.usersRestaurant.id,
+            restaurantId:restaurant.usersRestaurant.id, // 4:18
             jwt:localStorage.getItem("jwt")
         }))
     };
@@ -30,9 +30,9 @@ export const JewelryDetails = () => {
                 <div>
                 <Button
                 color={!restaurant.usersRestaurant?.open ? "primary" : "error"} 
-                className='py-[1rem] px-[2rem]' 
-                variant='contained' 
-                onClick={handleJewelryStatus} 
+                className='py-[1rem] px-[2rem]'
+                variant='contained'
+                onClick={handleJewelryStatus}
                 size='large'
                 >
                         {restaurant.usersRestaurant?.open ? "close" : "open"}
@@ -102,7 +102,7 @@ export const JewelryDetails = () => {
                                     <p className='w-48'>Country</p>
                                     <p className='text-gray-400'>
                                         <span className='pr-5'>-</span>
-                                        Anh Tri
+                                        {restaurant.usersRestaurant?.country}
                                     </p>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ export const JewelryDetails = () => {
                                     <p className='w-48'>City</p>
                                     <p className='text-gray-400'>
                                         <span className='pr-5'>-</span>
-                                        Anh Tri
+                                        {restaurant.usersRestaurant?.city}
                                     </p>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@ export const JewelryDetails = () => {
                                     <p className='w-48'>Postal Code</p>
                                     <p className='text-gray-400'>
                                         <span className='pr-5'>-</span>
-                                        Anh Tri
+                                        {restaurant.usersRestaurant?.postalCode}
                                     </p>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@ export const JewelryDetails = () => {
                                     <p className='w-48'>Street Address</p>
                                     <p className='text-gray-400'>
                                         <span className='pr-5'>-</span>
-                                        Anh Tri
+                                        {restaurant.usersRestaurant?.streetAddress}
                                     </p>
                                 </div>
                             </div>

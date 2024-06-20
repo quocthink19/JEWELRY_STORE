@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {
   Divider,
   FormControl,
@@ -8,9 +9,10 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import MenuCard from './MenuCard'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMenuItemsByJewelryId } from "../State/Menu/Action";
+import MenuCard from './MenuCard';
 
 const categories = [
   "Ring",
@@ -29,11 +31,38 @@ const jewelryTypes = [
 ];
 
 const menu=[1,1,1,1,1,1]
+
 const JewelryDetails = () => {
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+
+  const {restaurant, type, selectedCategory} = useSelector((store)=>store);
+  
   const [jewelryType, setJewelryType] = useState("all");
   const handleFilter = (e) => {
     console.log(e.target.value, e.target.name);
   };
+
+//==============================================
+  useEffect(() => {
+    // dispatch(getRestaurantByUserId({jwt, restaurantId: id}));
+    // dispatch(getRestaurantsCategory({jwt, restaurantId: id}));
+  },[]);
+
+  useEffect(()=> {
+    dispatch(
+      getMenuItemsByJewelryId({
+      //   jwt,
+      //   restaurantId: id,
+      //   vegetarian: type === "vegetarian",
+      //   nonveg: type === "non_vegetarian",
+      //   seasonal: type === "seasonal",
+      //   category: selectedCategory,
+      })
+    );
+  },[selectedCategory,type])
+//==============================================
+
   return (
     <div className="px-5 lg:px-20">
       <section>

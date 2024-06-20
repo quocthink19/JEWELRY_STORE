@@ -8,7 +8,7 @@ import CustomerRoute from './CustomerRoute'
 const Routers = () => {
     return (
         <Routes>
-            <Route path="/admin/jewelry/*" element={<AdminRoute />} />
+            <Route path="/admin/restaurants/*" element={<AdminRoute />} />
             <Route path="/*" element={<CustomerRoute />} />
         </Routes>
     )
