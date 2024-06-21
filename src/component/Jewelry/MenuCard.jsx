@@ -2,8 +2,11 @@ import React from "react";
 import { Accordion, AccordionDetails, AccordionSummary,FormGroup,
     FormControlLabel,
     Checkbox,
-    Button, } from "@mui/material";
+    Button,
+    MenuItem, } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../State/Cart/Action";
 
 const demo = [
     {
@@ -16,10 +19,26 @@ const demo = [
     },
   ];
 
-const MenuCart = () => {
+const MenuCart = ({item}) => {
+
+    const dispatch = useDispatch();
     const handleCheckBoxChange=(value)=>{
         console.log("value")
       }
+      const handleAddItemToCart =(e)=>{
+        e.preventDefault()
+     const reqData = {
+      jwt : localStorage.getItem("jwt"),
+      cartItem:{
+      jewelryId :item.id,
+      quanity:1 ,
+      }
+    }
+    dispatch(addItemToCart(reqData))
+    console.log("req Data",reqData)
+  }
+
+
   return (
     <Accordion>
       <AccordionSummary
@@ -31,13 +50,13 @@ const MenuCart = () => {
           <div className="lg:flex items-center lg:gap-5">
             <img
               className="w-[7rem] h-[7rem] object-cover"
-              src="https://cdn.pnj.io/images/detailed/205/sp-gnpaxmw000170-nhan-vang-trang-14k-dinh-ngoc-trai-akoya-pnj.png"
+              src={item.images[0]}
               alt=""
             />
             <div className="space-y-1 lg:space-y-5 lg:max-w-2x1">
-              <p className="font-semibold text-x1">Ring</p>
-              <p>$999</p>
-              <p className="text-gray-400">nice jewelry kkkkkokokokokokokokokokokokokokokokokokokoko</p>
+              <p className="font-semibold text-x1">{item.name}</p>
+              <p>{item.price} USD</p>
+              <p className="text-gray-400">{item.description}</p>
             </div>
           </div>
         </div>
@@ -60,7 +79,8 @@ const MenuCart = () => {
             ))}
           </div>
           <div className="pt-5">
-            <Button variant="contained" disabled={false} type="submit">{true?"Add to Cart":"Out of Stock"}</Button>
+            <Button onClick={handleAddItemToCart} variant="contained" 
+            disabled={false} type="submit">{true?"Add to Cart":"Out of Stock"}</Button>
           </div>
         </form>
       </AccordionDetails>

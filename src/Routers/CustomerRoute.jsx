@@ -28,7 +28,7 @@ export default function CustomerRoute() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />}/>
-        <Route path="/jewelry/:city/:title/:id" element={<JewelryDetail />} />
+        <Route path="/area/:title/:id" element={<JewelryDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/my-profile/*" element={<Profile />} />
       </Routes>

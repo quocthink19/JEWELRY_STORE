@@ -5,6 +5,7 @@ import "./App.css";
 import Routers from "./Routers/Routers";
 import { darkTheme } from "./Theme/DarkTheme";
 import { getUser } from "./component/State/Authentication/Action";
+import { findCart } from "./component/State/Cart/Action";
 function App() {
   const dispatch= useDispatch()
   const jwt = localStorage.getItem("jwt")
@@ -12,6 +13,7 @@ function App() {
 
   useEffect(()=> {
     dispatch(getUser(auth.jwt || jwt))
+    dispatch(findCart(jwt))
   },[auth.jwt])
   return (
     <ThemeProvider theme={darkTheme}>

@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
 import MultiItemCarousel from "./MultiItemCarousel";
 import Jewelry from '../Jewelry/JewelryCard';
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllAreaAction } from "../State/Area/Action";
+import { findCart } from "../State/Cart/Action";
 
-
-const jewelry=[1,1,1,1,1,1,1,1]
+const areas=[1,1,1,1,1]
 const Home = () => {
+      const dispatch = useDispatch();
+      const jwt = localStorage.getItem("jwt")
+      const {area} = useSelector(store=>store)
+
+      console.log("area",area)
+      useEffect(()=> {
+        dispatch(getAllAreaAction(jwt))
+   
+      },[])
+    
   return (
     <div className="pb-10">
       <section className="banner -z-50 relative flex flex-col justify-center items-center">
@@ -30,7 +42,7 @@ const Home = () => {
 </h1>
 <div className="flex flex-wrap items-center justify-around gap-5">
   {
-jewelry.map((item)=><Jewelry/>)
+    area.areas.map((item)=><Jewelry item ={item}/>)
   }
 
 </div>

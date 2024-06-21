@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { store } from "../State/store";
 
 export const Navbar = () => {
-  const { auth } = useSelector((store) => store);
+  const { auth,cart } = useSelector((store) => store);
   const navigate = useNavigate();
 
   const handleAvatarClick = () => {
@@ -53,8 +53,8 @@ export const Navbar = () => {
           )}
         </div>
         <div className="">
-          <IconButton>
-            <Badge badgeContent={4} color="secondary">
+          <IconButton onClick={() =>navigate("/cart")}>
+            <Badge badgeContent={cart.cart?.items.length} color="secondary">
               <ShoppingCartIcon sx={{ fontSize: "1.5rem" }} />
             </Badge>
           </IconButton>

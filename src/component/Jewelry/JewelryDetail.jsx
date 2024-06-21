@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Divider,
   FormControl,
@@ -11,16 +11,14 @@ import {
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MenuCard from './MenuCard'
+import {useNavigate, useParams} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { store } from "../State/store";
+import { getAreaById } from "../State/Area/Action";
+import { getMenuItemsByJewelryId } from "../State/Menu/Action";
+import { getAllCategory } from "../State/Categories/Action";
 
-const categories = [
-  "Ring",
-  "Necklace",
-  "Earring",
-  "Shake",
-  "Neck Strap",
-  "Stirrups",
-  "Pendant",
-];
+
 const jewelryTypes = [
   { label: "ALL", value: "all" },
   { label: "Gold", value: "Gold" },
@@ -28,12 +26,39 @@ const jewelryTypes = [
   { label: "Sliver", value: "Silver" },
 ];
 
-const menu=[1,1,1,1,1,1]
 const JewelryDetails = () => {
   const [jewelryType, setJewelryType] = useState("all");
+  const navigate = useNavigate()
+  const dispatch= useDispatch();
+  const jwt = localStorage.getItem("jwt")
+  const {auth,area,category,menu}= useSelector(store=>store)
+  const {SelectedCaterogy,setSelectedCaterogy} = useState("");
+
+  const {id} = useParams();
+
+
   const handleFilter = (e) => {
     console.log(e.target.value, e.target.name);
   };
+  const handleFilterCategory = (e,value) => {
+    console.log(e.target.value, e.target.name,value);
+  };
+
+
+  console.log("area" ,area);
+  console.log("category",category)
+  console.log("menu", menu)
+
+ useEffect(()=>{
+  dispatch(getAreaById({jwt,areaId:id}))
+  dispatch(getAllCategory({jwt}))
+},[])
+
+ useEffect(() => {
+  dispatch(getMenuItemsByJewelryId({jwt
+  }));
+ },[SelectedCaterogy])
+
   return (
     <div className="px-5 lg:px-20">
       <section>
@@ -45,7 +70,7 @@ const JewelryDetails = () => {
             <Grid item xs={12}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src="https://cdn.pnj.io/images/promo/211/hello-kitty-10-lp_gia_dinh-1200x450CTA.jpg"
+                src={area.area?.images[0]}
                 alt=""
               />
             </Grid>
@@ -66,8 +91,8 @@ const JewelryDetails = () => {
           </Grid>
         </div>
         <div className="pt-3 pb-5">
-          <h1 className="text-4x1 font-semibold">Yewelry product</h1>
-          <p className="text-gray-500 mt-1"> ProductDescription</p>
+          <h1 className="text-4x1 font-semibold">{area.area?.name}</h1>
+          <p className="text-gray-500 mt-1"> {area.area?.description}</p>
 
           <div className="space-y-3 mt-3">
             <p className="text-gray-500 flex items-center gap-3">
@@ -113,16 +138,16 @@ const JewelryDetails = () => {
               </Typography>
               <FormControl className="py-10 space-y-5" component={"fieldset"}>
                 <RadioGroup
-                  onChange={handleFilter}
+                  onChange={handleFilterCategory}
                   name="jewelry_type"
-                  value={jewelryTypes}
+                  value={setSelectedCaterogy}
                 >
-                  {categories.map((item) => (
+                  {category.categories.map((item) => (
                     <FormControlLabel
                       key={item}
-                      value={item}
+                      value={item.name}
                       control={<Radio />}
-                      label={item}
+                      label={item.name}
                     />
                   ))}
                 </RadioGroup>
@@ -131,7 +156,7 @@ const JewelryDetails = () => {
           </div>
         </div>
         <div className="space-y-5 lg:w[80%] lg:pl-10">
-          {menu.map((item)=><MenuCard/>)}
+          {menu.menuItems.map((item)=><MenuCard item={item }/>)}
         </div>
       </section>
     </div>
