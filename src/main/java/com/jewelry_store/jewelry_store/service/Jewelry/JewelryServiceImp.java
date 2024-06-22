@@ -61,7 +61,7 @@ public class JewelryServiceImp implements JewelryService {
             Optional<Component> componentOpt = componentRepository.findByName(componentName);
             if (componentOpt.isPresent()) {
                 Component component = componentOpt.get();
-                component.setJewelry(jewelry);
+                // component.setJewelry(jewelry);
                 componentRepository.save(component);
                 components.add(component);
             } else {
@@ -154,5 +154,11 @@ public class JewelryServiceImp implements JewelryService {
             jewelryRepository.save(jewelry);
         }
     }
+
+    @Override
+    public List<Jewelry> getAllJewelry() {
+        return jewelryRepository.findAll();
+    }
+
 
 }

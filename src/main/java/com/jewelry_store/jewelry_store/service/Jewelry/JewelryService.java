@@ -21,4 +21,6 @@ public interface JewelryService {
     public double calculateJewelryPrice(Jewelry jewelry);
 
     public void updatePricesFromComponentChanges();
+
+    public List<Jewelry> getAllJewelry() throws Exception;
 }

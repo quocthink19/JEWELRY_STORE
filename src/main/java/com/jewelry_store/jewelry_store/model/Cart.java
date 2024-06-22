@@ -26,10 +26,22 @@ public class Cart {
     @OneToOne
     private User staff;
 
-    private double total;
+    private Double total ;
 
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        if (total != null) {
+            this.total = total;
+        } else {
+            total = 0.0 ;
+        }
+    }
 }

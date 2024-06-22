@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jewelry_store.jewelry_store.model.Category;
 import com.jewelry_store.jewelry_store.model.Jewelry;
 import com.jewelry_store.jewelry_store.model.User;
 import com.jewelry_store.jewelry_store.service.Jewelry.JewelryService;
@@ -37,4 +38,17 @@ public class JewelryController {
         return new ResponseEntity<>(jewelries, HttpStatus.CREATED);
     }
   
-}
+     @GetMapping("/getAll")
+    public ResponseEntity<List<Jewelry>> getAllJewelry(
+            @RequestHeader("Authorization") String jwt) throws Exception {
+
+        // Validate user based on JWT token
+        User user = userService.findUserByJwtToken(jwt);
+        
+        // Get all categories
+        List<Jewelry> jewelries =  jewelryService.getAllJewelry();
+
+        return ResponseEntity.ok(jewelries);
+    }
+    }
+

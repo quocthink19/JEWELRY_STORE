@@ -27,7 +27,7 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/order")
+    @PostMapping("/orders")
     public ResponseEntity<Orderr> createOrder(@RequestBody OrderRequest req,
     @RequestHeader("Authorization") String jwt) throws Exception{
 
@@ -35,8 +35,8 @@ public class OrderController {
         Orderr order = orderService.createOrder(req,user);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
-    @GetMapping("/order")
-    public ResponseEntity<List<Orderr>> getOrderHistory(@RequestBody OrderRequest req,
+    @GetMapping("/orders/user")
+    public ResponseEntity<List<Orderr>> getOrderHistory(
     @RequestHeader("Authorization") String jwt) throws Exception{
 
         User user = userService.findUserByJwtToken(jwt);

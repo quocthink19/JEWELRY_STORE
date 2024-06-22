@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Orderr createOrder(OrderRequest order, User user) throws Exception {
         
-        Area area = areaService.findAreabyId(order.getAreaId());
+        Area area = areaService.findAreabyId(order.getStaffId());
 
         Orderr createOrder = new Orderr();
 
@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Orderr> getUserOrder(Long userId) throws Exception {
-        return orderReposity.findByAreaId(userId);
+        return orderReposity.findByStaffId(userId);
     }
 
     @Override

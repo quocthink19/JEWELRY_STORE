@@ -32,7 +32,7 @@ public JewelryService jewelryService;
     public CartItem addItemToCart(AddCartItemRequest req, String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
 
-        Jewelry jewelry = jewelryService.FindJewelryById(req.getJewelrId());
+        Jewelry jewelry = jewelryService.FindJewelryById(req.getJewelryId());
 
         Cart cart = cartRepository.findByStaffId(user.getId());
 

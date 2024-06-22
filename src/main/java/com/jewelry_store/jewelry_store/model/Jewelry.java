@@ -39,7 +39,8 @@ public class Jewelry {
     @ManyToOne
     private Category jewelryCategory;
    
-    @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany
+    // (mappedBy = "jewelry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Component> components;
 
     private String code ;

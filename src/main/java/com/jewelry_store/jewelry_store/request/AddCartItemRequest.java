@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class AddCartItemRequest {
 
-    private Long JewelrId;
+    private Long jewelryId;
 
     private int quanity;
 
