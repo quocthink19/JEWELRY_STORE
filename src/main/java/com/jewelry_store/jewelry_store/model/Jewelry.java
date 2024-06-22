@@ -1,19 +1,20 @@
 package com.jewelry_store.jewelry_store.model;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,9 +40,14 @@ public class Jewelry {
     @ManyToOne
     private Category jewelryCategory;
    
-    @OneToMany
-    (mappedBy = "jewelry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Component> components;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "jewelry_component",
+        joinColumns = @JoinColumn(name = "jewelry_id"),
+        inverseJoinColumns = @JoinColumn(name = "component_id")
+    )
+    private List<Component> components = new ArrayList<>();
 
     private String code ;
 
@@ -55,4 +61,7 @@ public class Jewelry {
     private Date creationDate;
 
     private double price;
+
+
+    
 }

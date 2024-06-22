@@ -57,17 +57,21 @@ public class JewelryServiceImp implements JewelryService {
         // Save components
           List<Component> components = new ArrayList<>();
         if(req.getComponents() !=null){
-        for (String componentName : req.getComponents()) {
-            Optional<Component> componentOpt = componentRepository.findByName(componentName);
-            if (componentOpt.isPresent()) {
-                Component component = componentOpt.get();
-                // component.setJewelry(jewelry);
-                componentRepository.save(component);
-                components.add(component);
-            } else {
-                throw new Exception("Component not found: " + componentName);
+            for (String componentName : req.getComponents()) {
+                Optional<Component> componentOpt = componentRepository.findByName(componentName);
+                if (componentOpt.isPresent()) {
+                    Component component = componentOpt.get();
+                    List<Jewelry> jewelryList = new ArrayList<>();
+                    jewelryList.add(jewelry); // Assuming 'jewelry' is the instance you want to add
+            
+                    component.setJewelryList(jewelryList); // Use the setter method
+            
+                    componentRepository.save(component);
+                    components.add(component);
+                } else {
+                    throw new Exception("Component not found: " + componentName);
+                }
             }
-        }
     }
         jewelry.setComponents(components);
         // Calculate and set price
