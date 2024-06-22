@@ -40,7 +40,7 @@ public class Jewelry {
     private Category jewelryCategory;
    
     @OneToMany
-    // (mappedBy = "jewelry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    (mappedBy = "jewelry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Component> components;
 
     private String code ;

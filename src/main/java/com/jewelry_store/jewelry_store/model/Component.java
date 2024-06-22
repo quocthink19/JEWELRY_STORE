@@ -26,8 +26,8 @@ public class Component {
 
     private double pricebuyback;
 
-    // @ManyToOne
-    // // (fetch = FetchType.LAZY)
-    // // @JoinColumn(name = "jewelry_id")
-    // private Jewelry jewelry;
+    @ManyToOne
+    (fetch = FetchType.LAZY)
+    @JoinColumn(name = "jewelry_id")
+    private Jewelry jewelry;
 }
