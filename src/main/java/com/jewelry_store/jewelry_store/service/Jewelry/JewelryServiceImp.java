@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jewelry_store.jewelry_store.model.Category;
 import com.jewelry_store.jewelry_store.model.Component;
 import com.jewelry_store.jewelry_store.model.Jewelry;
@@ -31,7 +32,7 @@ public class JewelryServiceImp implements JewelryService {
     @Override
     public Jewelry createJewelry(CreateJewelryRequest req, Category category) throws Exception {
         Optional<Category> existingCategoryOpt = categoryRepository.findByName(req.getJewelryCategory().getName());
-        
+
         if (existingCategoryOpt.isPresent()) {
             category = existingCategoryOpt.get();
         } else {
@@ -40,7 +41,7 @@ public class JewelryServiceImp implements JewelryService {
             category.setName(req.getJewelryCategory().getName());
             category = categoryRepository.save(category);
         }
-       
+
         Jewelry jewelry = new Jewelry();
         jewelry.setName(req.getName());
         jewelry.setDescription(req.getDescription());
@@ -51,33 +52,36 @@ public class JewelryServiceImp implements JewelryService {
         jewelry.setCode(req.getCode());
         jewelry.setCreationDate(new Date(System.currentTimeMillis()));
         jewelry.setAvailabe(true); // Assuming default availability
+
         // Save Jewelry first to generate ID for components
         jewelry = jewelryRepository.save(jewelry);
 
         // Save components
-          List<Component> components = new ArrayList<>();
-        if(req.getComponents() !=null){
+        List<Component> components = new ArrayList<>();
+        if (req.getComponents() != null) {
             for (String componentName : req.getComponents()) {
                 Optional<Component> componentOpt = componentRepository.findByName(componentName);
                 if (componentOpt.isPresent()) {
                     Component component = componentOpt.get();
-                    List<Jewelry> jewelryList = new ArrayList<>();
-                    jewelryList.add(jewelry); // Assuming 'jewelry' is the instance you want to add
-            
-                    component.setJewelryList(jewelryList); // Use the setter method
-            
-                    componentRepository.save(component);
+
+                    // Thêm jewelry vào danh sách của component
+                    component.getJewelryList().add(jewelry);
                     components.add(component);
+
+                    // Không cần lưu lại component ở đây nữa
                 } else {
                     throw new Exception("Component not found: " + componentName);
                 }
             }
-    }
+        }
+
         jewelry.setComponents(components);
+
         // Calculate and set price
         double totalPrice = calculateJewelryPrice(jewelry);
         jewelry.setPrice(totalPrice);
 
+        // Lưu lại jewelry đã cập nhật giá trị
         return jewelryRepository.save(jewelry);
     }
 
@@ -85,7 +89,6 @@ public class JewelryServiceImp implements JewelryService {
     public void deleteJewelry(Long jewelryid) throws Exception {
         Jewelry jewelry = FindJewelryById(jewelryid);
         jewelryRepository.save(jewelry);
-
     }
 
     @Override
@@ -95,11 +98,11 @@ public class JewelryServiceImp implements JewelryService {
 
     @Override
     public Jewelry FindJewelryById(Long jewelryId) throws Exception {
-     Optional<Jewelry> optionalJewelry = jewelryRepository.findById(jewelryId);
-     if(optionalJewelry.isEmpty()){
-    throw new Exception("Jewelry not exist");        
-     }
-     return optionalJewelry.get();
+        Optional<Jewelry> optionalJewelry = jewelryRepository.findById(jewelryId);
+        if (optionalJewelry.isEmpty()) {
+            throw new Exception("Jewelry not exist");        
+        }
+        return optionalJewelry.get();
     }
 
     public Jewelry updateAvailibityStatus(Long jewelryId) throws Exception {
@@ -126,13 +129,13 @@ public class JewelryServiceImp implements JewelryService {
         // Assuming components contain prices for gold and diamond
         for (Component component : components) {
             if (component.getName().contains("gold")) {
-                if(component.getName().contains("18k")){
+                if (component.getName().contains("18k")) {
                     goldPrice = component.getPrice();
                 } else {
                     goldPrice = component.getPrice();
                 }
             } else if (component.getName().contains("diamond")) {
-                if(component.getName().contains("natural")){
+                if (component.getName().contains("natural")) {
                     diamondPrice = component.getPrice();
                 } else {
                     diamondPrice = component.getPrice();
@@ -163,6 +166,4 @@ public class JewelryServiceImp implements JewelryService {
     public List<Jewelry> getAllJewelry() {
         return jewelryRepository.findAll();
     }
-
-
 }

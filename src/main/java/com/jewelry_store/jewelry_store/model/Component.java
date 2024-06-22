@@ -3,6 +3,8 @@ package com.jewelry_store.jewelry_store.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class Component {
 
     private double pricebuyback;
 
+    @JsonIgnoreProperties("components") // Ngăn Jackson serialize thuộc tính components của Jewelry
     @ManyToMany(mappedBy = "components")
     private List<Jewelry> jewelryList = new ArrayList<>();
 

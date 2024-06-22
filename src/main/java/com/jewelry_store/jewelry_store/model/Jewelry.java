@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -41,6 +43,7 @@ public class Jewelry {
     private Category jewelryCategory;
    
     
+    @JsonIgnoreProperties("jewelryList") // Ngăn Jackson serialize thuộc tính jewelryList của Component
     @ManyToMany
     @JoinTable(
         name = "jewelry_component",
