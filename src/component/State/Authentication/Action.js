@@ -1,7 +1,6 @@
 import axios from "axios"
+import { API_URL, api } from "../../config/api"
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType"
-import { API_URL } from "../../config/api"
-import { api } from "../../config/api"
 export const registerUser=(reqDate) =>async(dispatch)=>{
     dispatch({type:REGISTER_REQUEST})
     try {
@@ -28,7 +27,7 @@ export const loginUser = (reqDate) => async (dispatch) => {
             const { data } = await axios.post(`${API_URL}/auth/signin`, reqDate.userData);
             if (data.jwt) localStorage.setItem("jwt", data.jwt);
             if (data.role === "ROLE_MANAGER") {
-                reqDate.navigate("/admin/jewelry");
+                reqDate.navigate("/admin/restaurants");
             } else {
                 reqDate.navigate("/");
             }
