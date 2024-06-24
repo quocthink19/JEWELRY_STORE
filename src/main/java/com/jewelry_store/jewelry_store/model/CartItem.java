@@ -35,4 +35,19 @@ public class CartItem {
     private List<String> components;
 
     private double totalPrice;
+
+    private double discountedPrice; // Trường mới để lưu giá đã giảm
+
+    public double getTotalPrice() {
+        return this.totalPrice;
+    }
+
+    public void setDiscountedPrice(double discountPercentage) {
+        this.discountedPrice = this.totalPrice - (this.totalPrice * discountPercentage / 100);
+    }
+
+    public double getDiscountedPrice() {
+        return this.discountedPrice;
+    }
 }
+

@@ -16,10 +16,15 @@ public class AreaServiceImp implements AreaService {
     @Autowired
     private AreaRepository areaRepository;
     @Override
-    public Area createArea(CreateAreaRequest req, User user) {
+    public Area createArea(CreateAreaRequest req, User user) throws Exception {
+        Optional<Area> existingArea = areaRepository.findByName(req.getName());
+        if (existingArea.isPresent()) {
+            throw new Exception("Area with the same name already exists");
+        }
+
         Area area = new Area();
         area.setName(req.getName());
-        area.setDesciption(req.getDesciption());
+        area.setDescription(req.getDesciption());
         area.setContactInformation(req.getContactInformation());
         area.setImages(req.getImages());
         area.setOpeningHours(req.getOpeningHours());
@@ -32,8 +37,8 @@ public class AreaServiceImp implements AreaService {
     public Area updateArea(Long AreaId, CreateAreaRequest updateArea) throws Exception {
        Area area = findAreabyId(AreaId);
        
-       if(area.getDesciption()!=null){
-        area.setDesciption(updateArea.getDesciption());
+       if(area.getDescription()!=null){
+        area.setDescription(updateArea.getDesciption());
        }
         return areaRepository.save(area);
     }

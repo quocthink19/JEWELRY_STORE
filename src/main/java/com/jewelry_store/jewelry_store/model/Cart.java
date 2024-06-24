@@ -1,6 +1,7 @@
 package com.jewelry_store.jewelry_store.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -32,16 +33,43 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
-
-    public Double getTotal() {
-        return total;
+    @OneToOne
+    private Coupon coupon;
+    public void applyCoupon(Coupon coupon) {
+        this.coupon = coupon;
+        recalculateTotal();
+        applyDiscountToItems();
     }
 
-    public void setTotal(Double total) {
-        if (total != null) {
-            this.total = total;
+    private void recalculateTotal() {
+        double itemsTotal = items.stream().mapToDouble(CartItem::getTotalPrice).sum();
+        if (coupon != null && isValidCoupon()) {
+            double discount = itemsTotal * (coupon.getDiscountPercentage() / 100);
+            this.total = itemsTotal - discount;
         } else {
-            total = 0.0 ;
+            this.total = itemsTotal;
         }
     }
+
+    private void applyDiscountToItems() {
+        if (coupon != null && isValidCoupon()) {
+            double discountPercentage = coupon.getDiscountPercentage();
+            for (CartItem item : items) {
+                item.setDiscountedPrice(discountPercentage);
+            }
+        } else {
+            for (CartItem item : items) {
+                item.setDiscountedPrice(0); // Không có giảm giá
+            }
+        }
+    }
+
+    private boolean isValidCoupon() {
+        Date now = new Date();
+        return (coupon.getValidFrom().before(now) || coupon.getValidFrom().equals(now)) &&
+               (coupon.getValidUntil().after(now) || coupon.getValidUntil().equals(now));
+    }
 }
+
+
+

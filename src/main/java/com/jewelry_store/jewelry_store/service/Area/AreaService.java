@@ -8,7 +8,7 @@ import com.jewelry_store.jewelry_store.request.CreateAreaRequest;
 
 public interface AreaService {
 
-    public Area createArea(CreateAreaRequest req, User user);
+    public Area createArea(CreateAreaRequest req, User user) throws Exception;
 
     public Area updateArea(Long AreaId, CreateAreaRequest updateArea) throws Exception;
 

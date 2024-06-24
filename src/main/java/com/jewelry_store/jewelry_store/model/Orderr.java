@@ -34,7 +34,7 @@ public class Orderr {
     @ManyToOne
     private Area area ;
 
-    private Long totalAmout;
+    private double totalAmount;
 
     private String orderStatus;
 
@@ -47,5 +47,10 @@ public class Orderr {
 
     private int totalItem;
 
-    private double  totalPrice;
+    private double totalPrice;
+
+    @ManyToOne
+    private Customer customer;  // Added this line to establish the relationship with Customer
+
+
 }

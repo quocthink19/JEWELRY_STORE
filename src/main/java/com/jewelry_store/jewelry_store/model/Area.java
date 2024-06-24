@@ -12,8 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,21 +29,19 @@ public class Area {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-   @OneToOne
-    private User staff;
-
+    @ManyToOne
+    private User staff;  
 
     private String name;
 
-    private String desciption;
+    private String description;
 
     @Embedded
     private ContactInformation contactInformation;
 
     private String openingHours;
 
-
-    @OneToMany(mappedBy = "area" ,  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orderr> orders = new ArrayList<>();
     
     @ElementCollection
@@ -51,5 +49,4 @@ public class Area {
     private List<String> images;
 
     private boolean open;
-    
 }

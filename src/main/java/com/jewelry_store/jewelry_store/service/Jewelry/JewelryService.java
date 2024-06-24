@@ -23,4 +23,8 @@ public interface JewelryService {
     public void updatePricesFromComponentChanges();
 
     public List<Jewelry> getAllJewelry() throws Exception;
+
+    public Jewelry findJewelryByCode(String code) throws Exception;
+
+
 }

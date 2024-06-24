@@ -22,13 +22,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+    private Long id;
 
-   private String fullname;
+    private String fullname;
 
     private String username;
+    
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
@@ -39,8 +41,10 @@ public class User {
     private USER_ROLE role;
 
     @JsonIgnore
-    @OneToMany(cascade =  CascadeType.ALL, mappedBy = "staff")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
     private List<Orderr> orders = new ArrayList<>();
 
-  
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
+    private List<Area> areas = new ArrayList<>();  // New relationship
 }

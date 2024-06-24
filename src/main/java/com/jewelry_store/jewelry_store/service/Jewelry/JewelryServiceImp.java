@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jewelry_store.jewelry_store.model.Category;
 import com.jewelry_store.jewelry_store.model.Component;
 import com.jewelry_store.jewelry_store.model.Jewelry;
@@ -96,15 +95,6 @@ public class JewelryServiceImp implements JewelryService {
         return jewelryRepository.searchJewelry(keyword);    
     }
 
-    @Override
-    public Jewelry FindJewelryById(Long jewelryId) throws Exception {
-        Optional<Jewelry> optionalJewelry = jewelryRepository.findById(jewelryId);
-        if (optionalJewelry.isEmpty()) {
-            throw new Exception("Jewelry not exist");        
-        }
-        return optionalJewelry.get();
-    }
-
     public Jewelry updateAvailibityStatus(Long jewelryId) throws Exception {
         Optional<Jewelry> optionalJewelry = jewelryRepository.findById(jewelryId);
         
@@ -166,4 +156,18 @@ public class JewelryServiceImp implements JewelryService {
     public List<Jewelry> getAllJewelry() {
         return jewelryRepository.findAll();
     }
+
+    @Override
+    public Jewelry FindJewelryById(Long jewelryId) throws Exception {
+        return jewelryRepository.findById(jewelryId)
+                .orElseThrow(() -> new Exception("Jewelry not exist"));
+    }
+
+    public Jewelry findJewelryByCode(String code) throws Exception {
+        return jewelryRepository.findByCode(code)
+                .orElseThrow(() -> new Exception("Jewelry not found"));
+    }
+
+
 }
+
