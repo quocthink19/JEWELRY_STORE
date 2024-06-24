@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,7 +15,6 @@ const initialValues = {
 export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loginError] = useState({ username: "", password: "" });
 
   const handleSubmit = (values) => {
     dispatch(loginUser({ userData: values, navigate }))
@@ -26,7 +25,7 @@ export default function LoginForm() {
         } else {
           // Kiểm tra nếu có thông báo lỗi cụ thể từ server
           if (response.message === "Invalid username or password") {
-            toast.error("Sai username hoặc password. Vui lòng thử lại.");
+            toast.error("Error username or password. Please try again.");
           } else {
             // Nếu lỗi không rõ ràng, hiển thị thông báo chung
             toast.error(`Login failed: ${response.message}`);
@@ -40,11 +39,29 @@ export default function LoginForm() {
   };
 
 
+  const validate = (values) => {
+    const errors = {};
+    if (!values.username) {
+      errors.username = "Username is required";
+    } else if (/[^a-zA-Z0-9]/.test(values.username)) {
+      errors.username = "Username must not contain special characters";
+    }
+
+    if (!values.password) {
+      errors.password = "Password is required";
+    } else if (values.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(values.password)) {
+      errors.password = "Password must contain at least one special character";
+    }
+
+    return errors;
+  };
+
   return (
     <div
       style={{
-        backgroundImage:
-          'url("https://images.pexels.com/photos/5442446/pexels-photo-5442446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+        backgroundImage: 'url("https://images.pexels.com/photos/5442446/pexels-photo-5442446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
@@ -63,108 +80,44 @@ export default function LoginForm() {
           width: "100%",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-          <img
-            src="https://cdn.pnj.io/images/logo/pnj.com.vn.png"
-            alt="Logo"
-            style={{ width: "100px" }}
-          />
-        </div>
-        <Typography
-          variant="h5"
-          className="text-center"
-          style={{ color: "black" }}
-        >
+        <Typography variant="h5" align="center" style={{ marginBottom: "1rem" }}>
           Login
         </Typography>
-        <Formik onSubmit={handleSubmit} initialValues={initialValues}>
-          <Form>
-            <Field
-              as={TextField}
-              name="username"
-              label="Username"
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              error={!!loginError.username}
-              helperText={loginError.username}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "gray",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "gray",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "gray",
-                },
-              }}
-            />
-            <Field
-              as={TextField}
-              name="password"
-              label="Password"
-              type="password"
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              error={!!loginError.password}
-              helperText={loginError.password}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "gray",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "gray",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "gray",
-                },
-              }}
-            />
-            <Button
-              sx={{
-                mt: 2,
-                padding: "1rem",
-                background: "linear-gradient(to right, gray, yellow)",
-                color: "white",
-              }}
-              className="mt-5"
-              fullWidth
-              type="submit"
-              variant="contained"
-            >
-              Login
-            </Button>
-          </Form>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+          {({ errors, touched, handleBlur }) => (
+            <Form>
+              <Field
+                as={TextField}
+                name="username"
+                label="Username"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                onBlur={handleBlur}
+                helperText={touched.username && errors.username ? errors.username : ""}
+                error={touched.username && Boolean(errors.username)}
+              />
+              <Field
+                as={TextField}
+                name="password"
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                onBlur={handleBlur}
+                helperText={touched.password && errors.password ? errors.password : ""}
+                error={touched.password && Boolean(errors.password)}
+              />
+              <Button type="submit" fullWidth variant="contained" color="primary" style={{ marginTop: "1rem" }}>
+                Login
+              </Button>
+            </Form>
+          )}
         </Formik>
-        <Typography
-          variant="body2"
-          align="center"
-          sx={{ mt: 3, color: "black" }}
-        >
-          Don't have an account?
-          <Button
-            size="big"
-            onClick={() => navigate("/account/register")}
-            sx={{ color: "" }}
-          >
+        <Typography variant="body2" align="center" style={{ marginTop: "1rem" }}>
+          Don't have an account?{" "}
+          <Button color="primary" onClick={() => navigate("/register")}>
             Register
           </Button>
         </Typography>
