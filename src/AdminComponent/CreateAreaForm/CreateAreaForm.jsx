@@ -7,25 +7,18 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uploadImageToCloudinary } from '../util/UploadToCloudinary';
+import { createArea } from '../../component/State/Area/Action';
 
 const initialValues = {
     name: "",
     description: "",
-    jewelryType: "",
-    streetAddress: "",
-    city: "",
-    stateProvince: "",
-    postalCode: "",
-    country: "",
     email: "",
     mobile: "",
-    instagram: "",
-    facebook: "",
     openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
     images: []
 }
 
-const CreateJewelryForm = () => {
+const CreateAreaForm = () => {
     const [uploadImage, setUploadImage] = useState(false);
     const dispatch=useDispatch()
     const jwt=localStorage.getItem("jwt");
@@ -35,26 +28,16 @@ const CreateJewelryForm = () => {
             const data={
                 name: values.name,
                 description: values.description,
-                jewelryType: values.jewelryType,
-                address: {
-                    streetAddress: values.streetAddress,
-                    City: values.city,
-                    StateProvince: values.stateProvince,
-                    postalCode: values.postalCode,
-                    country: values.country
-                },
                 contactInformation:{
                     email: values.email,
                     mobile: values.mobile,
-                    instagram: values.instagram,
-                    facebook: values.facebook,
                 },
                 OpeningHours: values.openingHours,
                 images: values.images,
             };
             console.log("data ---",data)
-            // // import CreateJewelry từ component/...
-            // dispatch(CreateJewelry({data,token:jwt}))
+            
+            dispatch(createArea({data,token:jwt}))
         },
     });
 
@@ -142,72 +125,12 @@ const CreateJewelryForm = () => {
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <TextField fullWidth
-                                id="jewelryType"
-                                name="jewelryType"
-                                label="JewelryType"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.jewelryType}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <TextField fullWidth
                                 id="openingHours"
                                 name="openingHours"
                                 label="OpeningHours"
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.openingHours}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth
-                                id="streetAddress"
-                                name="streetAddress"
-                                label="Street Address"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.streetAddress}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField fullWidth
-                                id="city"
-                                name="city"
-                                label="City"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.city}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                            <TextField fullWidth
-                                id="stateProvince"
-                                name="stateProvince"
-                                label="State/Province"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.stateProvince}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                            <TextField fullWidth
-                                id="postalCode"
-                                name="postalCode"
-                                label="Postal Code"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.postalCode}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                            <TextField fullWidth
-                                id="country"
-                                name="country"
-                                label="Country"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.country}>
                             </TextField>
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -230,29 +153,9 @@ const CreateJewelryForm = () => {
                                 value={formik.values.mobile}>
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <TextField fullWidth
-                                id="instagram"
-                                name="instagram"
-                                label="Instagram"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.instagram}>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <TextField fullWidth
-                                id="facebook"
-                                name="facebook"
-                                label="Facebook"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.facebook}>
-                            </TextField>
-                        </Grid>
                     </Grid>
                     <Button variant="contained" color="primary" type="submit">
-                        Create Jewelry
+                        Create Area
                     </Button>
                 </form>
             </div>
@@ -260,4 +163,4 @@ const CreateJewelryForm = () => {
     )
 }
 
-export default CreateJewelryForm;
+export default CreateAreaForm;

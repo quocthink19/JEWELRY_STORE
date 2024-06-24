@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Divider,
   Button,
@@ -8,14 +8,13 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import {CartItem} from "./CartItem"; // Moved to the top
+import { CartItem } from "./CartItem"; // Moved to the top
 import AddressCard from "./AddressCard";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useFormik } from "formik";
+import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { store } from "../State/store";
 import { createOrder } from "../State/Order/Action";
+import { addItemToCartByCode, applyCoupon } from "../State/Cart/Action";
 
 export const style = {
   position: "absolute",
@@ -34,36 +33,72 @@ const initialValues = {
   email: "",
 };
 
-export const Cart = () => {
-  const createOrderUsingSelectedAddress = () => {};
-  const handleOpenAddressModal = () => setOpen(true);
-  const [open, setOpen] = React.useState(false);
-  const {cart} = useSelector(store=>store)
-  
-  const dispatch = useDispatch();
 
-  
+const Cart = () => {
+  const [open, setOpen] = useState(false);
+  const [productCode, setProductCode] = useState(""); // State for product code
+  const [couponCode, setCouponCode] = useState(""); // State for coupon code
+  // const [discount, setDiscount] = useState(0); // State for discount
+  const { cart } = useSelector((store) => store);
+  const dispatch = useDispatch();
 
   const handleClose = () => setOpen(false);
 
   const handleSubmit = (values) => {
-    const data={
-      jwt:localStorage.getItem("jwt"),
-      order:{
-        staffId : cart.cart.staff.id,
-      }
-    }
-    dispatch(createOrder(data))
+    const data = {
+      jwt: localStorage.getItem("jwt"),
+      order: {
+        staffId: cart.cart.staff.id,
+      },
+    };
+    dispatch(createOrder(data));
     console.log("form value ", values);
   };
-  
-  return (
+
+  const handleOpenAddressModal = () => setOpen(true);
+
+  const handleAddToCart = () => {
+    if (productCode.trim() === "") {
+      alert("Please enter a product code.");
+      return;
+    }
+
+    const reqData = {
+      jwt: localStorage.getItem("jwt"),
+      cartItem: {
+        code: productCode,
+        quantity: 1, // Assuming quantity is 1, adjust as needed
+      },
+    };
+
+    dispatch(addItemToCartByCode(reqData));
+    setProductCode("");
+  };
+
+  const handleApplyCoupon = () => {
+    if (couponCode.trim() === "") {
+      alert("Please enter a coupon code.");
+      return;
+    }
+
+    dispatch(applyCoupon(cart.cart.id, couponCode, localStorage.getItem("jwt")));
+    setCouponCode("");
+  };
+
+  const calculateTotal = () => {
+    const itemTotal = cart.cart?.total || 0;
+    const deliveryFee = 21;
+    const gstCharges = 33;
+    const tax = 10;
+    const totalBeforeDiscount = itemTotal + deliveryFee + gstCharges + tax;
+    return totalBeforeDiscount;
+  };  return (
     <>
       <div>
         <main className="lg:flex justify-between">
           <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
             {cart.cartItems.map((item) => (
-              <CartItem item= {item} />
+              <CartItem key={item.id} item={item} />
             ))}
 
             <Divider />
@@ -90,7 +125,7 @@ export const Cart = () => {
               </div>
               <div className="flex justify-between text-gray-400">
                 <p>Total Pay</p>
-                <p>{cart.cart?.total+33+21+10}</p>
+                <p>{calculateTotal()}</p>
               </div>
             </div>
           </section>
@@ -98,12 +133,13 @@ export const Cart = () => {
           <section className="lg:w-[70%] flex justify-center px-5 pb-0 lg:pb-0">
             <div>
               <h1 className="text-center font-semibold text-2xl py-10">
-                Choose Deli Address
+                Choose Delivery Address
               </h1>
               <div className="flex gap-5 flex-wrap justify-center">
                 {[1].map((item) => (
                   <AddressCard
-                    handleSelectAddress={createOrderUsingSelectedAddress}
+                    key={item.id}
+                    // handleSelectAddress={createOrderUsingSelectedAddress}
                     item={item}
                     showButton={true}
                   />
@@ -111,7 +147,7 @@ export const Cart = () => {
                 <Card className="flex gap-5 w-64 p-5">
                   <AddLocationAltIcon />
                   <div className="space-y-3 text-gray-500">
-                    <p> Thông tin khách hàng </p>
+                    <p> Customer Information </p>
                     <Button
                       variant="outlined"
                       fullWidth
@@ -129,6 +165,50 @@ export const Cart = () => {
                     </Button>
                   </div>
                 </Card>
+                {/* Product Code Input */}
+                <Card className="flex gap-5 w-64 p-5 mt-5">
+                  <TextField
+                    label="Product Code"
+                    variant="outlined"
+                    fullWidth
+                    value={productCode}
+                    onChange={(e) => setProductCode(e.target.value)}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={handleAddToCart}
+                    sx={{
+                      backgroundColor: "green", // Button background color
+                      "&:hover": {
+                        backgroundColor: "darkgreen", // Darker green on hover
+                      },
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+                </Card>
+                {/* Coupon Code Input */}
+                <Card className="flex gap-5 w-64 p-5 mt-5">
+                  <TextField
+                    label="Coupon Code"
+                    variant="outlined"
+                    fullWidth
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={handleApplyCoupon}
+                    sx={{
+                      backgroundColor: "blue", // Button background color
+                      "&:hover": {
+                        backgroundColor: "darkblue", // Darker blue on hover
+                      },
+                    }}
+                  >
+                    Apply Coupon
+                  </Button>
+                </Card>
               </div>
             </div>
           </section>
@@ -140,71 +220,34 @@ export const Cart = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Formik
-              initialValues={initialValues}
-              //validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
               <Form>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Field
                       as={TextField}
-                      name="stressAddress"
-                      label="Street Address"
+                      name="fullname"
+                      label="Full Name"
                       fullWidth
                       variant="outlined"
-                      // error={!ErrorMessage("stressAddress")}
-                      // helperText={
-                      //   <ErrorMessage>
-                      //     {(msg) => <span className="text-red-600">{msg}</span>}
-                      //   </ErrorMessage>
-                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <Field
                       as={TextField}
-                      name="state"
-                      label="state"
+                      name="mobile"
+                      label="Mobile"
                       fullWidth
                       variant="outlined"
-                      // error={!ErrorMessage("stressAddress")}
-                      // helperText={
-                      //   <ErrorMessage>
-                      //     {(msg) => <span className="text-red-600">{msg}</span>}
-                      //   </ErrorMessage>
-                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <Field
                       as={TextField}
-                      name="city"
-                      label="city"
+                      name="email"
+                      label="Email"
                       fullWidth
                       variant="outlined"
-                      // error={!ErrorMessage("stressAddress")}
-                      // helperText={
-                      //   <ErrorMessage>
-                      //     {(msg) => <span className="text-red-600">{msg}</span>}
-                      //   </ErrorMessage>
-                      // }
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      as={TextField}
-                      name="pincode"
-                      label="pin code"
-                      fullWidth
-                      variant="outlined"
-                      // error={!ErrorMessage("stressAddress")}
-                      // helperText={
-                      //   <ErrorMessage>
-                      //     {(msg) => <span className="text-red-600">{msg}</span>}
-                      //   </ErrorMessage>
-                      // }
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -218,7 +261,7 @@ export const Cart = () => {
                         },
                       }}
                     >
-                      Thanh toán
+                      Pay
                     </Button>
                   </Grid>
                 </Grid>

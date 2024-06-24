@@ -1,5 +1,5 @@
 import { api } from "../../config/api";
-import { ADD_ITEM_TO_CART_FAILURE, ADD_ITEM_TO_CART_REQUEST, ADD_ITEM_TO_CART_SUCCESS, CLEAR_CART_FAILURE, CLEAR_CART_REQUEST, CLEAR_CART_SUCCESS, DELETE_CARTITEM_FAILURE, DELETE_CARTITEM_REQUEST, DELETE_CARTITEM_SUCCESS, FIND_CART_FAILURE, FIND_CART_REQUEST, FIND_CART_SUCCESS, GET_ALL_CART_ITEMS_FAILURE, GET_ALL_CART_ITEMS_REQUEST, GET_ALL_CART_ITEMS_SUCCESS, UPDATE_CARTITEM_FAILURE, UPDATE_CARTITEM_REQUEST, UPDATE_CARTITEM_SUCCESS } from "./ActionType";
+import { ADD_ITEM_TO_CART_BY_CODE_FAILURE, ADD_ITEM_TO_CART_BY_CODE_REQUEST, ADD_ITEM_TO_CART_BY_CODE_SUCCESS, ADD_ITEM_TO_CART_FAILURE, ADD_ITEM_TO_CART_REQUEST, ADD_ITEM_TO_CART_SUCCESS, APPLY_COUPON_FAILURE, APPLY_COUPON_REQUEST, APPLY_COUPON_SUCCESS, CLEAR_CART_FAILURE, CLEAR_CART_REQUEST, CLEAR_CART_SUCCESS, DELETE_CARTITEM_FAILURE, DELETE_CARTITEM_REQUEST, DELETE_CARTITEM_SUCCESS, FIND_CART_FAILURE, FIND_CART_REQUEST, FIND_CART_SUCCESS, GET_ALL_CART_ITEMS_FAILURE, GET_ALL_CART_ITEMS_REQUEST, GET_ALL_CART_ITEMS_SUCCESS, UPDATE_CARTITEM_FAILURE, UPDATE_CARTITEM_REQUEST, UPDATE_CARTITEM_SUCCESS } from "./ActionType";
 
 export const findCart = (token) => {
     return async (dispatch) => {
@@ -48,6 +48,24 @@ export const addItemToCart = (reqData) => {
         } catch (error) {
             console.log("catch error ", error);
             dispatch({ type: ADD_ITEM_TO_CART_FAILURE, payload: error.message });
+        }
+    };
+};
+
+export const addItemToCartByCode = (reqData) => {
+    return async (dispatch) => {
+        dispatch({ type: ADD_ITEM_TO_CART_BY_CODE_REQUEST });
+        try {
+            const { data } = await api.put(`/api/cart/addByCode`, reqData.cartItem, {
+                headers: {
+                    Authorization: `Bearer ${reqData.jwt}`,
+                },
+            });
+            console.log("add item to cart ", data);
+            dispatch({ type: ADD_ITEM_TO_CART_BY_CODE_SUCCESS, payload: data });
+        } catch (error) {
+            console.log("catch error ", error);
+            dispatch({ type: ADD_ITEM_TO_CART_BY_CODE_FAILURE, payload: error.message });
         }
     };
 };
@@ -103,6 +121,22 @@ export const clearCartAction = () => {
         } catch (error) {
             console.log("catch error ",error)
             dispatch({type:CLEAR_CART_FAILURE,payload:error.message});
+        }
+    };
+};
+export const applyCoupon = (cartId, couponCode, jwt) => {
+    return async (dispatch) => {
+        dispatch({ type: APPLY_COUPON_REQUEST });
+        try {
+            const { data } = await api.post(`/api/cart/${cartId}/apply-coupon?couponCode=${couponCode}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
+            console.log('apply coupon data', data);
+            dispatch({ type: APPLY_COUPON_SUCCESS, payload: data });
+        } catch (error) {
+            dispatch({ type: APPLY_COUPON_FAILURE, payload: error });
         }
     };
 };

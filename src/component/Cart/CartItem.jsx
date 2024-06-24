@@ -19,15 +19,14 @@ export const CartItem = ({item}) => {
     dispatch(removeCartItem({cartItemId:item.id,jwt:auth.jwt || jwt}))
   }
   
- const handleUpdateCartItem =(value)=>{
-  if(value ===-1 && item.quantity ===1){
-   handleRemoveCartItem()
+  const handleUpdateCartItem =(value)=>{
+    if(value ===-1 && item.quantity ===1){
+      handleRemoveCartItem()
+    }
+  
+    const data = {cartItemId:item.id,quantity:item.quantity+value}
+    dispatch(updateCartItem({data,jwt}))
   }
-
-  const data = {cartItemId:item.id,quantity:item.quantity+value}
-  dispatch(updateCartItem({data,jwt}))
-
- }
 
   return (
     <div className="px-5">
