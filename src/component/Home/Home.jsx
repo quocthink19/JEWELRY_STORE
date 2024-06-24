@@ -24,7 +24,7 @@ const Home = () => {
         <div className="w-[50vw] z-10 text-center">
         <p className="text-7xl lg:text-9xl font-bold z-10 py-5 text-yellow-400">Jewelry</p>
           <p className="z-10 text-gray-300 text-xl lg:text-4x1">
-            Trao Niem Tin Cho Chung Toi Trao Lai Ban Su Uy Tinh
+          Giving Trust to Us, I Give You Prestige
           </p>
         </div>
         <div className="cover absolute top-0 left-0 right-0"></div>
