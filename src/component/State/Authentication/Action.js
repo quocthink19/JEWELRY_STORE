@@ -1,7 +1,6 @@
 import axios from "axios"
+import { API_URL, api } from "../../config/api"
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType"
-import { API_URL } from "../../config/api"
-import { api } from "../../config/api"
 export const registerUser=(reqDate) =>async(dispatch)=>{
     dispatch({type:REGISTER_REQUEST})
     try {
@@ -35,8 +34,12 @@ export const loginUser = (reqDate) => async (dispatch) => {
             dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
             console.log("login success")
         } catch (error) {
-            dispatch({ type: LOGIN_FAILURE, payload: error });
-            console.log(error, error);
+            let errorMessage = "An error occurred during login. Please try again.";
+            if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                errorMessage = "Incorrect username or password, or access denied. Please try again.";
+            }
+            dispatch({ type: LOGIN_FAILURE, payload: errorMessage });
+            console.log(error, errorMessage);
         }
     };
 
