@@ -36,6 +36,7 @@ export const loginUser = (reqDate) => async (dispatch) => {
             console.log("login success")
         } catch (error) {
             dispatch({ type: LOGIN_FAILURE, payload: error });
+        
             console.log(error, error);
         }
     };

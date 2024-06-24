@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+
+
+import React, { useState, useEffect } from "react";
 import {
   Divider,
   Button,
@@ -8,13 +10,14 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { CartItem } from "./CartItem"; // Moved to the top
+import { CartItem } from "./CartItem";
 import AddressCard from "./AddressCard";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../State/Order/Action";
 import { addItemToCartByCode, applyCoupon } from "../State/Cart/Action";
+import { checkOrCreateCustomer } from "../State/Customer/Action";
 
 export const style = {
   position: "absolute",
@@ -27,32 +30,46 @@ export const style = {
   boxShadow: 24,
   p: 4,
 };
-const initialValues = {
-  fullname: "",
-  mobile: "",
-  email: "",
-};
-
 
 const Cart = () => {
   const [open, setOpen] = useState(false);
-  const [productCode, setProductCode] = useState(""); // State for product code
-  const [couponCode, setCouponCode] = useState(""); // State for coupon code
-  // const [discount, setDiscount] = useState(0); // State for discount
+  const [productCode, setProductCode] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [formValues, setFormValues] = useState({
+    fullname: "",
+    mobile: "",
+    email: "",
+  });
   const { cart } = useSelector((store) => store);
+  const { customer } = useSelector((store) => store.customer);
   const dispatch = useDispatch();
 
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (customer) {
+      setFormValues({
+        fullname: customer.fullname || "",
+        mobile: customer.mobile || "",
+        email: customer.email || "",
+      });
+    }
+  }, [customer]);
 
   const handleSubmit = (values) => {
     const data = {
       jwt: localStorage.getItem("jwt"),
       order: {
         staffId: cart.cart.staff.id,
+        fullname: customer.fullname,
+        mobile: customer.mobile ,
+        email: customer.email
       },
     };
     dispatch(createOrder(data));
     console.log("form value ", values);
+
+    dispatch(checkOrCreateCustomer(values));
   };
 
   const handleOpenAddressModal = () => setOpen(true);
@@ -67,7 +84,7 @@ const Cart = () => {
       jwt: localStorage.getItem("jwt"),
       cartItem: {
         code: productCode,
-        quantity: 1, // Assuming quantity is 1, adjust as needed
+        quantity: 1,
       },
     };
 
@@ -92,7 +109,9 @@ const Cart = () => {
     const tax = 10;
     const totalBeforeDiscount = itemTotal + deliveryFee + gstCharges + tax;
     return totalBeforeDiscount;
-  };  return (
+  };
+
+  return (
     <>
       <div>
         <main className="lg:flex justify-between">
@@ -139,7 +158,6 @@ const Cart = () => {
                 {[1].map((item) => (
                   <AddressCard
                     key={item.id}
-                    // handleSelectAddress={createOrderUsingSelectedAddress}
                     item={item}
                     showButton={true}
                   />
@@ -220,7 +238,7 @@ const Cart = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik initialValues={formValues} onSubmit={handleSubmit} enableReinitialize>
               <Form>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>

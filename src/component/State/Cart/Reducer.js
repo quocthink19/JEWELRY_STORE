@@ -52,7 +52,7 @@ const cartReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 cartItems: state.cartItems.filter((item) =>
-                    item.id!== action.payload
+                    item.id !== action.payload
                 ),
             };
             case actionTypes.APPLY_COUPON_SUCCESS:
