@@ -21,43 +21,21 @@ export const registerUser=(reqDate) =>async(dispatch)=>{
     }
     }
 
-    export const loginUser = (reqData) => async (dispatch) => {
+export const loginUser = (reqDate) => async (dispatch) => {
         dispatch({ type: LOGIN_REQUEST });
         try {
-            // Password validation logic
-            const password = reqData.userData.password;
-            if (!password || password.trim() === "") {
-                throw new Error("Password cannot be blank");
-            }
-            if (password.length < 6) {
-                throw new Error("Password must be at least 6 characters long");
-            }
-            if (!password.match(".*[A-Za-z].*")) {
-                throw new Error("Password must contain at least one letter");
-            }
-            if (!password.match(".*[0-9].*")) {
-                throw new Error("Password must contain at least one number");
-            }
-            if (!password.match(".*[!@#$%&*()_+=|<>?{}\\[\\]~-].*")) {
-                throw new Error("Password must contain at least one special character");
-            }
-    
-            // Existing code to make API request and handle response
-            const { data } = await axios.post(`${API_URL}/auth/signin`, reqData.userData);
+            const { data } = await axios.post(`${API_URL}/auth/signin`, reqDate.userData);
             if (data.jwt) localStorage.setItem("jwt", data.jwt);
             if (data.role === "ROLE_MANAGER") {
-                reqData.navigate("/admin/jewelry");
+                reqDate.navigate("/admin/jewelry");
             } else {
-                reqData.navigate("/");
+                reqDate.navigate("/");
             }
             dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
-            console.log("login success");
+            console.log("login success")
         } catch (error) {
             let errorMessage = "An error occurred during login. Please try again.";
-            if (error instanceof Error) {
-                // Handle validation errors
-                errorMessage = error.message;
-            } else if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                 errorMessage = "Incorrect username or password, or access denied. Please try again.";
             }
             dispatch({ type: LOGIN_FAILURE, payload: errorMessage });

@@ -38,22 +38,20 @@ export default function RegisterForm() {
 
     if (!values.username) {
       errors.username = "Username is required";
-    } else if (/[^a-zA-Z0-9]/.test(values.username)) {
-      errors.username = "Username must not contain special characters";
     }
 
     if (!values.password) {
       errors.password = "Password is required";
     } else if (values.password.length < 6) {
       errors.password = "Password must be at least 6 characters long";
-    } else if (!/[!@#$%^&*(),.?:{}|<>]/.test(values.password)) {
-      errors.password = "Password must contain at least one special character";
+    } else if (values.password.length > 15) {
+      errors.password = "Password must not exceed 15 characters";
+    } else if (!/[A-Z]/.test(values.password)) {
+      errors.password = "Password must contain at least one uppercase letter";
     }
 
     if (!values.email) {
       errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-      errors.email = "Email address is invalid";
     }
 
     return errors;

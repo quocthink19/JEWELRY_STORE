@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginUser } from "../State/Authentication/Action";
@@ -12,47 +12,41 @@ const initialValues = {
   password: "",
 };
 
-export default function LoginForm() {
-  const navigate = useNavigate();
+const LoginForm = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const dispatch = useDispatch();
 
   const handleSubmit = (values) => {
     dispatch(loginUser({ userData: values, navigate }))
-      .then((response) => {
-        // Giả sử response chứa trạng thái đăng nhập
-        if (response.success) {
-          toast.success("Login succeeded");
-        } else {
-          // Kiểm tra nếu có thông báo lỗi cụ thể từ server
-          if (response.message === "Invalid username or password") {
-            toast.error("Error username or password. Please try again.");
-          } else {
-            // Nếu lỗi không rõ ràng, hiển thị thông báo chung
-            toast.error(`Login failed: ${response.message}`);
-          }
-        }
+      .then(() => {
+        toast.error("Login failed");
+        // toast.success("Login successful!");
+        // Optionally, redirect to a different page after a successful login
+        // navigate("/some-page");
       })
       .catch((error) => {
-        // Hiển thị thông báo chung khi có lỗi không xác định từ server
-        toast.error("Login failed. Please try again.");
+        if (error.response && error.response.data) {
+          toast.error(`Login failed: ${error.response.data.message}`);
+        } else {
+          toast.error("Login failed. Please try again.");
+        }
       });
   };
-
 
   const validate = (values) => {
     const errors = {};
     if (!values.username) {
       errors.username = "Username is required";
-    } else if (/[^a-zA-Z0-9]/.test(values.username)) {
-      errors.username = "Username must not contain special characters";
     }
 
     if (!values.password) {
       errors.password = "Password is required";
     } else if (values.password.length < 6) {
       errors.password = "Password must be at least 6 characters long";
-    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(values.password)) {
-      errors.password = "Password must contain at least one special character";
+    } else if (values.password.length > 15) {
+      errors.password = "Password must not exceed 15 characters";
+    } else if (!/[A-Z]/.test(values.password)) {
+      errors.password = "Password must contain at least one uppercase letter";
     }
 
     return errors;
@@ -61,7 +55,8 @@ export default function LoginForm() {
   return (
     <div
       style={{
-        backgroundImage: 'url("https://images.pexels.com/photos/5442446/pexels-photo-5442446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+        backgroundImage:
+          'url("https://images.pexels.com/photos/5442446/pexels-photo-5442446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
@@ -80,10 +75,18 @@ export default function LoginForm() {
           width: "100%",
         }}
       >
-        <Typography variant="h5" align="center" style={{ marginBottom: "1rem" }}>
+        <Typography
+          variant="h5"
+          align="center"
+          style={{ marginBottom: "1rem" }}
+        >
           Login
         </Typography>
-        <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validate={validate}
+        >
           {({ errors, touched, handleBlur }) => (
             <Form>
               <Field
@@ -94,7 +97,9 @@ export default function LoginForm() {
                 margin="normal"
                 variant="outlined"
                 onBlur={handleBlur}
-                helperText={touched.username && errors.username ? errors.username : ""}
+                helperText={
+                  touched.username && errors.username ? errors.username : ""
+                }
                 error={touched.username && Boolean(errors.username)}
               />
               <Field
@@ -106,16 +111,28 @@ export default function LoginForm() {
                 margin="normal"
                 variant="outlined"
                 onBlur={handleBlur}
-                helperText={touched.password && errors.password ? errors.password : ""}
+                helperText={
+                  touched.password && errors.password ? errors.password : ""
+                }
                 error={touched.password && Boolean(errors.password)}
               />
-              <Button type="submit" fullWidth variant="contained" color="primary" style={{ marginTop: "1rem" }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "1rem" }}
+              >
                 Login
               </Button>
             </Form>
           )}
         </Formik>
-        <Typography variant="body2" align="center" style={{ marginTop: "1rem" }}>
+        <Typography
+          variant="body2"
+          align="center"
+          style={{ marginTop: "1rem" }}
+        >
           Don't have an account?{" "}
           <Button color="primary" onClick={() => navigate("/register")}>
             Register
@@ -125,4 +142,6 @@ export default function LoginForm() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginForm;

@@ -7,57 +7,81 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MenuCard from './MenuCard'
-import {useNavigate, useParams} from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { store } from "../State/store";
 import { getAreaById } from "../State/Area/Action";
 import { getMenuItemsByJewelryId } from "../State/Menu/Action";
 import { getAllCategory } from "../State/Categories/Action";
-
 
 const jewelryTypes = [
   { label: "ALL", value: "all" },
   { label: "Gold", value: "Gold" },
   { label: "Platinum", value: "Platinum" },
-  { label: "Sliver", value: "Silver" },
+  { label: "Silver", value: "Silver" },
 ];
 
 const JewelryDetails = () => {
   const [jewelryType, setJewelryType] = useState("all");
-  const navigate = useNavigate()
-  const dispatch= useDispatch();
-  const jwt = localStorage.getItem("jwt")
-  const {auth,area,category,menu}= useSelector(store=>store)
-  const {SelectedCaterogy,setSelectedCaterogy} = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  const [sortBy, setSortBy] = useState("price_low_to_high"); // default sorting
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { area, menu } = useSelector(store => store);
+  const { id } = useParams();
 
-  const {id} = useParams();
+  useEffect(() => {
+    dispatch(getAreaById({ jwt, areaId: id }));
+    dispatch(getAllCategory({ jwt }));
+  }, [dispatch, jwt, id]);
 
+  useEffect(() => {
+    dispatch(getMenuItemsByJewelryId({ jwt }));
+  }, [dispatch, jwt]);
 
   const handleFilter = (e) => {
-    console.log(e.target.value, e.target.name);
-  };
-  const handleFilterCategory = (e,value) => {
-    console.log(e.target.value, e.target.name,value);
+    setJewelryType(e.target.value);
   };
 
+  const handleFilterByPrice = (range) => {
+    setPriceRange(range);
+  };
 
-  console.log("area" ,area);
-  console.log("category",category)
-  console.log("menu", menu)
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
 
- useEffect(()=>{
-  dispatch(getAreaById({jwt,areaId:id}))
-  dispatch(getAllCategory({jwt}))
-},[])
-
- useEffect(() => {
-  dispatch(getMenuItemsByJewelryId({jwt
-  }));
- },[SelectedCaterogy])
+  const filteredItems = menu.menuItems
+    .filter((item) =>
+      jewelryType === "all" ? true : item.type === jewelryType
+    )
+    .filter((item) => {
+      switch (priceRange) {
+        case "50-200":
+          return item.price >= 50 && item.price <= 200;
+        case "200-1000":
+          return item.price >= 200 && item.price <= 1000;
+        case "1000+":
+          return item.price > 1000;
+        default:
+          return true;
+      }
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "price_low_to_high":
+          return a.price - b.price;
+        case "price_high_to_low":
+          return b.price - a.price;
+        default:
+          return 0;
+      }
+    });
 
   return (
     <div className="px-5 lg:px-20">
@@ -112,6 +136,21 @@ const JewelryDetails = () => {
           <div className="box space-y-5 lg:sticky top-28 d">
             <div>
               <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
+                Sort By
+              </Typography>
+              <FormControl variant="outlined" className="w-full">
+                <Select
+                  value={sortBy}
+                  onChange={handleSortChange}
+                >
+                  <MenuItem value="price_low_to_high">Price: Low to High</MenuItem>
+                  <MenuItem value="price_high_to_low">Price: High to Low</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <Divider />
+            <div>
+              <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                 Jewelry Type
               </Typography>
               <FormControl className="py-10 space-y-5" component={"fieldset"}>
@@ -134,29 +173,37 @@ const JewelryDetails = () => {
             <Divider />
             <div>
               <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
-                Jewelry Category
+                Price Range
               </Typography>
               <FormControl className="py-10 space-y-5" component={"fieldset"}>
-                <RadioGroup
-                  onChange={handleFilterCategory}
-                  name="jewelry_type"
-                  value={setSelectedCaterogy}
-                >
-                  {category.categories.map((item) => (
-                    <FormControlLabel
-                      key={item}
-                      value={item.name}
-                      control={<Radio />}
-                      label={item.name}
-                    />
-                  ))}
+                <RadioGroup>
+                  <FormControlLabel
+                    value="50-200"
+                    control={<Radio />}
+                    label="50 - 200"
+                    onChange={() => handleFilterByPrice("50-200")}
+                  />
+                  <FormControlLabel
+                    value="200-1000"
+                    control={<Radio />}
+                    label="200 - 1000"
+                    onChange={() => handleFilterByPrice("200-1000")}
+                  />
+                  <FormControlLabel
+                    value="1000+"
+                    control={<Radio />}
+                    label="Over 1000"
+                    onChange={() => handleFilterByPrice("1000+")}
+                  />
                 </RadioGroup>
               </FormControl>
             </div>
           </div>
         </div>
         <div className="space-y-5 lg:w[80%] lg:pl-10">
-          {menu.menuItems.map((item)=><MenuCard item={item }/>)}
+          {filteredItems.map((item) => (
+            <MenuCard key={item.id} item={item} />
+          ))}
         </div>
       </section>
     </div>
