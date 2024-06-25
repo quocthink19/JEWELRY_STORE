@@ -83,17 +83,11 @@ public class AuthController {
    }
 
    private void validateUserInput(User user) {
-      if (user.getFullname() == null || user.getFullname().trim().isEmpty()) {
-         throw new IllegalArgumentException("Full name cannot be empty");
-      }
       if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
          throw new IllegalArgumentException("Username cannot be empty");
       }
       if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
          throw new IllegalArgumentException("Password cannot be empty");
-      }
-      if (user.getGender() == null || user.getGender().trim().isEmpty()) {
-         throw new IllegalArgumentException("Gender cannot be empty");
       }
       if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
          throw new IllegalArgumentException("Email cannot be empty");
@@ -104,14 +98,17 @@ public class AuthController {
       if (password.length() < 6) {
          throw new IllegalArgumentException("Password must have at least 6 characters");
       }
-      if (!password.matches(".*[a-zA-Z].*")) {
-         throw new IllegalArgumentException("Password must contain at least one letter");
+      if (password.length() > 15) {
+         throw new IllegalArgumentException("Password must not exceed 15 characters");
+      }
+      if (!password.matches(".*[a-z].*")) {
+         throw new IllegalArgumentException("Password must contain at least one lowercase letter");
+      }
+      if (!password.matches(".*[A-Z].*")) {
+         throw new IllegalArgumentException("Password must contain at least one uppercase letter");
       }
       if (!password.matches(".*\\d.*")) {
          throw new IllegalArgumentException("Password must contain at least one digit");
-      }
-      if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
-         throw new IllegalArgumentException("Password must contain at least one special character");
       }
    }
 
