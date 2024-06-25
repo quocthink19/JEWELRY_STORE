@@ -27,21 +27,21 @@ public class Cart {
     @OneToOne
     private User staff;
 
-    private Double total ;
+    private Double total = 0.0;
 
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
     @OneToOne
     private Coupon coupon;
+
     public void applyCoupon(Coupon coupon) {
         this.coupon = coupon;
-        recalculateTotal();
         applyDiscountToItems();
+        recalculateTotal();
     }
 
-    private void recalculateTotal() {
+    public void recalculateTotal() {
         double itemsTotal = items.stream().mapToDouble(CartItem::getTotalPrice).sum();
         if (coupon != null && isValidCoupon()) {
             double discount = itemsTotal * (coupon.getDiscountPercentage() / 100);
@@ -49,6 +49,7 @@ public class Cart {
         } else {
             this.total = itemsTotal;
         }
+        System.out.println("Recalculated total: " + this.total); // Log the recalculated total
     }
 
     private void applyDiscountToItems() {
@@ -70,6 +71,3 @@ public class Cart {
                (coupon.getValidUntil().after(now) || coupon.getValidUntil().equals(now));
     }
 }
-
-
-

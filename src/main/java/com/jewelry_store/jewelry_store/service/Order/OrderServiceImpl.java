@@ -13,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jewelry_store.jewelry_store.model.Area;
 import com.jewelry_store.jewelry_store.model.Cart;
 import com.jewelry_store.jewelry_store.model.CartItem;
-import com.jewelry_store.jewelry_store.model.Coupon;
 import com.jewelry_store.jewelry_store.model.Customer;
 import com.jewelry_store.jewelry_store.model.OrderItem;
 import com.jewelry_store.jewelry_store.model.Orderr;
 import com.jewelry_store.jewelry_store.model.User;
-import com.jewelry_store.jewelry_store.repository.CouponRepository;
 import com.jewelry_store.jewelry_store.repository.CustomerRepository;
 import com.jewelry_store.jewelry_store.repository.OrderItemRepository;
 import com.jewelry_store.jewelry_store.repository.OrderRepository;
@@ -49,11 +47,10 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private CouponRepository couponRepository;
 
     @Override
     public Orderr createOrder(OrderRequest orderRequest, User user) throws Exception {
+        // Area area = areaService.getAreabyUserId(user.getId());
         Area area = areaService.findAreabyId(orderRequest.getStaffId());
         Customer customer = customerRepository.findByFullnameAndMobileAndEmail(
                 orderRequest.getFullname(), orderRequest.getMobile(), orderRequest.getEmail())

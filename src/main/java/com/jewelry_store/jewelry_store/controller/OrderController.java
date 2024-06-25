@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jewelry_store.jewelry_store.model.Orderr;
 import com.jewelry_store.jewelry_store.model.User;
 import com.jewelry_store.jewelry_store.request.OrderRequest;
+import com.jewelry_store.jewelry_store.response.PaymentRespone;
 import com.jewelry_store.jewelry_store.service.Order.OrderService;
+import com.jewelry_store.jewelry_store.service.Payment.PaymentService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
 @RestController
@@ -26,14 +28,26 @@ public class OrderController {
     private OrderService orderService ;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PaymentService paymentService;
+
+    // @PostMapping("/orders")
+    // public ResponseEntity<Orderr> createOrder(@RequestBody OrderRequest req,
+    // @RequestHeader("Authorization") String jwt) throws Exception{
+
+    //     User user = userService.findUserByJwtToken(jwt);
+    //     Orderr order = orderService.createOrder(req,user);
+    //     return new ResponseEntity<>(order, HttpStatus.OK);
+    // }
 
     @PostMapping("/orders")
-    public ResponseEntity<Orderr> createOrder(@RequestBody OrderRequest req,
+    public ResponseEntity<PaymentRespone> createOrder(@RequestBody OrderRequest req,
     @RequestHeader("Authorization") String jwt) throws Exception{
 
         User user = userService.findUserByJwtToken(jwt);
         Orderr order = orderService.createOrder(req,user);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        PaymentRespone res = paymentService.createPaymentLink(order);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
     @GetMapping("/orders/user")
     public ResponseEntity<List<Orderr>> getOrderHistory(

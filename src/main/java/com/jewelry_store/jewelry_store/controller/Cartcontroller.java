@@ -33,7 +33,7 @@ public class Cartcontroller {
     @Autowired
     private UserService userService;
   
-    @PutMapping("/add")
+    @PutMapping("/cart/add")
     public ResponseEntity<?> updateCartItem(@RequestBody AddCartItemRequest request, 
     @RequestHeader("Authorization") String jwt) {
         try {
@@ -58,7 +58,7 @@ public class Cartcontroller {
         }
     }
 
-    @PutMapping("/cart-item/update")
+    @PutMapping("/cart/cart-item/update")
     public ResponseEntity<CartItem> updateCartItemQuantity(@RequestBody UpdateCartItemRequest req,
     @RequestHeader("Authorization") String jwt) throws Exception{
         
