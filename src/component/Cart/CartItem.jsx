@@ -9,7 +9,8 @@ import { removeCartItem, updateCartItem } from "../State/Cart/Action";
 
 export const CartItem = ({item}) => {
 
-  const{auth,cart} = useSelector((store)=>store)
+  const auth = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt")

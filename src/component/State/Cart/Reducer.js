@@ -4,14 +4,18 @@ import * as actionTypes from './ActionType';
 const initialState = {
     cart: null,
     cartItems: [],
-    loading : false,
-    error : null,
+    loading: false,
+    error: null,
     appliedCouponOrder: null,
+};
+
+// Hàm tính tổng giá của các sản phẩm trong giỏ hàng
+const calculateCartTotal = (cartItems) => {
+    return cartItems.reduce((total, item) => total + item.totalPrice, 0);
 };
 
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
-        // Các case xử lý request
         case actionTypes.FIND_CART_REQUEST:
         case actionTypes.GET_ALL_CART_ITEMS_REQUEST:
         case actionTypes.UPDATE_CARTITEM_REQUEST:
@@ -22,66 +26,140 @@ const cartReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: null,
-            }
-        // Các case xử lý success
-        case actionTypes.FIND_CART_SUCCESS:
+            };
+
+            case actionTypes.FIND_CART_SUCCESS:
+                return {
+                    ...state,
+                    cart: {
+                        ...action.payload,
+                        total: calculateCartTotal(action.payload.items),
+                    },
+                    cartItems: action.payload.items,
+                    loading: false,
+                    error: null,
+                };
+            
         case actionTypes.CLEAR_CART_SUCCESS:
+            if (!action.payload || !Array.isArray(action.payload.items)) {
+                console.error("Payload items is not an array:", action.payload.items);
+                return {
+                    ...state,
+                    loading: false,
+                    error: 'Invalid payload format',
+                };
+            }
             return {
                 ...state,
                 cart: action.payload,
                 loading: false,
                 cartItems: action.payload.items,
+                cart: {
+                    ...state.cart,
+                    total: calculateCartTotal(action.payload.items), // Tính tổng khi tải
+                },
             };
+
         case actionTypes.ADD_ITEM_TO_CART_SUCCESS:
         case actionTypes.ADD_ITEM_TO_CART_BY_CODE_SUCCESS:
+            if (!action.payload) {
+                console.error("Payload is invalid:", action.payload);
+                return {
+                    ...state,
+                    loading: false,
+                    error: 'Invalid payload format',
+                };
+            }
+            const newCartItems = [action.payload, ...state.cartItems];
             return {
                 ...state,
                 loading: false,
-                cartItems: [...action.payload, ...state.cartItems],
+                cartItems: newCartItems,
+                cart: {
+                    ...state.cart,
+                    total: calculateCartTotal(newCartItems), // Cập nhật tổng sau khi thêm sản phẩm
+                },
             };
+
         case actionTypes.UPDATE_CARTITEM_SUCCESS:
+            if (!action.payload) {
+                console.error("Payload is invalid:", action.payload);
+                return {
+                    ...state,
+                    loading: false,
+                    error: 'Invalid payload format',
+                };
+            }
+            const updatedCartItems = state.cartItems.map((item) =>
+                item.id === action.payload.id ? action.payload : item
+            );
             return {
                 ...state,
                 loading: false,
-                cartItems: state.cartItems.map((item) =>
-                    item.id === action.payload.id? action.payload : item
-            ),
-        };
-        case actionTypes.REMOVE_CARTITEM_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                cartItems: state.cartItems.filter((item) =>
-                    item.id !== action.payload
-                ),
+                cartItems: updatedCartItems,
+                cart: {
+                    ...state.cart,
+                    total: calculateCartTotal(updatedCartItems), // Cập nhật tổng sau khi cập nhật sản phẩm
+                },
             };
-            case actionTypes.APPLY_COUPON_SUCCESS:
-  return {
-    ...state,
-    loading: false,
-    error: null,
-    appliedCouponOrder: action.payload,
-    cart: {
-      ...state.cart,
-      ...action.payload, // Update cart with new data from payload
-    },
-  };
-        // Các case xử lý failure
+
+        case actionTypes.REMOVE_CARTITEM_SUCCESS:
+            if (!action.payload) {
+                console.error("Payload is invalid:", action.payload);
+                return {
+                    ...state,
+                    loading: false,
+                    error: 'Invalid payload format',
+                };
+            }
+            const remainingCartItems = state.cartItems.filter((item) =>
+                item.id !== action.payload
+            );
+            return {
+                ...state,
+                loading: false,
+                cartItems: remainingCartItems,
+                cart: {
+                    ...state.cart,
+                    total: calculateCartTotal(remainingCartItems), // Cập nhật tổng sau khi xóa sản phẩm
+                },
+            };
+
+        case actionTypes.APPLY_COUPON_SUCCESS:
+            if (!action.payload) {
+                console.error("Payload is invalid:", action.payload);
+                return {
+                    ...state,
+                    loading: false,
+                    error: 'Invalid payload format',
+                };
+            }
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                appliedCouponOrder: action.payload,
+                cart: {
+                    ...state.cart,
+                    ...action.payload, // Cập nhật lại giỏ hàng với dữ liệu mới từ payload
+                },
+            };
+
         case actionTypes.ADD_ITEM_TO_CART_BY_CODE_FAILURE:
         case actionTypes.FIND_CART_FAILURE:
         case actionTypes.UPDATE_CARTITEM_FAILURE:
         case actionTypes.REMOVE_CARTITEM_FAILURE:
         case actionTypes.APPLY_COUPON_FAILURE:
-    
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
             };
-        // Case xử lý logout
+
         case LOGOUT:
             localStorage.removeItem("jwt");
-            return {...state, cartItems:[],cart:null, success: "logout success" };
+            return { ...initialState, success: "logout success" };
+
         default:
             return state;
     }

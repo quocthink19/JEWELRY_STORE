@@ -75,7 +75,7 @@ export const updateCartItem = (reqData) => {
     return async (dispatch) => {
         dispatch({type:UPDATE_CARTITEM_REQUEST});
         try {
-            const {data} = await api.put(`/api/cart-item/update`, reqData.data,{
+            const {data} = await api.put(`/api/cart/cart-item/update`, reqData.data,{
                 headers: {
                     Authorization: `Bearer ${reqData.jwt}`,
                 },

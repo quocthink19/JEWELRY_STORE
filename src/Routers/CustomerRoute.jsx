@@ -10,6 +10,7 @@ import StockGold from "../component/StockGold/StockGold"; // Import the StockGol
 import LoginForm from "../component/Auth/LoginForm";
 import RegisterForm from "../component/Auth/RegisterForm";
 import Guarantee from "../component/Guarantee/Guarantee";
+import { PayMentSuccess } from "../PaymentSuccess/PayMentSuccess";
 
 export default function CustomerRoute() {
   return (
@@ -33,6 +34,7 @@ export default function CustomerRoute() {
         <Route path="/buyback" element={<BuyBack />} />
         <Route path="/stockgold" element={<StockGold />} />
         <Route path="/guarantee" element={<Guarantee />} />
+        <Route path="/payment/success/:id" element={<PayMentSuccess />} />
  {/* Route for StockGold component */}
       </Routes>
     </div>
