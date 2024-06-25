@@ -26,18 +26,18 @@
 	- Spring
 	- MySQL
 
-![techs](https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/materials/screenshots/tech.png)
 ## Documentation
-- [Jewelry Store System | SRS](https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/materials/docs/%5BCodies%5D%5BGift%20E-Commerce%20website%5D%20SRS.pdf)
-- [Jewelry Store System | Design Document](https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/materials/docs/%5BCodies%5D%5BGift%20E-Commerce%20website%5D%20Design%20Document.pdf)
+- [Jewelry Store System | SRS](https://github.com/quocthink19/JEWELRY_STORE/blob/tri-admin_panel/Documentation/SRS.docx)
+- [Jewelry Store System | Technical Requirements](https://github.com/quocthink19/JEWELRY_STORE/blob/tri-admin_panel/Documentation/Technical%20Requirements.docx)
+- [Jewelry Store System | Report_Mapping](https://github.com/quocthink19/JEWELRY_STORE/blob/tri-admin_panel/Documentation/N2NJS1806_Report0_Mapping.xlsx)
 
 
 -   **Download/Clone the source code.**
-- **Database**: (https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/backend/scripts/hommiestore_offical.sql).
-- **Code | Build & Run** 
+- **Database**: ().
+- **Code | Build & Run**
 	- **Back-end**:
-		- Customize the information in  [application.properties](https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/backend/src/main/resources/application.properties)  in /src/main/resources/application.properties for adapting to your case.
-		- Run [Jewelry_Store.Java](https://github.com/ducdmd152/gift-hommie-dot-com/blob/main/backend/src/main/java/com/gifthommie/backend/BackendApplication.java) to get started.
+		- Customize the information in  [application.properties](https://github.com/quocthink19/JEWELRY_STORE/blob/BE/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java)  in src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java for adapting to your case.
+		- Run [Jewelry_Store.Java](https://github.com/quocthink19/JEWELRY_STORE/blob/BE/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java) to get started.
 	- **Front-end**:
 		-   **To run, let's run "`npm start`" in the command line.**
 		-   *You also can get more at [https://create-react-app.dev/docs/getting-started/](https://create-react-app.dev/docs/getting-started/).*
@@ -46,9 +46,9 @@
 
 	| Username | Password | Role     |
 	|----------|----------|----------|
-	| customer | 123456   | ADMIN    |
-	| staff    | 123456   | STAFF    |
-	| manager  | 123456   | MANAGER  |
+	| thinh    | 12345    | ADMIN    |
+	| phat     | 12345    | STAFF    |
+	| tri      | 12345    | MANAGER  |
 	
 
 > 🤟 Hope to pass SWP 🤟
