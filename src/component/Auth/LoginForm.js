@@ -2,7 +2,7 @@ import React from "react";
 import { Button, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { loginUser } from "../State/Authentication/Action";
@@ -12,14 +12,15 @@ const initialValues = {
     password: ""
 };
 
-export default function LoginForm() {
-    const navigate = useNavigate();
+const LoginForm = () => {
+    const navigate = useNavigate(); // Initialize useNavigate hook
     const dispatch = useDispatch();
 
     const handleSubmit = (values) => {
         dispatch(loginUser({ userData: values, navigate }))
             .then(() => {
-                toast.success("Login successful!");
+                toast.error("Login failed");
+               // toast.success("Login successful!");
                 // Optionally, redirect to a different page after a successful login
                 // navigate("/some-page");
             })
@@ -126,7 +127,7 @@ export default function LoginForm() {
                 </Formik>
                 <Typography variant="body2" align="center" sx={{ mt: 3, color: 'black' }}>
                     Don't have an account?
-                    <Button size="big" onClick={() => navigate("/account/register")} sx={{ color: '' }}>
+                    <Button size="big" onClick={() => navigate("/register")} sx={{ color: '' }}>
                         Register
                     </Button>
                 </Typography>
@@ -135,3 +136,5 @@ export default function LoginForm() {
         </div>
     );
 }
+
+export default LoginForm;

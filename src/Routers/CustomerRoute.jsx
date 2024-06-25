@@ -5,32 +5,35 @@ import Home from "../component/Home/Home";
 import JewelryDetail from "../component/Jewelry/JewelryDetail";
 import Cart from "../component/Cart/Cart";
 import Profile from "../component/Profile/Profile";
-import { Auth } from "../component/Auth/Auth";
+import BuyBack from "../component/BuyBack/BuyBack";
+import StockGold from "../component/StockGold/StockGold"; // Import the StockGold component
 import LoginForm from "../component/Auth/LoginForm";
 import RegisterForm from "../component/Auth/RegisterForm";
+import Guarantee from "../component/Guarantee/Guarantee";
+
 export default function CustomerRoute() {
   return (
     <div>
       <ul>
         <li>
-          <Link to={"/cart"}>cart</Link>
-        </li>
-
-        <li>
-          <Link to={"/login"}>login</Link>
+          <Link to={"/login"}>Login</Link>
         </li>
         <li>
-          <Link to={"/register"}>register</Link>
+          <Link to={"/register"}>Register</Link>
         </li>
       </ul>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />}/>
+        <Route path="/register" element={<RegisterForm />} />
         <Route path="/area/:title/:id" element={<JewelryDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/my-profile/*" element={<Profile />} />
+        <Route path="/buyback" element={<BuyBack />} />
+        <Route path="/stockgold" element={<StockGold />} />
+        <Route path="/guarantee" element={<Guarantee />} />
+ {/* Route for StockGold component */}
       </Routes>
     </div>
   );

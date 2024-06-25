@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import {
   Divider,
@@ -117,7 +115,7 @@ const Cart = () => {
         <main className="lg:flex justify-between">
           <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
             {cart.cartItems.map((item) => (
-              <CartItem key={item.id} item={item} />
+<CartItem key={item.id} item={item} />
             ))}
 
             <Divider />
@@ -193,7 +191,7 @@ const Cart = () => {
                     onChange={(e) => setProductCode(e.target.value)}
                   />
                   <Button
-                    variant="contained"
+variant="contained"
                     onClick={handleAddToCart}
                     sx={{
                       backgroundColor: "green", // Button background color
@@ -276,7 +274,7 @@ const Cart = () => {
                         backgroundColor: "blue", // Button background color
                         "&:hover": {
                           backgroundColor: "darkblue", // Darker blue on hover
-                        },
+},
                       }}
                     >
                       Pay
