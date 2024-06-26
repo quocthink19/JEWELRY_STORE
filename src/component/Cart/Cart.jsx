@@ -14,7 +14,11 @@ import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../State/Order/Action";
-import { addItemToCartByCode, applyCoupon, clearCartAction } from "../State/Cart/Action";
+import {
+  addItemToCartByCode,
+  applyCoupon,
+  clearCartAction,
+} from "../State/Cart/Action";
 import { checkOrCreateCustomer } from "../State/Customer/Action";
 
 export const style = {
@@ -34,7 +38,6 @@ const initialValues = {
   email: "",
 };
 
-
 const Cart = () => {
   const [open, setOpen] = useState(false);
   const [productCode, setProductCode] = useState(""); // State for product code
@@ -51,10 +54,10 @@ const Cart = () => {
       order: {
         staffId: cart.cart?.staff?.id,
         fullname: values.fullname,
-        mobile:  values.mobile,
+        mobile: values.mobile,
         email: values.email,
-        items: cart.cartItems.map(item => ({
-          productId: item.jewelry.id,  // Adjust as per your data structure
+        items: cart.cartItems.map((item) => ({
+          productId: item.jewelry.id, // Adjust as per your data structure
           quantity: item.quantity,
           price: item.totalPrice,
         })),
@@ -64,8 +67,7 @@ const Cart = () => {
     console.log("form data ", data);
     // dispatch(checkOrCreateCustomer(values));
     dispatch(clearCartAction());
-    setOpen(false); 
-
+    setOpen(false);
   };
 
   const handleOpenAddressModal = () => setOpen(true);
@@ -94,38 +96,62 @@ const Cart = () => {
       return;
     }
 
-    dispatch(applyCoupon(cart.cart.id, couponCode, localStorage.getItem("jwt")));
+    dispatch(
+      applyCoupon(cart.cart.id, couponCode, localStorage.getItem("jwt"))
+    );
     setCouponCode("");
   };
 
   const calculateTotal = () => {
     const itemTotal = cart.cart?.total || 0;
-    const deliveryFee = 21;
     const gstCharges = 33;
     const tax = 10;
-    const totalBeforeDiscount = itemTotal + deliveryFee + gstCharges + tax;
+    const totalBeforeDiscount = itemTotal + gstCharges + tax;
     return totalBeforeDiscount;
-  };  return (
+  };
+
+  return (
     <>
       <div>
         <main className="lg:flex justify-between">
-          <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
-          {cart.cartItems.map((item, index) => (
-            <CartItem key={`${item.id}-${index}`} item={item} />
-          ))}
-          
+          <section className="lg:w-[40%] space-y-6 lg:min-h-screen pt-10">
+            {cart.cartItems.map((item, index) => (
+              <CartItem key={`${item.id}-${index}`} item={item} />
+            ))}
 
             <Divider />
+            {/* Product Code Input */}
+            <Card className="flex gap-5 w-96 p-5 mt-5">
+              <TextField
+                label="Product Code"
+                variant="outlined"
+                fullWidth
+                value={productCode}
+                onChange={(e) => setProductCode(e.target.value)}
+                sx={{ height: "56px" }}
+              />
+              <Button
+                variant="contained"
+                onClick={handleAddToCart}
+                sx={{
+                  height: "56px", // Increased height
+                  backgroundColor: "green", // Đổi màu nền thành đỏ
+                  fontWeight: "bold", // Làm đậm văn bản
+                  "&:hover": {
+                    backgroundColor: "red", // Đỏ đậm hơn khi hover
+                  },
+                }}
+              >
+                Add
+              </Button>
+            </Card>
+
             <div className="billDetails px-5 text-sm">
               <p className="font-extralight py-5">Bill Details</p>
               <div className="space-y-3">
                 <div className="flex justify-between text-gray-400">
                   <p>Item Total</p>
                   <p>{cart.cart?.total}</p>
-                </div>
-                <div className="flex justify-between text-gray-400">
-                  <p>Delivery Fee</p>
-                  <p>$21</p>
                 </div>
                 <div className="flex justify-between text-gray-400">
                   <p>GST and restaurant charges</p>
@@ -142,12 +168,38 @@ const Cart = () => {
                 <p>{calculateTotal()}</p>
               </div>
             </div>
+
+            {/* Coupon Code Input */}
+            <Card className="flex gap-5 w-96 p-5 mt-5">
+              <TextField
+                label="Coupon Code"
+                variant="outlined"
+                fullWidth
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                sx={{ height: "56px" }}
+              />
+            <Button
+            variant="contained"
+            onClick={handleApplyCoupon}
+            sx={{
+              height: '56px', // Tăng chiều cao
+              backgroundColor: "green", // Đổi màu nền thành đỏ
+              fontWeight: 'bold', // Làm đậm văn bản
+              "&:hover": {
+                backgroundColor: "red", // Đỏ đậm hơn khi hover
+              },
+            }}
+          >
+            Coupon
+          </Button>
+            </Card>
           </section>
           <Divider orientation="vertical" flexItem />
-          <section className="lg:w-[70%] flex justify-center px-5 pb-0 lg:pb-0">
+          <section className="lg:w-[60%] flex justify-center px-5 pb-0 lg:pb-0">
             <div>
               <h1 className="text-center font-semibold text-2xl py-10">
-                Choose Delivery Address
+                Enter Information
               </h1>
               <div className="flex gap-5 flex-wrap justify-center">
                 {[1].map((item) => (
@@ -178,50 +230,6 @@ const Cart = () => {
                       ADD
                     </Button>
                   </div>
-                </Card>
-                {/* Product Code Input */}
-                <Card className="flex gap-5 w-64 p-5 mt-5">
-                  <TextField
-                    label="Product Code"
-                    variant="outlined"
-                    fullWidth
-                    value={productCode}
-                    onChange={(e) => setProductCode(e.target.value)}
-                  />
-                  <Button
-                    variant="contained"
-                    onClick={handleAddToCart}
-                    sx={{
-                      backgroundColor: "green", // Button background color
-                      "&:hover": {
-                        backgroundColor: "darkgreen", // Darker green on hover
-                      },
-                    }}
-                  >
-                    Add to Cart
-                  </Button>
-                </Card>
-                {/* Coupon Code Input */}
-                <Card className="flex gap-5 w-64 p-5 mt-5">
-                  <TextField
-                    label="Coupon Code"
-                    variant="outlined"
-                    fullWidth
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                  />
-                  <Button
-                    variant="contained"
-                    onClick={handleApplyCoupon}
-                    sx={{
-                      backgroundColor: "blue", // Button background color
-                      "&:hover": {
-                        backgroundColor: "darkblue", // Darker blue on hover
-                      },
-                    }}
-                  >
-                    Apply Coupon
-                  </Button>
                 </Card>
               </div>
             </div>

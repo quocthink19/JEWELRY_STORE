@@ -1,71 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Language } from '@mui/icons-material';
 
 const Guarantee = () => {
+  const [language, setLanguage] = useState('en');
+
+  const programs = {
+    en: [
+      {
+        type: 'Warranty Policy',
+        description: 'Description for Warranty Policy including various conditions and details...'
+      },
+      {
+        type: 'Exchange Policy',
+        description: 'Description for Exchange Policy including various conditions and details...'
+      },
+      {
+        type: 'Custom Design - Client Goods',
+        description: 'Custom design products or accessories made from precious metals with or without diamonds, colored stones...'
+      }
+    ],
+    vi: [
+      {
+        type: 'CHÍNH SÁCH BẢO HÀNH',
+        description: 'Mô tả cho CHÍNH SÁCH BẢO HÀNH bao gồm các điều kiện và chi tiết khác nhau...'
+      },
+      {
+        type: 'THU ĐỔI',
+        description: 'Mô tả cho THU ĐỔI bao gồm các điều kiện và chi tiết khác nhau...'
+      },
+      {
+        type: 'Hàng thiết kế riêng - Hàng khách',
+        description: 'Sản phẩm trang sức hoặc phụ kiện từ kim loại quý gắn hoặc không gắn kim cương, đá màu...'
+      }
+    ]
+  };
+
+  const toggleLanguage = () => {
+    setLanguage((prevLang) => (prevLang === 'en' ? 'vi' : 'en'));
+  };
+
   return (
-    <div className="container mx-auto mt-8">
-      <h2 className="text-3xl font-semibold mb-4">Guarantee Information</h2>
-
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h3 className="text-xl font-semibold mb-4">Types of Guarantees</h3>
-
-        <table className="table-auto w-full border-collapse border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2">Type</th>
-              <th className="border border-gray-300 px-4 py-2">Description</th>
-              <th className="border border-gray-300 px-4 py-2">Coverage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border border-gray-300 px-4 py-2">18K Gold Warranty</td>
-              <td className="border border-gray-300 px-4 py-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                condimentum tortor vel justo volutpat.
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                Covers manufacturing defects specific to 18K gold products.
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 px-4 py-2">24K Gold Warranty</td>
-              <td className="border border-gray-300 px-4 py-2">
-                Phasellus condimentum tortor vel justo volutpat, nec rutrum
-                dolor pulvinar.
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                Covers manufacturing defects specific to 24K gold products.
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 px-4 py-2">Diamond Warranty</td>
-              <td className="border border-gray-300 px-4 py-2">
-                Morbi bibendum lorem quis nisi tempus, sed ultrices ex
-                vulputate.
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                Covers lifetime repair and replacement of diamonds in jewelry.
-              </td>
-            </tr>
-            {/* Add more rows for additional guarantee types */}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h3 className="text-xl font-semibold mb-4">Additional Information</h3>
-        <p className="text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-          condimentum tortor vel justo volutpat, nec rutrum dolor pulvinar.
-          Mauris et lorem vel nibh faucibus tristique. Nullam non lectus vitae
-          lacus volutpat tristique.
-        </p>
-        <p className="text-gray-700 mt-4">
-          Etiam ac odio interdum, faucibus nulla at, accumsan turpis. Donec
-          imperdiet diam sit amet justo hendrerit, eget lacinia enim
-          consectetur.
-        </p>
-      </div>
+    <div>
+      <Button
+        variant="contained"
+        startIcon={<Language />}
+        onClick={toggleLanguage}
+        size="small"
+        style={{
+          marginBottom: '20px',
+          marginRight: '20px', // Added margin to the right to align with table headers
+          backgroundColor: language === 'en' ? 'white' : 'black',
+          color: language === 'en' ? 'black' : 'white',
+          fontWeight: 'bold' // Added fontWeight to match table headers
+        }}
+      >
+        {language === 'en' ? 'to Vn' : 'to en'}
+      </Button>
+      <TableContainer component={Paper} elevation={3}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{language === 'en' ? 'Policy Type' : 'Loại Chính Sách'}</TableCell>
+              <TableCell>{language === 'en' ? 'Description' : 'Mô tả'}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {programs[language].map((program, index) => (
+              <TableRow key={index} hover>
+                <TableCell>{program.type}</TableCell>
+                <TableCell>{program.description}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

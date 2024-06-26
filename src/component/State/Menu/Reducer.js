@@ -73,6 +73,7 @@ const menuItemReducer = (state = initialState, action) => {
         default:
             return state;
     }
+
 };
 
 export default menuItemReducer;
