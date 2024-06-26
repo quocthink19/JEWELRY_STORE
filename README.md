@@ -36,9 +36,10 @@
 - **Database**: ().
 - **Code | Build & Run**
 	- **Back-end**:
-		- Customize the information in  [application.properties](https://github.com/quocthink19/JEWELRY_STORE/blob/BE/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java)  in src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java for adapting to your case.
-		- Run [Jewelry_Store.Java](https://github.com/quocthink19/JEWELRY_STORE/blob/BE/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java) to get started.
+		- Customize the information in  [application.properties](https://github.com/quocthink19/JEWELRY_STORE/blob/BACKEND/src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java)  in src/main/java/com/jewelry_store/jewelry_store/JewelryStoreApplication.java for adapting to your case.
+		- Run [Jewelry_Store.Java]() to get started.
 	- **Front-end**:
+ 		-   - Customize the information in  [FrontEnd file](https://github.com/quocthink19/JEWELRY_STORE/tree/Payment)
 		-   **To run, let's run "`npm start`" in the command line.**
 		-   *You also can get more at [https://create-react-app.dev/docs/getting-started/](https://create-react-app.dev/docs/getting-started/).*
    
