@@ -9,6 +9,7 @@ import menuItemReducer from "./Menu/Reducer";
 import { orderReducer } from "./Order/Reducer";
 import categoryReducer from "./Categories/Reducer";
 import customerReducer from "./Customer/Reducer";
+import goldPriceReducer from "./Gold Price/Reducer";
 
 const rootReducer = combineReducers({
   auth : authReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   areaOrder : areaOrderReducer,
   component : componentReducer,
   category : categoryReducer,
-  customer : customerReducer
+  customer : customerReducer,
+  gold_price : goldPriceReducer
 
   
 });
