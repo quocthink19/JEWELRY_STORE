@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 import { Language } from '@mui/icons-material';
 
 const Guarantee = () => {
@@ -41,12 +41,12 @@ const Guarantee = () => {
   };
 
   return (
-    <div>
+    <Box sx={{ padding: 3 }}>
       <Button
         variant="contained"
         startIcon={<Language />}
         onClick={toggleLanguage}
-        size="small"
+        size="medium"
         style={{
           marginBottom: '20px',
           marginRight: '20px', // Added margin to the right to align with table headers
@@ -61,21 +61,25 @@ const Guarantee = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{language === 'en' ? 'Policy Type' : 'Loại Chính Sách'}</TableCell>
-              <TableCell>{language === 'en' ? 'Description' : 'Mô tả'}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.2rem', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+                {language === 'en' ? 'Policy Type' : 'Loại Chính Sách'}
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                {language === 'en' ? 'Description' : 'Mô tả'}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {programs[language].map((program, index) => (
               <TableRow key={index} hover>
-                <TableCell>{program.type}</TableCell>
-                <TableCell>{program.description}</TableCell>
+                <TableCell sx={{ fontSize: '1rem', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{program.type}</TableCell>
+                <TableCell sx={{ fontSize: '1rem' }}>{program.description}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 

@@ -11,6 +11,7 @@ import LoginForm from "../component/Auth/LoginForm";
 import RegisterForm from "../component/Auth/RegisterForm";
 import Guarantee from "../component/Guarantee/Guarantee";
 import { PayMentSuccess } from "../PaymentSuccess/PayMentSuccess";
+import Footer from "../component/Footer/Footer";
 
 export default function CustomerRoute() {
   return (
@@ -37,6 +38,7 @@ export default function CustomerRoute() {
         <Route path="/payment/success/:id" element={<PayMentSuccess />} />
  {/* Route for StockGold component */}
       </Routes>
+      <Footer/>
     </div>
   );
 }

@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import MenuCard from './MenuCard'
-import { useNavigate, useParams } from "react-router-dom"
+import MenuCard from './MenuCard';
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAreaById } from "../State/Area/Action";
 import { getMenuItemsByJewelryId } from "../State/Menu/Action";
@@ -32,7 +32,7 @@ const JewelryDetails = () => {
   const [sortBy, setSortBy] = useState("price_low_to_high"); // default sorting
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { area, menu } = useSelector(store => store);
+  const { area, menu } = useSelector((store) => store);
   const { id } = useParams();
 
   useEffect(() => {
@@ -83,34 +83,40 @@ const JewelryDetails = () => {
       }
     });
 
+  const radioStyles = {
+    "&.Mui-checked": {
+      color: "gray",
+    },
+  };
+
+  const formControlStyles = {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "gray",
+      },
+      "&:hover fieldset": {
+        borderColor: "gray",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "gray",
+      },
+    },
+  };
+
   return (
     <div className="px-5 lg:px-20">
       <section>
-        <h3 className="text-gray-500 py-2 mt-10">
-          Home/jewelry/jewelry product
-        </h3>
+        <h3 className="text-gray-500 py-2 mt-10">Home/jewelry/jewelry product</h3>
         <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <img
-                className="w-full h-[40vh] object-cover"
-                src={area.area?.images[0]}
-                alt=""
-              />
+              <img className="w-full h-[40vh] object-cover" src={area.area?.images[0]} alt="" />
             </Grid>
             <Grid item xs={12} lg={6}>
-              <img
-                className="w-full h-[40vh] object-cover"
-                src="https://cdn.pnj.io/images/promo/206/Banner_BST_Sakura-1200x450_CTA.png"
-                alt=""
-              />
+              <img className="w-full h-[40vh] object-cover" src="https://cdn.pnj.io/images/promo/206/Banner_BST_Sakura-1200x450_CTA.png" alt="" />
             </Grid>
             <Grid item xs={12} lg={6}>
-              <img
-                className="w-full h-[40vh] object-cover"
-                src="https://cdn.pnj.io/images/promo/202/hello-apple-1200x450_CTA_.jpg"
-                alt=""
-              />
+              <img className="w-full h-[40vh] object-cover" src="https://cdn.pnj.io/images/promo/202/hello-apple-1200x450_CTA_.jpg" alt="" />
             </Grid>
           </Grid>
         </div>
@@ -135,14 +141,11 @@ const JewelryDetails = () => {
         <div className="space-y-10 lg:w-[20%] filter">
           <div className="box space-y-5 lg:sticky top-28 d">
             <div>
-              <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
+              <Typography variant="h5" sx={{ paddingBottom: "1rem", color: "gray" }}>
                 Sort By
               </Typography>
-              <FormControl variant="outlined" className="w-full">
-                <Select
-                  value={sortBy}
-                  onChange={handleSortChange}
-                >
+              <FormControl variant="outlined" className="w-full" sx={formControlStyles}>
+                <Select value={sortBy} onChange={handleSortChange}>
                   <MenuItem value="price_low_to_high">Price: Low to High</MenuItem>
                   <MenuItem value="price_high_to_low">Price: High to Low</MenuItem>
                 </Select>
@@ -154,16 +157,12 @@ const JewelryDetails = () => {
                 Jewelry Type
               </Typography>
               <FormControl className="py-10 space-y-5" component={"fieldset"}>
-                <RadioGroup
-                  onChange={handleFilter}
-                  name="jewelry_type"
-                  value={jewelryType}
-                >
+                <RadioGroup onChange={handleFilter} name="jewelry_type" value={jewelryType}>
                   {jewelryTypes.map((item) => (
                     <FormControlLabel
                       key={item.value}
                       value={item.value}
-                      control={<Radio />}
+                      control={<Radio sx={radioStyles} />}
                       label={item.label}
                     />
                   ))}
@@ -179,19 +178,19 @@ const JewelryDetails = () => {
                 <RadioGroup>
                   <FormControlLabel
                     value="50-200"
-                    control={<Radio />}
+                    control={<Radio sx={radioStyles} />}
                     label="50 - 200"
                     onChange={() => handleFilterByPrice("50-200")}
                   />
                   <FormControlLabel
                     value="200-1000"
-                    control={<Radio />}
+                    control={<Radio sx={radioStyles} />}
                     label="200 - 1000"
                     onChange={() => handleFilterByPrice("200-1000")}
                   />
                   <FormControlLabel
                     value="1000+"
-                    control={<Radio />}
+                    control={<Radio sx={radioStyles} />}
                     label="Over 1000"
                     onChange={() => handleFilterByPrice("1000+")}
                   />

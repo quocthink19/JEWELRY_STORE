@@ -11,7 +11,7 @@ import CreateMenuForm from '../Menu/CreateMenuForm'
 import { Menu } from '../Menu/Menu'
 import { Orders } from '../Orders/Orders'
 import { AdminSidebar } from './AdminSidebar'
-
+import Footer from '../Footer/Footer'
 
 
 
@@ -40,7 +40,7 @@ export const Admin = () => {
         <div>
             <div className='lg:flex justify-between'>
                 <div>
-                    
+
                     <AdminSidebar handleClose={handleClose}/>
                 </div>
                 <div className='lg:w-[80%]'>
@@ -54,7 +54,6 @@ export const Admin = () => {
                         <Route path='/details' element={<JewelryDetails/>}/>
                         <Route path='/add-menu' element={<CreateMenuForm/>}/>
                     </Routes>
-
                 </div>
             </div>
         </div>

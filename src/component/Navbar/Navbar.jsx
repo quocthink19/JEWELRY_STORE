@@ -39,8 +39,11 @@ export const Navbar = () => {
         {["Sale", "BuyBack", "StockGold", "Guarantee"].map((item) => (
           <Button
             key={item}
-          
-            onClick={() => navigate(`/${item.toLowerCase()}`)}
+            onClick={
+              item === "Sale"
+                ? handleSaleClick // Chỉ định handleSaleClick cho nút "Sale"
+                : () => navigate(`/${item.toLowerCase()}`)
+            }
             sx={{
               color: "Black",
               fontWeight: "bold",

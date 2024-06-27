@@ -11,6 +11,7 @@ import {
 import { CartItem } from "./CartItem"; // Moved to the top
 import AddressCard from "./AddressCard";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../State/Order/Action";
@@ -128,17 +129,38 @@ const Cart = () => {
                 fullWidth
                 value={productCode}
                 onChange={(e) => setProductCode(e.target.value)}
-                sx={{ height: "56px" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "gray",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "gray",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "gray",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "gray",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "gray",
+                  },
+                }}
               />
               <Button
-                variant="contained"
+                variant="outlined"
+                fullWidth
                 onClick={handleAddToCart}
                 sx={{
-                  height: "56px", // Increased height
-                  backgroundColor: "green", // Đổi màu nền thành đỏ
-                  fontWeight: "bold", // Làm đậm văn bản
+                  color: "green", // Màu chữ đen
+                  borderColor: "green", // Màu viền xanh
+                  fontWeight: "bold", // Làm chữ đậm
+                  width: "120px",
                   "&:hover": {
-                    backgroundColor: "red", // Đỏ đậm hơn khi hover
+                    borderColor: "darkblue", // Màu viền xanh đậm khi hover
+                    backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
                   },
                 }}
               >
@@ -177,22 +199,43 @@ const Cart = () => {
                 fullWidth
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
-                sx={{ height: "56px" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "gray",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "gray",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "gray",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "gray",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "gray",
+                  },
+                }}
               />
-            <Button
-            variant="contained"
-            onClick={handleApplyCoupon}
-            sx={{
-              height: '56px', // Tăng chiều cao
-              backgroundColor: "green", // Đổi màu nền thành đỏ
-              fontWeight: 'bold', // Làm đậm văn bản
-              "&:hover": {
-                backgroundColor: "red", // Đỏ đậm hơn khi hover
-              },
-            }}
-          >
-            Coupon
-          </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleApplyCoupon}
+                sx={{
+                  color: "green", // Màu chữ đen
+                  borderColor: "green", // Màu viền xanh
+                  fontWeight: "bold", // Làm chữ đậm
+                  width: "120px",
+                  "&:hover": {
+                    borderColor: "darkblue", // Màu viền xanh đậm khi hover
+                    backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
+                  },
+                }}
+              >
+                Coupon
+              </Button>
             </Card>
           </section>
           <Divider orientation="vertical" flexItem />
@@ -202,16 +245,8 @@ const Cart = () => {
                 Enter Information
               </h1>
               <div className="flex gap-5 flex-wrap justify-center">
-                {[1].map((item) => (
-                  <AddressCard
-                    key={item.id}
-                    // handleSelectAddress={createOrderUsingSelectedAddress}
-                    item={item}
-                    showButton={true}
-                  />
-                ))}
                 <Card className="flex gap-5 w-64 p-5">
-                  <AddLocationAltIcon />
+                  <PersonAddIcon />
                   <div className="space-y-3 text-gray-500">
                     <p> Customer Information </p>
                     <Button
@@ -219,11 +254,12 @@ const Cart = () => {
                       fullWidth
                       onClick={handleOpenAddressModal}
                       sx={{
-                        color: "blue", // Text color
-                        borderColor: "blue", // Border color
+                        color: "green", // Màu chữ đen
+                        borderColor: "green", // Màu viền xanh
+                        fontWeight: "bold", // Làm chữ đậm
                         "&:hover": {
-                          borderColor: "darkblue", // Darker blue on hover
-                          backgroundColor: "lightblue", // Light blue background on hover
+                          borderColor: "darkblue", // Màu viền xanh đậm khi hover
+                          backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
                         },
                       }}
                     >
@@ -252,6 +288,25 @@ const Cart = () => {
                       label="Full Name"
                       fullWidth
                       variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "gray",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "gray",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "gray",
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -261,6 +316,25 @@ const Cart = () => {
                       label="Mobile"
                       fullWidth
                       variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "gray",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "gray",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "gray",
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -270,16 +344,40 @@ const Cart = () => {
                       label="Email"
                       fullWidth
                       variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "gray",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "gray",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "gray",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "gray",
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <Button
-                      variant="contained"
+                      variant="outlined"
+                      fullWidth
                       type="submit"
                       sx={{
-                        backgroundColor: "blue", // Button background color
+                        color: "green", // Màu chữ đen
+                        borderColor: "green", // Màu viền xanh
+                        fontWeight: "bold", // Làm chữ đậm
+                        width: "120px",
                         "&:hover": {
-                          backgroundColor: "darkblue", // Darker blue on hover
+                          borderColor: "darkblue", // Màu viền xanh đậm khi hover
+                          backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
                         },
                       }}
                     >
