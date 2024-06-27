@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from 'react';
 import CreateIcon from '@mui/icons-material/Create';
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import React, { useState } from 'react';
-import CreateIngredientForm from './CreateIngredientsForm';
-
-const orders = [1, 1, 1, 1, 1, 1, 1];
+import { useSelector, useDispatch } from "react-redux";
+import { getAllComponent } from '../../component/State/Components/Action';
+import UpdateForm from './UpdateForm';
+import CreateIngredientsForm from './CreateIngredientsForm';
 
 const style = {
     position: 'absolute',
@@ -17,11 +18,27 @@ const style = {
     p: 4,
 };
 
-export default function IngredientTable() {
+const IngredientTable = () => {
     const [open, setOpen] = useState(false);
+    const [selectedComponent, setSelectedComponent] = useState(null);
+    const { components } = useSelector((state) => state.component);
+    const dispatch = useDispatch();
+    const jwt = localStorage.getItem("jwt");
+
+    useEffect(() => {
+        dispatch(getAllComponent({ jwt }));
+    }, [dispatch, jwt]);
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedComponent(null);
+    };
+
+    const handleUpdateClick = (component) => {
+        setSelectedComponent(component);
+        setOpen(true);
+    };
 
     return (
         <Box>
@@ -41,19 +58,25 @@ export default function IngredientTable() {
                             <TableRow>
                                 <TableCell align="left">ID</TableCell>
                                 <TableCell align="right">Name</TableCell>
-                                <TableCell align="right">Category</TableCell>
-                                <TableCell align="right">Availability</TableCell>
+                                <TableCell align="right">Price</TableCell>
+                                <TableCell align="right">Price Buyback</TableCell>
+                                <TableCell align="right">Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orders.map((row, index) => (
-                                <TableRow key={index}>
+                            {components.map((item, index) => (
+                                <TableRow key={item.id}>
                                     <TableCell component="th" scope="row">
                                         {index + 1}
                                     </TableCell>
-                                    <TableCell align="right">{"Image"}</TableCell>
-                                    <TableCell align="right">{"Price"}</TableCell>
-                                    <TableCell align="right">{"Ring"}</TableCell>
+                                    <TableCell align="right">{item.name}</TableCell>
+                                    <TableCell align="right">{item.price}</TableCell>
+                                    <TableCell align="right">{item.pricebuyback}</TableCell>
+                                    <TableCell align="right">
+                                        <IconButton onClick={() => handleUpdateClick(item)} aria-label="update">
+                                            Update
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -67,9 +90,15 @@ export default function IngredientTable() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CreateIngredientForm />
+                    {selectedComponent ? (
+                        <UpdateForm component={selectedComponent} onClose={handleClose} />
+                    ) : (
+                        <CreateIngredientsForm onClose={handleClose} />
+                    )}
                 </Box>
             </Modal>
         </Box>
     );
-}
+};
+
+export default IngredientTable;

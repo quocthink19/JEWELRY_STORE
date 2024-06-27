@@ -17,8 +17,9 @@ const style = {
 
 const initialValue = {
     image: "",
-    location: "",
     name: "",
+    code: "",
+    discountPercentage: "",
     startedAt: null,
     endsAt: null
 };
@@ -69,16 +70,6 @@ export const Events = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        name="location"
-                                        label="Location"
-                                        variant="outlined"
-                                        fullWidth
-                                        value={formValue.location}
-                                        onChange={handleFormChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
                                         name="name"
                                         label="Name"
                                         variant="outlined"
@@ -87,6 +78,26 @@ export const Events = () => {
                                         onChange={handleFormChange}
                                     />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        name="code"
+                                        label="GIFT_CODE"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={formValue.code}
+                                        onChange={handleFormChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                <TextField
+                                    name="code"
+                                    label="DISCOUNT RATE"
+                                    variant="outlined"
+                                    fullWidth
+                                    value={formValue.discountPercentage}
+                                    onChange={handleFormChange}
+                                />
+                            </Grid>
                                 <Grid item xs={12}>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DateTimePicker

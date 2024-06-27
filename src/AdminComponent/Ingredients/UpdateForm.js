@@ -1,51 +1,44 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createComponent } from '../../component/State/Components/Action';
+import { createComponent, updateComponent } from '../../component/State/Components/Action';
 
-const CreateIngredientsForm = () => {
-    const dispath = useDispatch();
+const UpdateForm = ({ component, onClose }) => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        "name" : "",
-        "price" : "",
-        "pricebuyback" : ""
+        price: component.price,
+        pricebuyback: component.pricebuyback,
     });
-    const jwt= localStorage.getItem("jwt")
+
+    const jwt = localStorage.getItem("jwt");
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         const data = {
-
-            name: formData.name,
-            price : formData.price,
-            pricebuyback : formData.pricebuyback
+            id: component.id, // Lấy id của component từ props
+            name: component.name,
+            price: formData.price,
+            pricebuyback: formData.pricebuyback,
         };
 
-        dispath(createComponent({data,jwt}))
-        console.log(data);
+        dispatch(updateComponent({data, jwt }));
+        onClose(); // Đóng modal sau khi cập nhật thành công
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
         });
     };
+
 
     return (
         <div className=''>
             <div className='p-5'>
                 <h1 className='text-black text-center text-xl pb-10' style={{ fontSize: '30px' }}>Create Ingredient</h1>
                 <form className="space-y-5" onSubmit={handleSubmit}>
-                    <TextField
-                        fullWidth
-                        id="name"
-                        name="name"
-                        label="Name"
-                        variant="outlined"
-                        onChange={handleInputChange}
-                        value={formData.name}
-                    />
                     <TextField
                         fullWidth
                         id="price"
@@ -68,7 +61,7 @@ const CreateIngredientsForm = () => {
                     
 
                     <Button variant="contained" type="submit">
-                        Create Category
+                        Update Category
                     </Button>
                 </form>
             </div>
@@ -76,4 +69,4 @@ const CreateIngredientsForm = () => {
     );
 };
 
-export default CreateIngredientsForm;
+export default UpdateForm;
