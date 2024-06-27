@@ -16,8 +16,6 @@ public interface AreaService {
 
     public  List<Area> getAllArea();
 
-    public List<Area> SearchArea();
-
     public Area findAreabyId(Long id) throws Exception;
 
     public Area getAreabyUserId(Long UserId) throws Exception;

@@ -16,4 +16,6 @@ public interface ComponentService {
     public Optional<Component> updateComponent(Long id, ComponentRequest req);
     public boolean deleteComponent(Long id );
     public List<Component> findAll();
+    public List<Component> findByIds(List<Long> ids) ;
+    
 }   

@@ -42,9 +42,7 @@ public class AreaController {
         @PathVariable Long id
         ) throws Exception  {
         User user = userService.findUserByJwtToken(jwt);
-
         Area area = areaService.findAreabyId(id);
-
         return new ResponseEntity<>(area, HttpStatus.OK);
 }
 }

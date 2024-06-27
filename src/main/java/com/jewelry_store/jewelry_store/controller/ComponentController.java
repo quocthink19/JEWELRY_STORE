@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jewelry_store.jewelry_store.model.Component;
@@ -22,8 +24,10 @@ import com.jewelry_store.jewelry_store.request.ComponentRequest;
 import com.jewelry_store.jewelry_store.service.Component.ComponentService;
 import com.jewelry_store.jewelry_store.service.User.UserService;
 
+
 @RestController
 @RequestMapping("/api/component")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ComponentController {
     @Autowired
     private ComponentService componentService;
@@ -31,6 +35,14 @@ public class ComponentController {
     @Autowired
     private UserService userService;
     
+    @GetMapping("/ids")
+    public ResponseEntity<List<Component>> getComponentsByIds(@RequestParam List<Long> ids,
+                                                              @RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        List<Component> components = componentService.findByIds(ids);
+        return new ResponseEntity<>(components, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Component> getComponentById(@PathVariable Long id,
     @RequestHeader("Authorization") String jwt) throws Exception{

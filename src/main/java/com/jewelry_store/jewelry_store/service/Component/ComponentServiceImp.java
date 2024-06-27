@@ -63,4 +63,9 @@ public class ComponentServiceImp implements ComponentService  {
         return componentRepository.findAll();
     }
 
+    @Override
+    public List<Component> findByIds(List<Long> ids) {
+        return componentRepository.findAllById(ids);
+    }
+
 }

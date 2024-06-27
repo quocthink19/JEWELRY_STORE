@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,6 @@ public class User {
     private List<Orderr> orders = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "staff")
-    private List<Area> areas = new ArrayList<>();  // New relationship
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "staff")
+    private Area area; 
 }
