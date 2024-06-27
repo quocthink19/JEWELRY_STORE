@@ -14,8 +14,9 @@ export const AdminRoute = () => {
             <Routes>
                 <Route path="/*" 
                 element={
-                    !area.userArea ? <CreateAreaForm/> : <Admin/>
-
+                    // !area.userArea ? <CreateAreaForm/> : <Admin/>
+                    // !area.userArea ? <CreateAreaForm/> : 
+                    <Admin/>
       }         
                 ></Route>
             </Routes>

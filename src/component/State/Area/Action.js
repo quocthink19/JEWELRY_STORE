@@ -126,9 +126,9 @@ import { CREATE_AREA_FAILURE, CREATE_AREA_REQUEST,CREATE_AREA_SUCCESS,CREATE_EVE
                 `api/admin/area/${areaId}/status`,
                 {},
                 {
-                    headers:{
-                        Authorization:`Bearer${jwt}`,
-                    },
+                    headers: {
+                        Authorization: `Bearer ${jwt}`,
+                    },                    
                 }
             );
             console.log("ressssss", res.data);

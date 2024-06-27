@@ -1,8 +1,9 @@
 import CreateIcon from '@mui/icons-material/Create';
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateCategoryForm from './CreateCategoryForm';
+import { getAllCategory } from '../../component/State/Categories/Action';
 
 const orders = [1, 1, 1, 1, 1, 1, 1]
 const style = {
@@ -18,12 +19,21 @@ const style = {
 };
 
 export default function CategoryTable() {
-    const {jewelry}=useSelector(store=>store)
+    const {category}=useSelector(store=>store)
     const dispatch=useDispatch()
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    console.log("Jewelry Details", jewelry)
+    const jwt = localStorage.getItem("jwt");
+    console.log("categoty Details", category)
+
+    useEffect(() => {
+        dispatch(getAllCategory({jwt}
+    ))
+    },[]);
+
+
+
     return (
         <div>
             <Box>
@@ -46,15 +56,15 @@ export default function CategoryTable() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {orders.map((row) => (
+                                {category.categories.map((item) => (
                                     <TableRow
-                                        key={row.name}
+                                        key={item.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {1}
+                                            {item.id}
                                         </TableCell>
-                                        <TableCell align="left">{"name"}</TableCell>
+                                        <TableCell align="left">{item.name}</TableCell>
 
 
                                     </TableRow>
