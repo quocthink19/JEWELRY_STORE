@@ -19,54 +19,45 @@ const style = {
 };
 
 export default function CategoryTable() {
-    const {category}=useSelector(store=>store)
-    const dispatch=useDispatch()
+    const { category } = useSelector(store => store);
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     const jwt = localStorage.getItem("jwt");
-    console.log("categoty Details", category)
 
     useEffect(() => {
-        dispatch(getAllCategory({jwt}
-    ))
-    },[]);
-
-
+        dispatch(getAllCategory({ jwt }));
+    }, [dispatch, jwt]);
 
     return (
         <div>
             <Box>
-                <Card className='mt-1'>
+                <Card className='mt-1' sx={{ padding: 2, margin: 2 }}>
                     <CardHeader
                         action={
-                        <IconButton onClick={handleOpen} aria-label="settings">
-                            <CreateIcon />
-                        </IconButton>
-                    }
-                        title={"Jewelry Category"}
-                        sx={{ pt: 2, alignItems: "center" }} />
+                            <IconButton onClick={handleOpen} aria-label="create category">
+                                <CreateIcon />
+                            </IconButton>
+                        }
+                        title="Jewelry Category"
+                        sx={{ pt: 2, alignItems: "center" }}
+                    />
                     <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <Table sx={{ minWidth: 650 }} aria-label="category table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="left">id</TableCell>
-                                    <TableCell align="left">name</TableCell>
-
+                                    <TableCell align="left">ID</TableCell>
+                                    <TableCell align="left">Name</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {category.categories.map((item) => (
-                                    <TableRow
-                                        key={item.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {item.id}
-                                        </TableCell>
-                                        <TableCell align="left">{item.name}</TableCell>
-
-
+                                    <TableRow key={item.id}>
+                                        <TableCell>{item.id}</TableCell>
+                                        <TableCell>{item.name}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -74,7 +65,6 @@ export default function CategoryTable() {
                     </TableContainer>
                 </Card>
 
-                
                 <Modal
                     open={open}
                     onClose={handleClose}
@@ -82,11 +72,10 @@ export default function CategoryTable() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <CreateCategoryForm/>
+                        <CreateCategoryForm />
                     </Box>
                 </Modal>
             </Box>
         </div>
-    )
+    );
 }
-
