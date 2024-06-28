@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { JewelryDetails } from '../Admin/JewelryDetails'
 import { Category } from '../Category/Category'
-import { JewelryDashboard } from '../Dashboard/Dashboard'
+import Dashboard from '../Dashboard/Dashboard'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Events } from '../Events/Events'
@@ -12,7 +12,7 @@ import { Menu } from '../Menu/Menu'
 import { Orders } from '../Orders/Orders'
 import { AdminSidebar } from './AdminSidebar'
 import Footer from '../Footer/Footer'
-
+import Home from '../HomeA/Home'
 
 
 export const Admin = () => {
@@ -43,9 +43,10 @@ export const Admin = () => {
 
                     <AdminSidebar handleClose={handleClose}/>
                 </div>
-                <div className='lg:w-[80%]'>
+                <div className='lg:w-[70%]'>
                     <Routes>
-                        <Route path='/' element={<JewelryDashboard/>}/>
+                    <Route path='/' element={<Home/>}/>
+                        <Route path='/dashboard' element={<Dashboard/>}/>
                         <Route path='/orders' element={<Orders/>}/>
                         <Route path='/menu' element={<Menu/>}/>
                         <Route path='/category' element={<Category/>}/>
