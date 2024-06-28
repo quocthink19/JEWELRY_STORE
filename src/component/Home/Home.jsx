@@ -28,17 +28,15 @@ const Home = () => {
                 <div className="cover absolute top-0 left-0 right-0"></div>
                 <div className="fadout"></div>
             </section>
-            <section className="p-10 lg:py-10 lg:px-20">
-                <p className="text-2xl font-semibold text-blue-1000 py-3 pb-10">
-                    Top Product
-                </p>
+            <section className="top-product-section p-10 lg:py-10 lg:px-20">
+                <p className="header-blue">Top Product</p>
                 <MultiItemCarousel />
             </section>
             <div className="separator"></div> {/* Đường kẻ chia */}
             <section id="order-here" className="px-5 lg:px-20 pt-5">
-                <h1 className="text-2xl font-semibold text-blue-1000 py-5">
-                    Order here
-                </h1>
+               
+                <p className="order-here-section">Order here</p> 
+              
                 <div className="flex flex-wrap items-center justify-around gap-5">
                     {area?.areas?.length > 0 ? area.areas.map((item, index) => (
                         <JewelryCard key={index} item={item} />

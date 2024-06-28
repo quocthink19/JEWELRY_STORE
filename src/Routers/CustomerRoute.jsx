@@ -13,7 +13,8 @@ import Guarantee from "../component/Guarantee/Guarantee";
 import { PayMentSuccess } from "../PaymentSuccess/PayMentSuccess";
 import ValuationA  from "../component/BuyBack/ValuationA";
 import Footer from "../component/Footer/Footer";
-
+import Buy from "../component/BuyBack/Buy";
+import Exchange from "../component/BuyBack/Exchange";
 export default function CustomerRoute() {
   return (
     <div>
@@ -37,6 +38,8 @@ export default function CustomerRoute() {
         <Route path="/valuation/in" element={<ValuationA/>} />
         <Route path="/stockgold" element={<StockGold />} />
         <Route path="/guarantee" element={<Guarantee />} />
+        <Route path="/buy" element={<Buy />} />
+        <Route path="/exchange" element={<Exchange />} />
         <Route path="/payment/success/:id" element={<PayMentSuccess />} />
  {/* Route for StockGold component */}
       </Routes>

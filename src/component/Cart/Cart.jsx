@@ -8,8 +8,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { CartItem } from "./CartItem"; // Moved to the top
-import AddressCard from "./AddressCard";
+import { CartItem } from "./CartItem";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Formik, Form, Field } from "formik";
@@ -22,7 +21,7 @@ import {
 } from "../State/Cart/Action";
 import { checkOrCreateCustomer } from "../State/Customer/Action";
 
-export const style = {
+const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -33,6 +32,7 @@ export const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const initialValues = {
   fullname: "",
   mobile: "",
@@ -43,7 +43,8 @@ const Cart = () => {
   const [open, setOpen] = useState(false);
   const [productCode, setProductCode] = useState(""); // State for product code
   const [couponCode, setCouponCode] = useState(""); // State for coupon code
-  // const [discount, setDiscount] = useState(0); // State for discount
+  const [customInvoicePercentage, setCustomInvoicePercentage] = useState(""); // State for custom invoice percentage input
+
   const { cart } = useSelector((store) => store);
   const dispatch = useDispatch();
 
@@ -58,15 +59,13 @@ const Cart = () => {
         mobile: values.mobile,
         email: values.email,
         items: cart.cartItems.map((item) => ({
-          productId: item.jewelry.id, // Adjust as per your data structure
+          productId: item.jewelry.id,
           quantity: item.quantity,
           price: item.totalPrice,
         })),
       },
     };
     dispatch(createOrder(data));
-    console.log("form data ", data);
-    // dispatch(checkOrCreateCustomer(values));
     dispatch(clearCartAction());
     setOpen(false);
   };
@@ -83,7 +82,7 @@ const Cart = () => {
       jwt: localStorage.getItem("jwt"),
       cartItem: {
         code: productCode,
-        quantity: 1, // Assuming quantity is 1, adjust as needed
+        quantity: 1,
       },
     };
 
@@ -108,7 +107,17 @@ const Cart = () => {
     const gstCharges = 33;
     const tax = 10;
     const totalBeforeDiscount = itemTotal + gstCharges + tax;
-    return totalBeforeDiscount;
+    const customPercent = parseFloat(customInvoicePercentage);
+    if (isNaN(customPercent)) {
+      return totalBeforeDiscount; // Return total without additional percentage if input is invalid
+    } else {
+      const invoiceAmount = totalBeforeDiscount * (customPercent / 100);
+      return totalBeforeDiscount + invoiceAmount;
+    }
+  };
+
+  const handleCustomInvoiceChange = (e) => {
+    setCustomInvoicePercentage(e.target.value);
   };
 
   return (
@@ -154,13 +163,13 @@ const Cart = () => {
                 fullWidth
                 onClick={handleAddToCart}
                 sx={{
-                  color: "green", // Màu chữ đen
-                  borderColor: "green", // Màu viền xanh
-                  fontWeight: "bold", // Làm chữ đậm
+                  color: "green",
+                  borderColor: "green",
+                  fontWeight: "bold",
                   width: "120px",
                   "&:hover": {
-                    borderColor: "darkblue", // Màu viền xanh đậm khi hover
-                    backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
+                    borderColor: "darkyellow",
+                    backgroundColor: "lightyellow",
                   },
                 }}
               >
@@ -188,6 +197,36 @@ const Cart = () => {
               <div className="flex justify-between text-gray-400">
                 <p>Total Pay</p>
                 <p>{calculateTotal()}</p>
+              </div>
+
+              {/* Custom Invoice Percentage Input */}
+              <div className="flex justify-between py-3">
+                <TextField
+                  label="Custom Invoice Percentage"
+                  variant="outlined"
+                  fullWidth
+                  value={customInvoicePercentage}
+                  onChange={handleCustomInvoiceChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "gray",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "gray",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "gray",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "gray",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "gray",
+                    },
+                  }}
+                />
               </div>
             </div>
 
@@ -224,13 +263,13 @@ const Cart = () => {
                 fullWidth
                 onClick={handleApplyCoupon}
                 sx={{
-                  color: "green", // Màu chữ đen
-                  borderColor: "green", // Màu viền xanh
-                  fontWeight: "bold", // Làm chữ đậm
+                  color: "green",
+                  borderColor: "green",
+                  fontWeight: "bold",
                   width: "120px",
                   "&:hover": {
-                    borderColor: "darkblue", // Màu viền xanh đậm khi hover
-                    backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
+                    borderColor: "darkyellow",
+                    backgroundColor: "lightyellow",
                   },
                 }}
               >
@@ -254,12 +293,12 @@ const Cart = () => {
                       fullWidth
                       onClick={handleOpenAddressModal}
                       sx={{
-                        color: "green", // Màu chữ đen
-                        borderColor: "green", // Màu viền xanh
-                        fontWeight: "bold", // Làm chữ đậm
+                        color: "green",
+                        borderColor: "green",
+                        fontWeight: "bold",
                         "&:hover": {
-                          borderColor: "darkblue", // Màu viền xanh đậm khi hover
-                          backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
+                          borderColor: "darkyellow",
+                          backgroundColor: "lightyellow",
                         },
                       }}
                     >
@@ -371,13 +410,13 @@ const Cart = () => {
                       fullWidth
                       type="submit"
                       sx={{
-                        color: "green", // Màu chữ đen
-                        borderColor: "green", // Màu viền xanh
-                        fontWeight: "bold", // Làm chữ đậm
+                        color: "green",
+                        borderColor: "green",
+                        fontWeight: "bold",
                         width: "120px",
                         "&:hover": {
-                          borderColor: "darkblue", // Màu viền xanh đậm khi hover
-                          backgroundColor: "lightblue", // Màu nền xanh nhạt khi hover
+                          borderColor: "darkyellow",
+                          backgroundColor: "lightyellow",
                         },
                       }}
                     >

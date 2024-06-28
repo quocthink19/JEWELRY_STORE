@@ -3,7 +3,7 @@ li{
 }
 .navbar-container {
     padding: 0.8rem 5rem;
-    background: linear-gradient(to right, rgb(213, 237, 124), rgb(229, 229, 120));
+    background: linear-gradient(to right, #eed622, #eed622);
     display: flex;
     justify-content: space-between;
     align-items: center;
