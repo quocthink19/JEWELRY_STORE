@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -65,6 +66,7 @@ public class Jewelry {
 
     private double price;
 
-
+    @OneToMany(mappedBy = "jewelry")
+    private List<BuybackTransaction> buybackTransactions;
     
 }

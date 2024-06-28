@@ -41,7 +41,7 @@ public class ComponentServiceImp implements ComponentService  {
     Optional<Component> optionalComponent = componentRepository.findById(id);
         if (optionalComponent.isPresent()) {
             Component component = optionalComponent.get();
-            component.setName(req.getName());
+            // component.setName(req.getName());
             component.setPrice(req.getPrice());
             component.setPricebuyback(req.getPricebuyback());
             return Optional.of(componentRepository.save(component));

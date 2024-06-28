@@ -69,18 +69,7 @@ public class ComponentController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Component> updateComponent(@PathVariable Long id, @RequestBody ComponentRequest req,
-    @RequestHeader("Authorization") String jwt) throws Exception{
-
-        User user = userService.findUserByJwtToken(jwt);
-        Optional<Component> updatedComponent = componentService.updateComponent(id, req);
-        if (updatedComponent.isPresent()) {
-            return new ResponseEntity<>(updatedComponent.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComponent(@PathVariable Long id,
