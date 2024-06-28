@@ -1,13 +1,25 @@
 import { Delete } from "@mui/icons-material";
 import CreateIcon from '@mui/icons-material/Create';
 import { Box, Card, CardHeader, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllMenuItem} from '../../component/State/Menu/Action';
 
-const orders = [1, 1, 1, 1, 1, 1, 1]
+
 
 export default function MenuTable() {
+    const {menu} = useSelector(store=>store)
+    const dispatch = useDispatch();
     const navigate=useNavigate();
+    const jwt = localStorage.getItem("jwt");
+    console.log("categoty Details", menu)
+
+    useEffect(() => {
+        dispatch(getAllMenuItem({jwt}
+    ))
+    },[]);
+    
     return (
         <div>
             <Box>
@@ -24,30 +36,35 @@ export default function MenuTable() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="left">image</TableCell>
-                                    <TableCell align="right">title</TableCell>
-                                    <TableCell align="right">ingredients</TableCell>
+                                    <TableCell align="right">Jewelry Code</TableCell>
+                                    <TableCell align="right">name</TableCell>
+                                    <TableCell align="right">type</TableCell>
+                                    <TableCell align="right">components</TableCell>
                                     <TableCell align="right">price</TableCell>
-                                    <TableCell align="right">Avaibilty</TableCell>
                                     <TableCell align="right">Delete</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {orders.map((row) => (
+                                {menu.menuItems.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {1}
+                                            <img src={row.images} alt="Product Image" style={{ width: 50, height: 50 }} />
                                         </TableCell>
-                                        <TableCell align="right">{"image"}</TableCell>
+                                        <TableCell align="right">{row.code}</TableCell>
+                                        <TableCell align="right">{row.name}</TableCell>
+                                        <TableCell align="right">
+                                            {row.jewelryCategory.name}
+                                        </TableCell>
 
                                         <TableCell align="right">
-                                            {"anhtri@gmail.com"}
+                                        {row.components[0]?.name} with {row.components[1]?.name}
                                         </TableCell>
 
-                                        <TableCell align="right">{"price"}</TableCell>
-                                        <TableCell align="right">{"ring"}</TableCell>
+                                        <TableCell align="right">{row.price}</TableCell>
+
                                         <TableCell align="right">
                                             <IconButton>
                                                 <Delete />

@@ -10,6 +10,7 @@ import { orderReducer } from "./Order/Reducer";
 import categoryReducer from "./Categories/Reducer";
 import customerReducer from "./Customer/Reducer";
 import goldPriceReducer from "./Gold Price/Reducer";
+import valuationReducer from "./Valuation/Reducer";
 
 const rootReducer = combineReducers({
   auth : authReducer,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   component : componentReducer,
   category : categoryReducer,
   customer : customerReducer,
-  gold_price : goldPriceReducer
+  gold_price : goldPriceReducer,
+  valuation : valuationReducer
 
   
 });

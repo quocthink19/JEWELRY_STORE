@@ -8,29 +8,53 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { uploadImageToCloudinary } from '../util/UploadToCloudinary';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCategory } from '../../component/State/Categories/Action';
+import { fetchComponents } from '../../component/State/Gold Price/Action';
+import { createMenuItem } from '../../component/State/Menu/Action';
 
 const initialValues = {
     name: "",
     description: "",
-    price: "",
+    code: "",
     category: "",
-    restaurantId: '',
-    vegetarian: true,
-    seasonal: false,
-    ingredients: [],
+    selectedComponents: [], // Đổi tên thành selectedComponents
+    selectedComponents2: [], // Thêm selectedComponents2
+    goldWeight: "",
+    diamondWeight: "",
     images: []
 };
 
 const CreateMenuForm = () => {
     const [uploadImage, setUploadImage] = useState(false);
+    const { components, } = useSelector((state) => state.gold_price);
+    const { category } = useSelector(store => store);
+    const dispatch = useDispatch();
+    const jwt = localStorage.getItem("jwt")
+
     const formik = useFormik({
         initialValues,
         onSubmit: (values) => {
-            values.restaurantId = 2;
-            console.log("data ---", values);
+            const selectedCategory = category.categories.find(cat => cat.id === formik.values.category);
+            const jewelryCategoryName = selectedCategory ? selectedCategory.name : '';
+            const data = {
+                name: values.name,
+                description: values.description,
+                code: values.code,
+                jewelryCategory: jewelryCategoryName,
+                components: [values.selectedComponents, values.selectedComponents2],
+                goldWeight: values.goldWeight,
+                diamondWeight: values.diamondWeight,
+                images: values.images,
+            };
+            console.log("jwt", jwt);
+            console.log("data ---", data);
+        
+            dispatch(createMenuItem({ data, jwt }));
         },
+        
     });
 
     const handleImageChange = async (e) => {
@@ -48,11 +72,30 @@ const CreateMenuForm = () => {
         formik.setFieldValue("images", updatedImages);
     };
 
+    useEffect(() => {
+        dispatch(getAllCategory({ jwt }));
+    }, []);
+
+    useEffect(() => {
+    const componentIds = "1, 4"; // Replace with the list of component IDs you want to fetch
+    dispatch(fetchComponents(componentIds));
+  }, [dispatch]);
+
+    const handleChangeComponents = (event) => {
+        const { value } = event.target;
+        formik.setFieldValue("selectedComponents", value);
+    };
+
+    const handleChangeComponents2 = (event) => {
+        const { value } = event.target;
+        formik.setFieldValue("selectedComponents2", value);
+    };
+
     return (
         <div className='py-10 lg:flex px-5 items-center justify-center min-h-screen'>
             <div className="lg:max-w-4xl">
                 <h1 className='font-bold text-2xl text-center py-2'>
-                    Add New Menu
+                    Add New Jewelry
                 </h1>
                 <form onSubmit={formik.handleSubmit} className='space-y-4'>
                     <Grid container spacing={2}>
@@ -121,93 +164,97 @@ const CreateMenuForm = () => {
                         <Grid item xs={12} lg={6}>
                             <TextField
                                 fullWidth
-                                id="price"
-                                name="price"
-                                label="Price"
+                                id="code"
+                                name="code"
+                                label="Jewelry Code"
                                 variant="outlined"
                                 onChange={formik.handleChange}
-                                value={formik.values.price}>
+                                value={formik.values.code}>
                             </TextField>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="category"
-                                    value={formik.values.category}
-                                    label="Category"
-                                    onChange={formik.handleChange}
-                                    name="category"
-                                >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="ingredients-label">Ingredients</InputLabel>
-                                <Select
-                                    labelId="ingredients-label"
-                                    id="ingredients"
-                                    name="ingredients"
-                                    multiple
-                                    value={formik.values.ingredients}
-                                    onChange={formik.handleChange}
-                                    input={<OutlinedInput id="select-multiple-chip" label="Ingredients" />}
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Chip key={value} label={value} />
-                                            ))}
-                                        </Box>
-                                    )}
-                                >
-                                    {["gold", "silver", "diamond"].map((name) => (
-                                        <MenuItem key={name} value={name}>
-                                            {name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                labelId="demo-simple-select-label"
+                                id="category"
+                                value={formik.values.category} // Nên là id của category
+                                onChange={formik.handleChange}
+                                name="category"
+                            >
+                                {category.categories.map((category) => (
+                                    <MenuItem key={category.id} value={category.id}>
+                                        {category.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="seasonal-label">Is Seasonal</InputLabel>
+                                <InputLabel id="components-label">Components 1</InputLabel>
                                 <Select
-                                    labelId="seasonal-label"
-                                    id="seasonal"
-                                    value={formik.values.seasonal}
-                                    label="Is Seasonal"
-                                    onChange={formik.handleChange}
-                                    name="seasonal"
-                                >
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
+                                labelId="components-label"
+                                id="components"
+                                name="selectedComponents"
+                                value={formik.values.selectedComponents}
+                                onChange={handleChangeComponents}
+                                input={<OutlinedInput id="select-single-chip" label="Components 1" />}
+                                label="Components 1"
+                            >
+                                {components.map((component) => (
+                                    <MenuItem key={component.id} value={component.name}>
+                                        {component.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <FormControl fullWidth>
-                                <InputLabel id="vegetarian-label">Is Vegetarian</InputLabel>
-                                <Select
-                                    labelId="vegetarian-label"
-                                    id="vegetarian"
-                                    value={formik.values.vegetarian}
-                                    label="Is Vegetarian"
-                                    onChange={formik.handleChange}
-                                    name="vegetarian"
-                                >
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl>
+                        <FormControl fullWidth>
+                            <InputLabel id="components-label-2">Components 2</InputLabel>
+                            <Select
+                            labelId="components-label-2"
+                            id="components-2"
+                            name="selectedComponents2"
+                            value={formik.values.selectedComponents2}
+                            onChange={handleChangeComponents2}
+                            input={<OutlinedInput id="select-single-chip-2" label="Components 2" />}
+                            label="Components 2"
+                        >
+                            {["Natural Diamond", "Artificial Diamond"].map((name) => (
+                                <MenuItem key={name} value={name}>
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                        <TextField
+                            fullWidth
+                            id="goldWeight"
+                            name="goldWeight"
+                            label="Gold Weight"
+                            variant="outlined"
+                            onChange={formik.handleChange}
+                            value={formik.values.goldWeight}>
+                        </TextField>
+                    </Grid>                       
+                         <Grid item xs={12} lg={6}>
+                            <TextField
+                                fullWidth
+                                id="diamondWeight"
+                                name="diamondWeight"
+                                label="Diamond Weight"
+                                variant="outlined"
+                                onChange={formik.handleChange}
+                                value={formik.values.diamondWeight}>
+                            </TextField>
                         </Grid>
                     </Grid>
                     <Button variant="contained" color="primary" type="submit">
-                        Create Menu
+                        Create
                     </Button>
                 </form>
             </div>

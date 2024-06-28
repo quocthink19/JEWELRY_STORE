@@ -37,7 +37,7 @@ const CreateAreaForm = () => {
             };
             console.log("data ---",data)
             
-            dispatch(createArea({data,token:jwt}))
+            dispatch(createArea({data},{jwt}))
         },
     });
 

@@ -15,6 +15,7 @@ const menuItemReducer = (state = initialState, action) => {
         case actionTypes.DELETE_MENU_ITEM_REQUEST:
         case actionTypes.SEARCH_MENU_ITEM_REQUEST:
         case actionTypes.UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST:
+        case actionTypes.GET_MENU_ITEM_BY_CODE_REQUEST:
 
             return {
                 ...state,
@@ -54,7 +55,9 @@ const menuItemReducer = (state = initialState, action) => {
                 ),
             };
         case actionTypes.SEARCH_MENU_ITEM_SUCCESS:
-            return {
+        case actionTypes.GET_MENU_ITEM_BY_CODE_SUCCESS :
+            
+        return {
                 ...state,
                 loading: false,
                 search: action.payload,
@@ -64,6 +67,7 @@ const menuItemReducer = (state = initialState, action) => {
         case actionTypes.DELETE_MENU_ITEM_FAILURE:
         case actionTypes.SEARCH_MENU_ITEM_FAILURE:
         case actionTypes.UPDATE_MENU_ITEMS_AVAILABILITY_FAILURE:
+            case actionTypes.GET_MENU_ITEM_BY_CODE_FAILURE:
             return {
                 ...state,
                 loading: false,

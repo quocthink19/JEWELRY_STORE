@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CreateCategoryForm from './CreateCategoryForm';
 import { getAllCategory } from '../../component/State/Categories/Action';
 
-const orders = [1, 1, 1, 1, 1, 1, 1]
+
 const style = {
     position: 'absolute',
     top: '50%',
