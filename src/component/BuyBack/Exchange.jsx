@@ -38,7 +38,7 @@ const Buy = () => {
       mx="auto"
     >
       <Typography variant="h4" gutterBottom>
-        Customer Information
+        Exchange
       </Typography>
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <TextField

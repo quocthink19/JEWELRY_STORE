@@ -3,43 +3,36 @@ import { Box, TextField, Button, Typography, FormControl, InputLabel, Select, Me
 
 const Buy = () => {
   const [customerName, setCustomerName] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
   const [reason, setReason] = useState('');
   const [type, setType] = useState('');
-  const [category, setCategory] = useState('');
   const [goldWeight, setGoldWeight] = useState('');
   const [diamondWeight, setDiamondWeight] = useState('');
-  const [goldPrice, setGoldPrice] = useState(''); // State for gold price
-  const [diamondPrice, setDiamondPrice] = useState(''); // State for diamond price
-  const [calculatedTotal, setCalculatedTotal] = useState(''); // State for calculated total price
+  const [goldPrice, setGoldPrice] = useState('');
+  const [diamondPrice, setDiamondPrice] = useState('');
+  const [calculatedTotal, setCalculatedTotal] = useState('');
   const [images, setImages] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here, e.g., sending data to a server
+    calculateTotal(goldPrice, diamondPrice);
     const formData = {
       customerName,
-      customerEmail,
       reason,
       type,
-      category,
       goldWeight,
       diamondWeight,
       goldPrice,
       diamondPrice,
-      images
+      images,
     };
     console.log(formData);
-    // Reset form fields after submission if needed
     resetForm();
   };
 
   const resetForm = () => {
     setCustomerName('');
-    setCustomerEmail('');
     setReason('');
     setType('');
-    setCategory('');
     setGoldWeight('');
     setDiamondWeight('');
     setGoldPrice('');
@@ -54,41 +47,27 @@ const Buy = () => {
     setImages(selectedImages);
   };
 
-  const handleCategoryChange = (e) => {
-    const selectedCategory = e.target.value;
-    setCategory(selectedCategory);
-    // Reset diamond weight when category changes
-    if (selectedCategory !== 'diamond') {
-      setDiamondWeight('');
-      setDiamondPrice(''); // Reset diamond price when category changes
-    }
-  };
-
   const handleGoldPriceChange = (e) => {
     const price = e.target.value;
     setGoldPrice(price);
-    // Calculate total price when gold price changes
-    calculateTotal(price, diamondPrice);
   };
 
   const handleDiamondPriceChange = (e) => {
     const price = e.target.value;
     setDiamondPrice(price);
-    // Calculate total price when diamond price changes
-    calculateTotal(goldPrice, price);
   };
 
-  const calculateTotal = (goldPrice, diamondPrice) => {
+  const calculateTotal = () => {
     const gold = parseFloat(goldPrice);
     const diamond = parseFloat(diamondPrice);
     if (!isNaN(gold) && !isNaN(diamond)) {
       const total = gold + diamond;
-      const totalWithDiscount = total * 0.7; // Calculate 70% of the total price
-      setCalculatedTotal(totalWithDiscount.toFixed(2)); // Round to 2 decimal places
+      const totalWithDiscount = total * 0.7;
+      setCalculatedTotal(totalWithDiscount.toFixed(2));
     } else if (!isNaN(gold)) {
-      setCalculatedTotal((gold * 0.7).toFixed(2)); // Calculate 70% of gold price
+      setCalculatedTotal((gold * 0.7).toFixed(2));
     } else if (!isNaN(diamond)) {
-      setCalculatedTotal((diamond * 0.7).toFixed(2)); // Calculate 70% of diamond price
+      setCalculatedTotal((diamond * 0.7).toFixed(2));
     } else {
       setCalculatedTotal('');
     }
@@ -100,16 +79,15 @@ const Buy = () => {
       flexDirection="column"
       alignItems="center"
       p={3}
-      maxWidth="800px" // Increased width for better display
+      maxWidth="800px"
       mx="auto"
     >
       <Typography variant="h4" gutterBottom>
-        Customer Information
+        Validation
       </Typography>
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <Grid container spacing={2}>
-          {/* Left Side - Name, Email, Reason */}
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <TextField
               label="Name"
               value={customerName}
@@ -117,37 +95,6 @@ const Buy = () => {
               fullWidth
               variant="outlined"
               margin="normal"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "gray",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "gray",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "gray",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "gray",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Email"
-              value={customerEmail}
-              onChange={(e) => setCustomerEmail(e.target.value)}
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              type="email"
-              required
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -201,7 +148,6 @@ const Buy = () => {
               }}
             />
           </Grid>
-          {/* Right Side - Category, Type, Image, Định Giá, Submit Button */}
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth margin="normal">
               <InputLabel>Type</InputLabel>
@@ -209,7 +155,7 @@ const Buy = () => {
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 required
-                sx={{ color: 'gray' }} // Set text color to gray
+                sx={{ color: 'gray' }}
               >
                 <MenuItem value="earning">Earning</MenuItem>
                 <MenuItem value="ring">Ring</MenuItem>
@@ -218,79 +164,62 @@ const Buy = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Category</InputLabel>
-              <Select
-                value={category}
-                onChange={handleCategoryChange}
-                required
-                sx={{ color: 'gray' }} // Set text color to gray
-              >
-                <MenuItem value="18k">18k</MenuItem>
-                <MenuItem value="24k">24k</MenuItem>
-                <MenuItem value="diamond">Diamond</MenuItem>
-              </Select>
-            </FormControl>
-            {category === 'diamond' && (
-              <>
-                <TextField
-                  label="Diamond Weight"
-                  value={diamondWeight}
-                  onChange={(e) => setDiamondWeight(e.target.value)}
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "gray",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "gray",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "gray",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "gray",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "gray",
-                    },
-                  }}
-                />
-                <TextField
-                  label="Diamond Price"
-                  value={diamondPrice}
-                  onChange={handleDiamondPriceChange}
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  type="number"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "gray",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "gray",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "gray",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "gray",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "gray",
-                    },
-                  }}
-                />
-              </>
-            )}
+          <Grid item xs={12}>
+            <TextField
+              label="Diamond Weight"
+              value={diamondWeight}
+              onChange={(e) => setDiamondWeight(e.target.value)}
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "gray",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "gray",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "gray",
+                },
+              }}
+            />
+            <TextField
+              label="Diamond Price"
+              value={diamondPrice}
+              onChange={handleDiamondPriceChange}
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              type="number"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "gray",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "gray",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "gray",
+                },
+              }}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -354,41 +283,91 @@ const Buy = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            {calculatedTotal && (
-              <Typography variant="body1" gutterBottom>
-                Định Giá: {calculatedTotal}
-              </Typography>
-            )}
+            <Button variant="contained" component="label" sx={{
+              bgcolor: 'green',
+              color: 'white',
+              fontWeight: 'bold',
+              '&:hover': {
+                bgcolor: 'red',
+              },
+              '&:focus': {
+                bgcolor: 'black',
+              },
+            }}>
+              Upload Images
+              <input type="file" multiple hidden onChange={handleImageUpload} />
+            </Button>
+            <Box display="flex" flexWrap="wrap" justifyContent="center" mt={2}>
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Uploaded ${index + 1}`}
+                  style={{ width: '100px', height: '100px', objectFit: 'cover', margin: '0 8px 8px 0' }}
+                />
+              ))}
+            </Box>
           </Grid>
           <Grid item xs={12}>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {images.map((image, index) => (
-              <img key={index} src={image} alt={`Image ${index}`} style={{ width: '100px', height: 'auto', marginRight: '10px' }} />
-            ))}
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary"  sx={{
-          bgcolor: 'green', // Initial background color
-          color: 'white', // Text color
-          fontWeight: 'bold',
-          '&:hover': {
-            bgcolor: 'red', // Background color on hover
-          },
-          '&:focus': {
-            bgcolor: 'black', // Background color on focus
-          },
-        }}>
-              Submit
+            <Button variant="contained" color="primary" onClick={calculateTotal} fullWidth sx={{
+              bgcolor: 'green',
+              color: 'white',
+              fontWeight: 'bold',
+              '&:hover': {
+                bgcolor: 'red',
+              },
+              '&:focus': {
+                bgcolor: 'black',
+              },
+            }}>
+              Định Giá
             </Button>
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Định Giá"
+              value={calculatedTotal}
+              InputProps={{
+                readOnly: true,
+              }}
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "gray",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "gray",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: "gray",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: "gray",
+                },
+              }}
+            />
+          </Grid>
         </Grid>
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{
+          bgcolor: 'green',
+          color: 'white',
+          fontWeight: 'bold',
+          '&:hover': {
+            bgcolor: 'red',
+          },
+          '&:focus': {
+            bgcolor: 'black',
+          },
+        }}>
+          Submit
+        </Button>
       </form>
     </Box>
   );
