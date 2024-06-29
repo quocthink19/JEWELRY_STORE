@@ -62,15 +62,18 @@ height: 90vh;
 /* Home.css */
 
 .header-blue {
-    color: Black; /* Black text color */
+    color:White; /* Black text color */
     font-size: 2rem;
     font-weight: bold;
     padding-bottom: 1rem;
     text-align: center;
-    background-color: #eed622;/* Yellow background color */
+    background-image: url('https://images.pexels.com/photos/8398839/pexels-photo-8398839.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); /* Background image */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-position: center; /* Center the background image */
     padding: 0.5rem 1rem; /* Padding for some space around the text */
     border-radius: 5px; /* Rounded corners */
 }
+
 /* Home.css */
 .order-here-section {
     color: Black; /* Black text color */
