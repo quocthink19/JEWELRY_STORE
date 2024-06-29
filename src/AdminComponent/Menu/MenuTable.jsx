@@ -7,76 +7,75 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllMenuItem} from '../../component/State/Menu/Action';
 
 
-const orders = [
-    {
-        id: 1,
-        image: 'https://via.placeholder.com/40',
-        title: 'Jewelry 1',
-        ingredients: 'Gold, Diamond',
-        price: '$1000',
-        availability: 'Available'
-    },
-    {
-        id: 2,
-        image: 'https://via.placeholder.com/40',
-        title: 'Jewelry 2',
-        ingredients: 'Silver, Ruby',
-        price: '$800',
-        availability: 'Out of Stock'
-    },
-    // Add more order objects as needed
-];
-
 export default function MenuTable() {
-    const navigate = useNavigate();
+    const {menu} = useSelector(store=>store)
+    const dispatch = useDispatch();
+    const navigate=useNavigate();
+    const jwt = localStorage.getItem("jwt");
+    console.log("categoty Details", menu)
+
+    useEffect(() => {
+        dispatch(getAllMenuItem({jwt}
+    ))
+    },[]);
+    
     return (
-        <Box sx={{ padding: 2 }}>
-            <Card sx={{ mt: 2, boxShadow: 3 }}>
-                <CardHeader
-                    action={
-                        <IconButton onClick={() => navigate("/admin/jewelry/add-menu")} aria-label="add menu">
+        <div>
+            <Box>
+                <Card className='mt-1'>
+                    <CardHeader action={
+                        <IconButton onClick={()=>navigate("/admin/jewelry/add-menu")} aria-label="settings">
                             <CreateIcon />
                         </IconButton>
                     }
-                    title={"Menu"}
-                    sx={{ pt: 2, alignItems: "center", textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}
-                />
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="menu table">
-                        <TableHead>
-                            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                                <TableCell align="center">Image</TableCell>
-                                <TableCell align="center">Title</TableCell>
-                                <TableCell align="center">Ingredients</TableCell>
-                                <TableCell align="center">Price</TableCell>
-                                <TableCell align="center">Availability</TableCell>
-                                <TableCell align="center">Delete</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {orders.map((order) => (
-                                <TableRow
-                                    key={order.id}
-                                    sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' }, '&:hover': { backgroundColor: '#e0e0e0' } }}
-                                >
-                                    <TableCell align="center">
-                                        <Avatar src={order.image} alt="Product Image" />
-                                    </TableCell>
-                                    <TableCell align="center">{order.title}</TableCell>
-                                    <TableCell align="center">{order.ingredients}</TableCell>
-                                    <TableCell align="center">{order.price}</TableCell>
-                                    <TableCell align="center">{order.availability}</TableCell>
-                                    <TableCell align="center">
-                                        <IconButton>
-                                            <Delete />
-                                        </IconButton>
-                                    </TableCell>
+                        title={"Menu"}
+                        sx={{ pt: 2, alignItems: "center" }} />
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left">image</TableCell>
+                                    <TableCell align="right">Jewelry Code</TableCell>
+                                    <TableCell align="right">name</TableCell>
+                                    <TableCell align="right">type</TableCell>
+                                    <TableCell align="right">components</TableCell>
+                                    <TableCell align="right">price</TableCell>
+                                    <TableCell align="right">Delete</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Card>
-        </Box>
-    );
+                            </TableHead>
+                            <TableBody>
+                                {menu.menuItems.map((row) => (
+                                    <TableRow
+                                        key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            <img src={row.images} alt="Product Image" style={{ width: 50, height: 50 }} />
+                                        </TableCell>
+                                        <TableCell align="right">{row.code}</TableCell>
+                                        <TableCell align="right">{row.name}</TableCell>
+                                        <TableCell align="right">
+                                            {row.jewelryCategory.name}
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                        {row.components[0]?.name} with {row.components[1]?.name}
+                                        </TableCell>
+
+                                        <TableCell align="right">{row.price}</TableCell>
+
+                                        <TableCell align="right">
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Card>
+            </Box>
+        </div>
+    )
 }

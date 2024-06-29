@@ -36,19 +36,26 @@ const CreateMenuForm = () => {
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => {
-            const selectedCategory = category.categories.find(cat => cat.id === formik.values.category);
-            const jewelryCategoryName = selectedCategory ? selectedCategory.name : '';
+        onSubmit: async (values) => {
+            // const selectedCategory = category.categories.find(cat => cat.id === formik.values.category);
+            // const jewelryCategoryName = selectedCategory ? selectedCategory.name : '';
             const data = {
                 name: values.name,
                 description: values.description,
                 code: values.code,
-                jewelryCategory: jewelryCategoryName,
+                jewelryCategory: values.category,
                 components: [values.selectedComponents, values.selectedComponents2],
+                get components() {
+                    return this._components;
+                },
+                set components(value) {
+                    this._components = value;
+                },
                 goldWeight: values.goldWeight,
                 diamondWeight: values.diamondWeight,
                 images: values.images,
             };
+    
             console.log("jwt", jwt);
             console.log("data ---", data);
         
@@ -183,7 +190,7 @@ const CreateMenuForm = () => {
                                 name="category"
                             >
                                 {category.categories.map((category) => (
-                                    <MenuItem key={category.id} value={category.id}>
+                                    <MenuItem key={category.id} value={category.name}>
                                         {category.name}
                                     </MenuItem>
                                 ))}

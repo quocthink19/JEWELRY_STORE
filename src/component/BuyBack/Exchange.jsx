@@ -1,38 +1,47 @@
+
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMenuItemByCode } from '../../component/State/Menu/Action';
+import { calculateBuybackPrice } from '../../component/State/Valuation/Action';
 
 const Buy = () => {
-  const [customerName, setCustomerName] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
-  const [reason, setReason] = useState('');
   const [productCode, setProductCode] = useState('');
-  const [duration, setDuration] = useState('');
-  const [price, setPrice] = useState('');
+  const [productDetail, setProductDetail] = useState(null); // State để lưu trữ thông tin chi tiết sản phẩm
+  const dispatch = useDispatch();
+  const { menu, valuation } = useSelector(store => store);
+  const jwt = localStorage.getItem("jwt");
+  const [jewelryImage, setjewelryImage] = useState('');
 
-  const handlePriceCalculation = () => {
-    // Calculate price based on selected duration
-    if (duration === '24h') {
-      setPrice(0.95 * 100); // Assuming 95% of the product price
-    } else if (duration === '1w') {
-      setPrice(0.9 * 100); // Assuming 90% of the product price
-    } else if (duration === '1m') {
-      setPrice(0.8 * 100); // Assuming 80% of the product price
-    } else {
-      setPrice(''); // Reset price if duration is not selected
+  const handlePriceCalculation = async () => {
+    try {
+      await dispatch(getMenuItemByCode({ code: productCode, jwt }));
+
+      // Sau khi lấy thông tin sản phẩm thành công, lấy dữ liệu sản phẩm từ store (nếu đã lưu vào store)
+      const jewelry = menu.search;
+      await dispatch(calculateBuybackPrice({ jewelry, jwt }));
+
+      const imageUrl = jewelry.images[0]; // Giả sử là lấy hình ảnh đầu tiên trong mảng images
+      setjewelryImage(imageUrl);
+      // Lấy thông tin chi tiết sản phẩm từ `menu.search` và lưu vào state `productDetail`
+      setProductDetail(menu.search);
+
+    } catch (error) {
+      console.error('Error:', error);
+      // Xử lý lỗi nếu có
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here, e.g., sending data to a server
-    console.log({ customerName, customerEmail, reason, productCode, duration, price });
+    // Xử lý logic gửi dữ liệu lên server tại đây
   };
 
   return (
-    <Box 
-      display="flex" 
-      flexDirection="column" 
-      alignItems="center" 
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
       p={3}
       maxWidth="400px"
       mx="auto"
@@ -41,93 +50,6 @@ const Buy = () => {
         Exchange
       </Typography>
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <TextField
-          label="Name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          required
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "gray",
-              },
-              "&:hover fieldset": {
-                borderColor: "gray",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "gray",
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "gray",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "gray",
-            },
-          }}
-        />
-        <TextField
-          label="Email"
-          value={customerEmail}
-          onChange={(e) => setCustomerEmail(e.target.value)}
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          type="email"
-          required
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "gray",
-              },
-              "&:hover fieldset": {
-                borderColor: "gray",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "gray",
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "gray",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "gray",
-            },
-          }}
-        />
-        <TextField
-          label="Reason for Return/Exchange"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          multiline
-          rows={4}
-          required
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "gray",
-              },
-              "&:hover fieldset": {
-                borderColor: "gray",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "gray",
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "gray",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "gray",
-            },
-          }}
-        />
         <TextField
           label="Product Code"
           value={productCode}
@@ -156,38 +78,6 @@ const Buy = () => {
             },
           }}
         />
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Duration</InputLabel>
-          <Select
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            required
-            variant="outlined"
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "gray",
-                },
-                "&:hover fieldset": {
-                  borderColor: "gray",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "gray",
-                },
-              },
-              "& .MuiInputLabel-root": {
-                color: "gray",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "gray",
-              },
-            }}
-          >
-            <MenuItem value="24h">24 hours</MenuItem>
-            <MenuItem value="1w">1 week</MenuItem>
-            <MenuItem value="1m">1 month</MenuItem>
-          </Select>
-        </FormControl>
         <Box mt={2}>
           <Button onClick={handlePriceCalculation} variant="contained" color="primary" fullWidth sx={{
             bgcolor: 'green', // Initial background color
@@ -203,10 +93,24 @@ const Buy = () => {
             Định Giá
           </Button>
         </Box>
-        {price !== '' && (
-          <Typography variant="body1" align="center" mt={2}>
-            Calculated Price: {price} USD
-          </Typography>
+        {/* Hiển thị thông tin chi tiết sản phẩm */}
+        {productDetail && (
+          <Box mt={3} border={1} p={2} borderColor="primary.main">
+          <img src={jewelryImage} alt={productDetail.name} style={{ maxWidth: '100%', height: 'auto' }} />
+            <Typography variant="h6" gutterBottom>
+              Thông tin chi tiết sản phẩm
+            </Typography>
+            <Typography variant="body1">
+              Tên sản phẩm: {productDetail.name}
+            </Typography>
+            <Typography variant="body1">
+              Loại: {productDetail.jewelryCategory.name}
+            </Typography>
+            <Typography variant="body1">
+              Giá mua lại : {valuation.totalPrice} đồng
+            </Typography>
+            {/* Thêm các thông tin chi tiết khác tùy theo cấu trúc của `productDetail` */}
+          </Box>
         )}
         <Box mt={2}>
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{

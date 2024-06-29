@@ -126,11 +126,11 @@ export const deleteFoodAction = ({ jewelryId, jwt }) =>
         }
     };
 
-    export const getMenuItemByCode = ({code, jwt }) => {
+    export const getMenuItemByCode = ({code, jwt} ) => {
         return async (dispatch) => {
             dispatch({type:GET_MENU_ITEM_BY_CODE_REQUEST});
             try {
-                const {data} = await api.get(`/api/jewelry/search?code=${code}`,
+                const {data} = await api.get(`api/jewelry/findByCode?code=${code}`,
                     {
                         headers: {
                             Authorization: `Bearer ${jwt}`,
@@ -139,6 +139,7 @@ export const deleteFoodAction = ({ jewelryId, jwt }) =>
                 console.log("data --------- ", data);
                 dispatch({type:GET_MENU_ITEM_BY_CODE_SUCCESS,payload:data});
             } catch (error) {
+                console.log("get error",error)
                 dispatch({type:GET_MENU_ITEM_BY_CODE_FAILURE,payload:error});
             }
         };
