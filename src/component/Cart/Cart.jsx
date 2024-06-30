@@ -19,7 +19,6 @@ import {
   applyCoupon,
   clearCartAction,
 } from "../State/Cart/Action";
-import { checkOrCreateCustomer } from "../State/Customer/Action";
 
 const style = {
   position: "absolute",
