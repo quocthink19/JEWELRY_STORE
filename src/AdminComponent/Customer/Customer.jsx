@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllCustomers } from '../../component/State/Customer/Action';
+import { fetchAllCustomers, getAllCustomers } from '../../component/State/Customer/Action';
 import UpdateCustomerForm from './UpdateCustomerForm';
 
 const style = {
@@ -24,7 +24,7 @@ const Customer = () => {
     const jwt = localStorage.getItem("jwt");
 
     useEffect(() => {
-        dispatch(fetchAllCustomers({ jwt }));
+        dispatch(getAllCustomers( jwt ));
     }, [dispatch, jwt]);
 
     const handleOpen = () => setOpen(true);
@@ -63,10 +63,10 @@ const Customer = () => {
                                     <TableCell component="th" scope="row">
                                         {index + 1}
                                     </TableCell>
-                                    <TableCell align="right">{item.name}</TableCell>
-                                    <TableCell align="right">{item.phoneNumber}</TableCell>
+                                    <TableCell align="right">{item.fullname}</TableCell>
+                                    <TableCell align="right">{item.mobile}</TableCell>
                                     <TableCell align="right">{item.email}</TableCell>
-                                    <TableCell align="right">{item.loyaltyPoints}</TableCell>
+                                    <TableCell align="right">{item.point}</TableCell>
                                     <TableCell align="right">
                                         <IconButton onClick={() => handleUpdateClick(item)} aria-label="update">
                                             Update

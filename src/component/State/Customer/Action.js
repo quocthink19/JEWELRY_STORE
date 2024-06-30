@@ -1,56 +1,82 @@
-import { createAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { 
-  CHECK_OR_CREATE_CUSTOMER_REQUEST, 
-  CHECK_OR_CREATE_CUSTOMER_SUCCESS, 
-  CHECK_OR_CREATE_CUSTOMER_FAILURE 
+// actions.js
+
+import { api } from '../../config/api';
+import {
+  GET_ALL_CUSTOMERS_REQUEST,
+  GET_ALL_CUSTOMERS_SUCCESS,
+  GET_ALL_CUSTOMERS_FAILURE,
+  GET_CUSTOMER_REQUEST,
+  GET_CUSTOMER_SUCCESS,
+  GET_CUSTOMER_FAILURE,
+  UPDATE_CUSTOMER_REQUEST,
+  UPDATE_CUSTOMER_SUCCESS,
+  UPDATE_CUSTOMER_FAILURE
 } from './Actiontype';
 
-export const getAllCustomers = createAction('GET_ALL_CUSTOMERS');
-export const updateCustomer = createAction('UPDATE_CUSTOMER');
+// Action creators for fetching all customers
+export const getAllCustomers = (jwt) => async (dispatch) => {
+  dispatch({ type: GET_ALL_CUSTOMERS_REQUEST });
 
-export const fetchAllCustomers = ({ jwt }) => async (dispatch) => {
   try {
-    const response = await axios.get('/api/customers', {
+    const response = await api.get('/api/customer', {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${jwt}`,
       },
+  });
+    dispatch({
+      type: GET_ALL_CUSTOMERS_SUCCESS,
+      payload: response.data
     });
-    dispatch(getAllCustomers(response.data));
   } catch (error) {
-    console.error('Error fetching customers:', error);
+    console.log("jwt",jwt)
+    console.log("error",error)
+    dispatch({
+      type: GET_ALL_CUSTOMERS_FAILURE,
+      error: error.message
+    });
   }
 };
 
-export const submitUpdateCustomer = (customer) => async (dispatch) => {
+// Action creator for fetching a single customer by id
+export const getCustomerById = (id, jwt) => async (dispatch) => {
+  dispatch({ type: GET_CUSTOMER_REQUEST });
+
   try {
-    const response = await axios.put(`/api/customers/${customer.id}`, customer, {
+    const response = await api.get(`/api/customer/${id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          Authorization: `Bearer ${jwt}`,
       },
+  });
+    dispatch({
+      type: GET_CUSTOMER_SUCCESS,
+      payload: response.data
     });
-    dispatch(updateCustomer(response.data));
   } catch (error) {
-    console.error('Error updating customer:', error);
+    dispatch({
+      type: GET_CUSTOMER_FAILURE,
+      error: error.message
+    });
   }
 };
 
-export const checkOrCreateCustomer = (customerData) => async (dispatch) => {
-  dispatch({ type: CHECK_OR_CREATE_CUSTOMER_REQUEST });
+// Action creator for updating a customer
+export const updateCustomer = (id, updatedCustomer, jwt) => async (dispatch) => {
+  dispatch({ type: UPDATE_CUSTOMER_REQUEST });
+
   try {
-    const response = await axios.post('/api/customer', customerData, {
+    const response = await api.put(`/api/customer/${id}`, updatedCustomer, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          Authorization: `Bearer ${jwt}`,
       },
-    });
+  });
     dispatch({
-      type: CHECK_OR_CREATE_CUSTOMER_SUCCESS,
-      payload: response.data,
+      type: UPDATE_CUSTOMER_SUCCESS,
+      payload: response.data
     });
   } catch (error) {
     dispatch({
-      type: CHECK_OR_CREATE_CUSTOMER_FAILURE,
-      payload: error.message,
+      type: UPDATE_CUSTOMER_FAILURE,
+      error: error.message
     });
   }
 };

@@ -29,19 +29,23 @@ export const createBuyback = (buybackRequest, jewelryCode, jwt) => {
   };
 
 
-// export const createBuybackOut = (buybackRequest, newJewelryRequest, jwt) => {
-//     return async dispatch => {
-//       dispatch({ type: CREATE_BUYBACK_OUT_REQUEST });
+export const createBuybackOut = (buybackRequest, createJewelryRequest, jwt) => {
+    return async dispatch => {
+      dispatch({ type: CREATE_BUYBACK_OUT_REQUEST });
   
-//       try {
-//         const response = await api.post('/api/buyback/create/out', { buybackRequest, newJewelryRequest }, {
-//           headers: { Authorization: jwt }
-//         });
-//         dispatch({ type: CREATE_BUYBACK_OUT_SUCCESS, payload: response.data });
-//         // Handle success scenario if needed
-//       } catch (error) {
-//         dispatch({ type: CREATE_BUYBACK_OUT_FAILURE, error: error.message });
-//         // Handle error scenario
-//       }
-//     };
-//   };
+      try {
+        const response = await api.post('/api/buyback/create/out', { buybackRequest, createJewelryRequest }, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+        },
+        });
+        dispatch({ type: CREATE_BUYBACK_OUT_SUCCESS, payload: response.data });
+        console.log("ĐÃ MUA LẠI THÀNH CÔNG")
+        // Handle success scenario if needed
+      } catch (error) {
+        console.log("error",error)
+        dispatch({ type: CREATE_BUYBACK_OUT_FAILURE, error: error.message });
+        // Handle error scenario
+      }
+    };
+  };

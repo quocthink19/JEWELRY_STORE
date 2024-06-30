@@ -1,14 +1,14 @@
 import { CREATE_MENU_ITEM_FAILURE, CREATE_MENU_ITEM_REQUEST, CREATE_MENU_ITEM_SUCCESS, DELETE_MENU_ITEM_REQUEST, DELETE_MENU_ITEM_SUCCESS, GET_MENU_ITEMS_BY_JEWELRY_ID_FAILURE, GET_MENU_ITEMS_BY_JEWELRY_ID_REQUEST, GET_MENU_ITEMS_BY_JEWELRY_ID_SUCCESS, GET_MENU_ITEM_BY_CODE_FAILURE, GET_MENU_ITEM_BY_CODE_REQUEST, GET_MENU_ITEM_BY_CODE_SUCCESS, SEARCH_MENU_ITEM_FAILURE, SEARCH_MENU_ITEM_REQUEST, SEARCH_MENU_ITEM_SUCCESS, UPDATE_MENU_ITEMS_AVAILABILITY_FAILURE, UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST, UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS } from "./ActionType";
 import { api } from "../../config/api";
 
-export const createMenuItem = (menu) => {
+export const createMenuItem = ({menu,jwt}) => {
     return async (dispatch) => {
         dispatch({type:CREATE_MENU_ITEM_REQUEST});
         try {
             const {data} = await api.post('/api/admin/jewelry', menu,
                 {
                 headers: {
-                    Authorization: `Bearer ${menu.jwt}`,
+                    Authorization: `Bearer ${jwt}`,
                 },
             });
             console.log("created menu", data);

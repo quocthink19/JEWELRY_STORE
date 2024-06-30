@@ -39,7 +39,7 @@ const CreateMenuForm = () => {
         onSubmit: async (values) => {
             // const selectedCategory = category.categories.find(cat => cat.id === formik.values.category);
             // const jewelryCategoryName = selectedCategory ? selectedCategory.name : '';
-            const data = {
+            const menu = {
                 name: values.name,
                 description: values.description,
                 code: values.code,
@@ -57,9 +57,9 @@ const CreateMenuForm = () => {
             };
     
             console.log("jwt", jwt);
-            console.log("data ---", data);
+            console.log("data ---", menu);
         
-            dispatch(createMenuItem({ data, jwt }));
+        dispatch(createMenuItem( {menu, jwt} ));
         },
         
     });
