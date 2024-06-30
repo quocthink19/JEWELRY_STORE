@@ -47,10 +47,14 @@ export default function CategoryTable() {
                     />
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="category table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="left">ID</TableCell>
-                                    <TableCell align="left">Name</TableCell>
+                            <TableHead sx={{ backgroundColor: '#0B4CBB' }}>
+                                <TableRow >
+                                    <TableCell align="left">
+                                        <span style={{ color: 'white', fontWeight: 'bold' }}>ID</span>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <span style={{ color: 'white', fontWeight: 'bold' }}>Name</span>
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

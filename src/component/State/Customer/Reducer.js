@@ -1,34 +1,39 @@
-import { CHECK_OR_CREATE_CUSTOMER_FAILURE, CHECK_OR_CREATE_CUSTOMER_REQUEST, CHECK_OR_CREATE_CUSTOMER_SUCCESS } from "./Actiontype";
+import { createReducer } from '@reduxjs/toolkit';
+import { getAllCustomers, updateCustomer } from './Action';
+import { 
+  CHECK_OR_CREATE_CUSTOMER_REQUEST, 
+  CHECK_OR_CREATE_CUSTOMER_SUCCESS, 
+  CHECK_OR_CREATE_CUSTOMER_FAILURE 
+} from './Actiontype';
 
 const initialState = {
-    customer: null,
-    loading: false,
-    error: null,
-  };
-  
-  const customerReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case CHECK_OR_CREATE_CUSTOMER_REQUEST:
-        return {
-          ...state,
-          loading: true,
-          error: null,
-        };
-      case CHECK_OR_CREATE_CUSTOMER_SUCCESS:
-        return {
-          ...state,
-          customer: action.payload,
-          loading: false,
-        };
-      case CHECK_OR_CREATE_CUSTOMER_FAILURE:
-        return {
-          ...state,
-          loading: false,
-          error: action.payload,
-        };
-      default:
-        return state;
-    }
-  };
-  
-  export default customerReducer;
+  customers: [],
+  loading: false,
+  error: null,
+};
+
+const customerReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(getAllCustomers, (state, action) => {
+      state.customers = action.payload;
+    })
+    .addCase(updateCustomer, (state, action) => {
+      const index = state.customers.findIndex((customer) => customer.id === action.payload.id);
+      if (index !== -1) {
+        state.customers[index] = action.payload;
+      }
+    })
+    .addCase(CHECK_OR_CREATE_CUSTOMER_REQUEST, (state) => {
+      state.loading = true;
+    })
+    .addCase(CHECK_OR_CREATE_CUSTOMER_SUCCESS, (state, action) => {
+      state.loading = false;
+      state.customers.push(action.payload);
+    })
+    .addCase(CHECK_OR_CREATE_CUSTOMER_FAILURE, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+});
+
+export default customerReducer;

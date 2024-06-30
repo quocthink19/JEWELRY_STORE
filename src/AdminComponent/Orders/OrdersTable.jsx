@@ -34,19 +34,41 @@ export default function OrdersTable({ filter }) {
             <Card sx={{ mt: 2, boxShadow: 3 }}>
                 <CardHeader
                     title={"All Orders"}
-                    sx={{ pt: 2, alignItems: "center", textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}
+                    sx={{
+                        pt: 2,
+                        pb: 1,
+                        alignItems: "center",
+                        textAlign: 'center',
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        backgroundColor: '#f5f5f5', // Background color for the header
+                    }}
                 />
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
-                            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                                <TableCell>ID</TableCell>
-                                <TableCell align="center">Image</TableCell>
-                                <TableCell align="center">Customer</TableCell>
-                                <TableCell align="center">Price</TableCell>
-                                <TableCell align="center">Name</TableCell>
-                                <TableCell align="center">Ingredients</TableCell>
-                                <TableCell align="center">Status</TableCell>
+                            <TableRow sx={{ backgroundColor:'#0B4CBB' }}>
+                                <TableCell>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>ID</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Image</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Customer</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Price</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Name</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Ingredients</Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Status</Typography>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -66,7 +88,7 @@ export default function OrdersTable({ filter }) {
                                     <TableCell align="center">{order.name}</TableCell>
                                     <TableCell align="center">{order.ingredients}</TableCell>
                                     <TableCell align="center">
-                                        <Typography variant="body2" sx={{ color: order.status === 'Completed' ? 'green' : 'red' }}>
+                                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: order.status === 'Completed' ? 'green' : 'red' }}>
                                             {order.status}
                                         </Typography>
                                     </TableCell>
