@@ -11,7 +11,11 @@ import com.jewelry_store.jewelry_store.request.CreateJewelryRequest;
 
 public interface BuybackService {
 
-    public Buyback createBuyback(BuybackRequest buyback, Customer customerId, String jewelryCode, CreateJewelryRequest newJewelryRequest, User user) throws Exception;
+    public Buyback createBuyback(BuybackRequest buyback, String jewelryCode, 
+    User user) throws Exception;
+
+    public Buyback createBuybackOut(BuybackRequest buybackreq, 
+    CreateJewelryRequest newJewelryRequest, User user) throws Exception;
 
     public Optional<Buyback> getBuybackById(Long id);
 

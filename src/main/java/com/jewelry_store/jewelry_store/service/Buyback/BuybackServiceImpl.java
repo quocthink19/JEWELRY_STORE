@@ -40,9 +40,10 @@ public class BuybackServiceImpl implements BuybackService {
     
 
     @Override
-    public Buyback createBuyback(BuybackRequest buybackreq, Customer customerId, String jewelryCode,
-        CreateJewelryRequest newJewelryRequest, User user) throws Exception {
-        Area area = areaService.getAreabyUserId(buybackreq.getStaffId());
+    public Buyback createBuyback(BuybackRequest buybackreq,  String jewelryCode,
+    User user) throws Exception {
+        // Area area = areaService.getAreabyUserId(buybackreq.getStaffId());
+        Area area = areaService.getAreabyUserId(user.getId());
         Customer customer = customerRepository.findByFullnameAndMobileAndEmail(
                 buybackreq.getFullname(), buybackreq.getMobile(), buybackreq.getEmail())
                 .orElseGet(() -> {
@@ -53,16 +54,13 @@ public class BuybackServiceImpl implements BuybackService {
                     newCustomer.setPoint(0);  // Khởi tạo điểm về 0
                     return customerRepository.save(newCustomer);
                 }); 
-                Jewelry jewelry;
-        if (jewelryCode != null && !jewelryCode.isEmpty()) {
+            Jewelry jewelry;
             Optional<Jewelry> optionalJewelry = jewelryRepository.findByCode(jewelryCode);
             if (!optionalJewelry.isPresent()) {
                 throw new Exception("Jewelry not found with code: " + jewelryCode);
             }
-            jewelry = optionalJewelry.get();
-        } else {
-            jewelry = jewelryService.createJewelry(newJewelryRequest);
-        }   
+             jewelry = optionalJewelry.get();
+        
         Buyback buyback = new Buyback();
         double buybackPrice = jewelryService.calculateBuybackPrice(jewelry);
         // tạo mới sản phẩm
@@ -73,11 +71,45 @@ public class BuybackServiceImpl implements BuybackService {
             buyback.setCustomer(customer);
             buyback.setBuybackPrice(buybackPrice);
             buyback.setTransactionDate(new Date(System.currentTimeMillis()));
-
+        
         return buybackRepository.save(buyback);
+        
                 
+}
+
+            @Override
+            public Buyback createBuybackOut(BuybackRequest buybackreq,  CreateJewelryRequest newJewelryRequest,
+            User user) throws Exception {
+                Area area = areaService.getAreabyUserId(user.getId());
+                Customer customer = customerRepository.findByFullnameAndMobileAndEmail(
+                        buybackreq.getFullname(), buybackreq.getMobile(), buybackreq.getEmail())
+                        .orElseGet(() -> {
+                            Customer newCustomer = new Customer();
+                            newCustomer.setFullname(buybackreq.getFullname());
+                            newCustomer.setMobile(buybackreq.getMobile());
+                            newCustomer.setEmail(buybackreq.getEmail());
+                            newCustomer.setPoint(0);  // Khởi tạo điểm về 0
+                            return customerRepository.save(newCustomer);
+                        }); 
+                        Jewelry jewelry;
                 
-            }
+                    jewelry = jewelryService.createJewelry(newJewelryRequest);
+                  
+                Buyback buyback = new Buyback();
+                double buybackPrice = jewelryService.calculateBuybackPrice(jewelry);
+                // tạo mới sản phẩm
+        
+                    buyback.setJewelry(jewelry);
+                    buyback.setArea(area);
+                    buyback.setStaff(user);
+                    buyback.setCustomer(customer);
+                    buyback.setBuybackPrice(buybackPrice);
+                    buyback.setTransactionDate(new Date(System.currentTimeMillis()));
+        
+                return buybackRepository.save(buyback);
+                        
+                        
+                    }
 
     @Override
     public Optional<Buyback> getBuybackById(Long id) {

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class BuybackRequest {
 
-    private Long staffId;
+    // private Long staffId;
     // thong tin cua customer
     private String fullname;
     private String mobile;

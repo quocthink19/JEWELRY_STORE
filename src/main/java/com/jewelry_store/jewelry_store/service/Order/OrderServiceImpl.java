@@ -50,8 +50,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Orderr createOrder(OrderRequest orderRequest, User user) throws Exception {
-        // Area area = areaService.getAreabyUserId(user.getId());
-        Area area = areaService.getAreabyUserId(orderRequest.getStaffId());
+        Area area = areaService.getAreabyUserId(user.getId());
+        // Area area = areaService.findAreabyId(orderRequest.getStaffId());
         Customer customer = customerRepository.findByFullnameAndMobileAndEmail(
                 orderRequest.getFullname(), orderRequest.getMobile(), orderRequest.getEmail())
                 .orElseGet(() -> {

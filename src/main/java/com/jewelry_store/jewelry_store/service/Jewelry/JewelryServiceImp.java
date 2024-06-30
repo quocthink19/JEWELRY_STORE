@@ -31,13 +31,13 @@ public class JewelryServiceImp implements JewelryService {
     @Override
     public Jewelry createJewelry(CreateJewelryRequest req) throws Exception {
         Category category = new Category();
-        Optional<Category> existingCategoryOpt = categoryRepository.findByName(req.getJewelryCategory().getName());
+        Optional<Category> existingCategoryOpt = categoryRepository.findByName(req.getJewelryCategory());
         if (existingCategoryOpt.isPresent()) {
             category = existingCategoryOpt.get();
         } else {
             // Save the category if it does not exist
             category = new Category();
-            category.setName(req.getJewelryCategory().getName());
+            category.setName(req.getJewelryCategory());
             category = categoryRepository.save(category);
         }
 
