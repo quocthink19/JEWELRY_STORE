@@ -15,7 +15,7 @@ import Footer from '../Footer/Footer'
 import Home from '../HomeA/Home'
 import Teams from '../Staff/Teams'
 import Customer from '../Customer/Customer'
-
+import Buyback from '../Buyback/Buyback'
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -54,6 +54,7 @@ export const Admin = () => {
                         <Route path='/event' element={<Events />} />
                         <Route path='/details' element={<JewelryDetails />} />
                         <Route path='/add-menu' element={<CreateMenuForm />} />
+                        <Route path='/buyback' element={<Buyback/>} />
                         <Route path='/teams' element={<Teams/>} />
                         <Route path='/customer' element={<Customer/>} />
                     </Routes>

@@ -8,6 +8,7 @@ import ShopTwoIcon from '@mui/icons-material/ShopTwo';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,8 +24,10 @@ const menu = [
     { title: "Ingredients", icon: <DiamondIcon fontSize="large" sx={{ color: 'White'  }} />, path: "/ingredients" },
     { title: "Staff", icon: <GroupIcon fontSize="large" sx={{ color: 'White'  }} />, path: "/teams" },
     { title: "Customer", icon: <ChecklistIcon fontSize="large" sx={{ color: 'White' }} />, path: "/customer" },
+    { title: "Buyback", icon: <ShoppingCartCheckoutIcon fontSize="large" sx={{ color: 'White' }} />, path: "/buyback" },
     { title: "Details", icon: <AdminPanelSettingsIcon fontSize="large" sx={{ color: 'White'  }} />, path: "/details" },
     { title: "Events", icon: <EventIcon fontSize="large" sx={{ color: 'White' }} />, path: "/event" },
+
     { title: "Logout", icon: <LogoutIcon fontSize="large" sx={{ color: 'Red'  }} />, path: "/logout" },
 ];
 
@@ -84,7 +87,6 @@ export const AdminSidebar = ({ handleClose }) => {
                                     {item.icon}
                                 </div>
                                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#000000' }}>{item.title}</Typography>
-
                             </div>
                         ))}
                     </div>
