@@ -1,9 +1,10 @@
 import React from 'react'
+import StaffTable from './StaffTable'
 
 const Teams = () => {
   return (
     <div>
-      hi
+     <StaffTable/>
     </div>
   )
 }
