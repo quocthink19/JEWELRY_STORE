@@ -17,8 +17,8 @@ export const Orders = () => {
 
   return (
     <div className='px-2'>
-      <Card className='p-5'>
-        <Typography sx={{ paddingBottom: "1rem" }} variant='h5'>
+      <Card className='p-5' sx={{ backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+        <Typography sx={{ paddingBottom: "1rem", color: "black", fontWeight: "bold" }} variant='h5'>
           Order Status
         </Typography>
         <FormControl component="fieldset">
@@ -27,9 +27,9 @@ export const Orders = () => {
               <FormControlLabel
                 key={item.value}
                 value={item.value}
-                control={<Radio />}
+                control={<Radio sx={{ color: "#0B4CBB", '&.Mui-checked': { color: "red" } }} />}
                 label={item.label}
-                sx={{ color: "gray" }}
+                sx={{ color: "black", fontWeight: "bold" }}
               />
             ))}
           </RadioGroup>

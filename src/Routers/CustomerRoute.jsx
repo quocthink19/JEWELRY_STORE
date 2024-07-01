@@ -18,14 +18,6 @@ import Exchange from "../component/BuyBack/Exchange";
 export default function CustomerRoute() {
   return (
     <div>
-      <ul>
-        <li>
-          <Link to={"/login"}>Login</Link>
-        </li>
-        <li>
-          <Link to={"/register"}>Register</Link>
-        </li>
-      </ul>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -41,8 +33,15 @@ export default function CustomerRoute() {
         <Route path="/buy" element={<Buy />} />
         <Route path="/exchange" element={<Exchange />} />
         <Route path="/payment/success/:id" element={<PayMentSuccess />} />
- {/* Route for StockGold component */}
       </Routes>
+      <ul>
+        <li>
+          <Link to={"/login"}>Login</Link>
+        </li>
+        <li>
+          <Link to={"/register"}>Register</Link>
+        </li>
+      </ul>
       <Footer/>
     </div>
   );

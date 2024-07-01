@@ -86,7 +86,7 @@ const ProfileNavigation = ({ open, handleClose }) => {
                 },
               }}
             >
-              <ListItemIcon sx={{ color: "#00ABE1", fontSize: "3rem" }}>
+              <ListItemIcon sx={{ color: "#0B4CBB", fontSize: "3rem" }}>
                 {React.cloneElement(item.icon, { fontSize: "inherit" })}
               </ListItemIcon>
               <ListItemText primary={item.title} />
